@@ -1,0 +1,17 @@
+import type { Metadata } from 'next';
+// @imports
+import AnnouncementBar from '@/components/AnnouncementBar';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import PageShell from '@/components/PageShell';
+
+export const metadata: Metadata = {
+  title: 'Privacy Policy — Converse360',
+  description: 'How Converse360 collects, uses and protects your data.',
+};
+
+export default function PrivacyPage() {
+  return (
+    <PageShell scope="legal">
+      <AnnouncementBar />
+      <Header />

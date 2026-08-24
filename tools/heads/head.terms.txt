@@ -1,0 +1,17 @@
+import type { Metadata } from 'next';
+// @imports
+import AnnouncementBar from '@/components/AnnouncementBar';
+import Header from '@/components/Header';
+import Footer from '@/components/Footer';
+import PageShell from '@/components/PageShell';
+
+export const metadata: Metadata = {
+  title: 'Terms of Service — Converse360',
+  description: 'The terms that govern your use of Converse360.',
+};
+
+export default function TermsPage() {
+  return (
+    <PageShell scope="legal">
+      <AnnouncementBar />
+      <Header />

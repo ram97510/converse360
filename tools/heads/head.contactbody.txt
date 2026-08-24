@@ -1,0 +1,20 @@
+'use client';
+
+import { useState } from 'react';
+// @imports
+
+/**
+ * The contact page body.
+ *
+ * Client-side only, exactly as the source: submitting the form does not post
+ * anywhere, it just reveals the confirmation line beneath the button.
+ */
+export default function ContactBody() {
+  const [sent, setSent] = useState(false);
+  const submit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setSent(true);
+  };
+
+  return (
+    <>

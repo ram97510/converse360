@@ -1,0 +1,10 @@
+'use client';
+
+import Hx from './Hx';
+import Link from 'next/link';
+import { BRAND_LIGHT, WHITE } from '@/lib/tokens';
+
+/** The two-slide green announcement bar. Both slides are always rendered; the
+ *  annA / annB keyframes in globals.css cross-fade them. */
+export default function AnnouncementBar() {
+  return (

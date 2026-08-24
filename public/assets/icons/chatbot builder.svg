@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg id="Layer_1" data-name="Layer 1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <defs>
+    <style>
+      .cls-1 {
+        fill-rule: evenodd;
+        stroke: #000;
+        stroke-miterlimit: 10;
+        stroke-width: .5px;
+      }
+    </style>
+  </defs>
+  <g id="Chatbots">
+    <path class="cls-1" d="M25,23.97v4l-5.33-4H4V4.97h24v19h-3ZM23,23.97v-2h3V6.97H6v15h14.33l2.67,2ZM9,17.47c-.61-.46-1-1.18-1-2h0c0-.82.39-1.54,1-2v-2.5h6v-1h-1v-2h4v2h-1v1h6v2.5c.61.46,1,1.18,1,2h0c0,.82-.39,1.55-1,2v2.5h-14v-2.5ZM21,12.97h-10v5h10v-5ZM18.5,13.97c.83,0,1.5.67,1.5,1.5s-.67,1.5-1.5,1.5-1.5-.67-1.5-1.5.67-1.5,1.5-1.5ZM13.5,13.97c.83,0,1.5.67,1.5,1.5s-.67,1.5-1.5,1.5-1.5-.67-1.5-1.5.67-1.5,1.5-1.5Z"/>
+  </g>
+</svg>
