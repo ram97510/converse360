@@ -6582,24 +6582,35 @@ body {
    -------------------------------------------------------------------------- */
 @media (max-width: 640px) {
 
-  /* !important is required: the anchor carries `display:inline-flex` in its
-       style attribute, which no ordinary stylesheet rule can outrank. As a flex
-       row the wrapped headline becomes one full-width item and shoves the arrow
-       to the far edge of the bar; as normal flow the arrow follows the last
-       word. `block` rather than `inline` because the anchor is itself a flex
-       item, and a flex item's display is blockified regardless. */
-  :is(.page-landing, .page-about, .page-std, .legal-page, .page-blog, .page-post) a:has(> .ann-sweep) {
-    display: block !important;
-    line-height: 1.4;
+  /* Keep badge + text on one line — override the flexWrap:"wrap" inline style */
+  :is(.page-landing, .page-about, .page-std, .legal-page, .page-blog, .page-post, .page-ind) [role="region"][aria-label="Announcements"] > div > div {
+    flex-wrap: nowrap !important;
+    gap: 8px !important;
   }
 
-  :is(.page-landing, .page-about, .page-std, .legal-page, .page-blog, .page-post) a:has(> .ann-sweep)>svg {
-    vertical-align: -3px;
-    margin-left: 5px;
+  /* Shrink the badge pill so it fits beside the text */
+  :is(.page-landing, .page-about, .page-std, .legal-page, .page-blog, .page-post, .page-ind) [role="region"][aria-label="Announcements"] > div > div > span:first-child {
+    padding: 4px 10px !important;
+    font-size: 9.5px !important;
   }
 
-  :is(.page-landing, .page-about, .page-std, .legal-page, .page-blog, .page-post) .ann-rule {
-    display: none;
+  /* Keep link text inline, reduce size slightly */
+  :is(.page-landing, .page-about, .page-std, .legal-page, .page-blog, .page-post, .page-ind) a:has(> .ann-sweep) {
+    font-size: 12px !important;
+    white-space: nowrap !important;
+    display: inline-flex !important;
+    align-items: center !important;
+  }
+
+  :is(.page-landing, .page-about, .page-std, .legal-page, .page-blog, .page-post, .page-ind) a:has(> .ann-sweep)>svg {
+    vertical-align: middle !important;
+    margin-left: 4px !important;
+    width: 13px !important;
+    height: 13px !important;
+  }
+
+  :is(.page-landing, .page-about, .page-std, .legal-page, .page-blog, .page-post, .page-ind) .ann-rule {
+    display: none !important;
   }
 }
 
@@ -7501,36 +7512,7 @@ body {
   }
 }
 
-@media (max-width: 640px) {
-  .page-ind .ann-rule {
-    display: none !important;
-  }
 
-  /* Keep badge + text on one line — override the flexWrap:"wrap" inline style */
-  .page-ind [role="region"][aria-label="Announcements"] > div > div {
-    flex-wrap: nowrap !important;
-    gap: 8px !important;
-  }
-
-  /* Shrink the badge pill so it fits beside the text */
-  .page-ind [role="region"][aria-label="Announcements"] > div > div > span:first-child {
-    padding: 4px 10px !important;
-    font-size: 9.5px !important;
-  }
-
-  /* Keep link text inline, reduce size slightly */
-  .page-ind a:has(> .ann-sweep) {
-    font-size: 12px !important;
-    white-space: nowrap;
-  }
-
-  .page-ind a:has(> .ann-sweep)>svg {
-    vertical-align: -3px;
-    margin-left: 4px;
-    width: 13px;
-    height: 13px;
-  }
-}
 
 @media (max-width: 760px) {
 
