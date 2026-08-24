@@ -63,8 +63,7 @@ export default function PricingBody() {
             <div role="tablist" aria-label="Billing period" style={{ display: "inline-flex", alignItems: "center", gap: "4px", background: "var(--color-surface)", border: "1px solid var(--color-divider)", borderRadius: "999px", padding: "5px" }}>
               <button type="button" role="tab" aria-selected={isMonthly} onClick={pickMonthly} style={{ font: "inherit", cursor: "pointer", border: "0", borderRadius: "999px", padding: "10px 22px", fontSize: "14.5px", fontWeight: "600", background: mBg, color: mFg, boxShadow: mShadow }}>Monthly</button>
               <button type="button" role="tab" aria-selected={isYearly} onClick={pickYearly} style={{ font: "inherit", cursor: "pointer", border: "0", borderRadius: "999px", padding: "10px 22px", fontSize: "14.5px", fontWeight: "600", background: yBg, color: yFg, boxShadow: yShadow, display: "inline-flex", alignItems: "center", gap: "9px" }}>Yearly{' '}
-                <span style={{ fontSize: "10.5px", fontWeight: "700", letterSpacing: "0.06em", textTransform: "uppercase", color: "var(--color-accent-600)" }}>Save
-                  10%</span></button>
+                <span style={{ fontSize: "10px", fontWeight: "700", letterSpacing: "0.04em", textTransform: "uppercase", color: "#15803d", background: "#dcfce7", padding: "3px 7px", borderRadius: "4px", lineHeight: "1" }}>Save 10%</span></button>
             </div>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(260px,100%),1fr))", gap: "20px", alignItems: "stretch" }}>
@@ -79,7 +78,7 @@ export default function PricingBody() {
               </div>
               <div style={{ fontSize: "12.5px", color: "var(--color-text-muted)", marginTop: "8px", marginBottom: "22px" }}>{n1}</div>
               <Hx link className="btn-fx btn-fx-brand" href="/contact" style={{ display: "block", textAlign: "center", background: "var(--brand)", color: "var(--color-bg)", fontSize: "15px", fontWeight: "700", padding: "14px 18px", borderRadius: "999px", marginBottom: "24px" }} hoverStyle={{ background: "var(--color-text)" }}>Start for free</Hx>
-              <div style={{ background: "var(--color-surface)", border: "1px solid var(--color-divider)", borderRadius: "10px", padding: "14px 15px", marginBottom: "24px" }}>
+              <div style={{ fontFamily: "Manrope, sans-serif", background: "var(--color-surface)", border: "1px solid var(--color-divider)", borderRadius: "10px", padding: "14px 15px", marginBottom: "24px" }}>
                 <div style={{ fontSize: "10.5px", fontWeight: "700", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-accent-600)", marginBottom: "12px" }}>
                   {' '}Per template message</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "9px", fontSize: "13.5px" }}>
@@ -232,7 +231,7 @@ export default function PricingBody() {
               </div>
               <div style={{ fontSize: "12.5px", color: "var(--color-text-muted)", marginTop: "8px", marginBottom: "22px" }}>{n2}</div>
               <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ display: "block", textAlign: "center", background: "var(--brand)", color: "var(--color-bg)", fontSize: "15px", fontWeight: "700", padding: "14px 18px", borderRadius: "999px", marginBottom: "24px" }} hoverStyle={{ background: "#000" }}>Start for free</Hx>
-              <div style={{ background: "var(--color-surface)", border: "1px solid var(--color-divider)", borderRadius: "10px", padding: "14px 15px", marginBottom: "24px" }}>
+              <div style={{ fontFamily: "Manrope, sans-serif", background: "var(--color-surface)", border: "1px solid var(--color-divider)", borderRadius: "10px", padding: "14px 15px", marginBottom: "24px" }}>
                 <div style={{ fontSize: "10.5px", fontWeight: "700", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-accent-600)", marginBottom: "12px" }}>
                   {' '}Per template message</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "9px", fontSize: "13.5px" }}>
@@ -403,7 +402,7 @@ export default function PricingBody() {
               </div>
               <div style={{ fontSize: "12.5px", color: "var(--color-text-muted)", marginTop: "8px", marginBottom: "22px" }}>{n3}</div>
               <Hx link className="btn-fx btn-fx-brand" href="/contact" style={{ display: "block", textAlign: "center", background: "var(--brand)", color: "var(--color-bg)", fontSize: "15px", fontWeight: "700", padding: "14px 18px", borderRadius: "999px", marginBottom: "24px" }} hoverStyle={{ background: "var(--color-text)" }}>Start for free</Hx>
-              <div style={{ background: "var(--color-surface)", border: "1px solid var(--color-divider)", borderRadius: "10px", padding: "14px 15px", marginBottom: "24px" }}>
+              <div style={{ fontFamily: "Manrope, sans-serif", background: "var(--color-surface)", border: "1px solid var(--color-divider)", borderRadius: "10px", padding: "14px 15px", marginBottom: "24px" }}>
                 <div style={{ fontSize: "10.5px", fontWeight: "700", letterSpacing: "0.1em", textTransform: "uppercase", color: "var(--color-accent-600)", marginBottom: "12px" }}>
                   {' '}Per template message</div>
                 <div style={{ display: "flex", flexDirection: "column", gap: "9px", fontSize: "13.5px" }}>

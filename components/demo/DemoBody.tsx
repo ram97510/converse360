@@ -909,23 +909,23 @@ export default function DemoBody() {
       <section style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(48px,6.5vw,80px) clamp(20px,4vw,32px)' }}>
         {stepper}
 
+        <h2 style={{ fontSize: 'clamp(24px,3.2vw,32px)', fontWeight: '700', letterSpacing: '-0.03em', marginBottom: '12px' }}>
+          {heading.title}
+        </h2>
+        <p style={{ fontSize: '16.5px', lineHeight: '1.65', color: 'var(--color-text-muted)', marginBottom: '24px' }}>
+          {heading.body}
+        </p>
+
         <div
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit,minmax(min(340px,100%),1fr))',
             gap: 'clamp(32px,5vw,64px)',
-            alignItems: 'start',
+            alignItems: 'stretch',
           }}
         >
-          <div style={{ minWidth: '0' }}>
-            <h2 style={{ fontSize: 'clamp(24px,3.2vw,32px)', fontWeight: '700', letterSpacing: '-0.03em', marginBottom: '12px' }}>
-              {heading.title}
-            </h2>
-            <p style={{ fontSize: '16.5px', lineHeight: '1.65', color: 'var(--color-text-muted)', marginBottom: '24px' }}>
-              {heading.body}
-            </p>
-
-            <div style={{ ...CARD, background: 'var(--color-surface)' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', minWidth: '0' }}>
+            <div style={{ ...CARD, flex: 1, background: 'var(--color-surface)' }}>
               {step === 1 && (
                 <>
                   <div className="demo-picker" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1.15fr) minmax(0,0.85fr)', gap: 'clamp(18px,2.5vw,28px)' }}>
@@ -958,7 +958,7 @@ export default function DemoBody() {
           </div>
 
           <div style={{ display: 'flex', flexDirection: 'column', minWidth: '0' }}>
-            <div style={CARD}>
+            <div style={{ ...CARD, flex: 1 }}>
               <h3 style={{ fontSize: '17px', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '6px' }}>
                 What the twenty minutes covers
               </h3>
@@ -979,37 +979,6 @@ export default function DemoBody() {
                   </div>
                 </div>
               ))}
-            </div>
-
-            <div style={{ ...CARD, marginTop: '20px' }}>
-              <h3 style={{ fontSize: '17px', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '6px' }}>
-                Rather not wait?
-              </h3>
-              <p style={{ fontSize: '14.5px', lineHeight: '1.6', color: 'var(--color-text-muted)', marginBottom: '18px' }}>
-                Message or call us and we&apos;ll find a slot on the spot.
-              </p>
-              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
-                <Hx as="a" href="https://wa.me/917338855082" target="_blank" rel="noopener noreferrer" style={PILL} hoverStyle={PILL_HOVER}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M21 11.5a8.5 8.5 0 0 1-12.6 7.4L3.5 20.5l1.6-4.8A8.5 8.5 0 1 1 21 11.5z" />
-                    <path d="M8.8 9c.3 2.6 2.6 4.9 5.2 5.2l1-1.4 1.7.7a4.6 4.6 0 0 1-6-1.2 4.6 4.6 0 0 1-1.2-6l.7 1.7z" />
-                  </svg>
-                  WhatsApp us
-                </Hx>
-                <Hx as="a" href="tel:7338855082" style={{ ...PILL, whiteSpace: 'nowrap' }} hoverStyle={PILL_HOVER}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6A19.8 19.8 0 0 1 2.1 4.2 2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1 1 .4 1.9.7 2.8a2 2 0 0 1-.5 2.1L8.1 9.8a16 16 0 0 0 6 6l1.2-1.2a2 2 0 0 1 2.1-.5c.9.3 1.8.6 2.8.7a2 2 0 0 1 1.8 2.1z" />
-                  </svg>
-                  7338855082
-                </Hx>
-                <Hx as="a" href="mailto:hello@converse360.in" style={{ ...PILL, overflowWrap: 'break-word' }} hoverStyle={PILL_HOVER}>
-                  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                    <rect x="2.5" y="4.5" width="19" height="15" rx="2.5" />
-                    <path d="m3 6.5 9 6.5 9-6.5" />
-                  </svg>
-                  hello@converse360.in
-                </Hx>
-              </div>
             </div>
           </div>
         </div>
