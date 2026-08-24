@@ -91,6 +91,28 @@ export default function ConversationalSalesPost() {
 
             <h2>Why Conversational Selling Drives Higher Conversions</h2>
 
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))',
+              gap: '20px',
+              margin: '30px 0 35px'
+            }}>
+              <div style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--color-divider)', aspectRatio: '4/3' }}>
+                <img
+                  src="/assets/whatsapp_sales_checkout.jpg"
+                  alt="WhatsApp sales checkout illustration"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+              </div>
+              <div style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--color-divider)', aspectRatio: '4/3' }}>
+                <img
+                  src="/assets/sales_conversion_analytics.jpg"
+                  alt="Sales conversion analytics dashboard"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+              </div>
+            </div>
+
             <h3>1. It Meets Buyers at the Moment of Intent</h3>
             <p>When a prospect asks a question in real time, they're actively considering a decision. Responding instantly
               rather than hours or days later — significantly increases the likelihood of conversion, since interest

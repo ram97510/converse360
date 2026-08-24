@@ -14,20 +14,20 @@ export default function AnnouncementBar() {
       <span aria-hidden="true" style={{ position: "absolute", right: "22px", top: "0", bottom: "0", width: "120px", backgroundImage: "radial-gradient(rgba(255,255,255,0.22) 1.2px,transparent 1.2px)", backgroundSize: "11px 11px" }}></span>
       <div style={{ position: "relative", display: "grid", width: "100%", maxWidth: "1440px", margin: "0 auto", alignItems: "center" }}>
         <div style={{ gridArea: "1/1", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "8px 14px", animation: "annA 11s ease-in-out infinite" }}>
-          <span style={{ border: "1.5px solid rgba(255,255,255,0.75)", color: "var(--color-bg)", borderRadius: "999px", padding: "5px 15px", fontSize: "11px", fontWeight: "700", letterSpacing: "0.11em", textTransform: "uppercase", whiteSpace: "nowrap", flex: "none" }}>New</span>
-          <span aria-hidden="true" className="ann-rule" style={{ width: "1px", height: "22px", background: "rgba(255,255,255,0.28)", flex: "none" }}></span>
-          <Hx link href="/contact" style={{ display: "inline-flex", alignItems: "center", gap: "11px", color: "var(--color-bg)", fontSize: "clamp(12.5px,1.4vw,15px)", fontWeight: "700", letterSpacing: "-0.01em", position: "relative", overflow: "hidden" }} hoverStyle={{ color: "var(--color-accent-pale)" }}><span aria-hidden="true" className="ann-sweep"><span className="ann-slash ann-slash-1"></span><span className="ann-slash ann-slash-2"></span></span>Build AI Agents
-            on WhatsApp that qualify &amp; convert 24/7{' '}
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={BRAND_LIGHT} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flex: "none" }}>
-              <path d="M5 12h14M13 6l6 6-6 6"></path>
-            </svg></Hx>
-        </div>
-        <div style={{ gridArea: "1/1", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "8px 14px", animation: "annB 11s ease-in-out infinite", opacity: "0" }}>
           <span style={{ border: "1.5px solid rgba(255,255,255,0.75)", color: "var(--color-bg)", borderRadius: "999px", padding: "5px 15px", fontSize: "11px", fontWeight: "700", letterSpacing: "0.11em", textTransform: "uppercase", whiteSpace: "nowrap", flex: "none" }}>Coming
             soon</span>
           <span aria-hidden="true" className="ann-rule" style={{ width: "1px", height: "22px", background: "rgba(255,255,255,0.28)", flex: "none" }}></span>
           <Hx link href="/contact" style={{ display: "inline-flex", alignItems: "center", gap: "11px", color: "var(--color-bg)", fontSize: "clamp(12.5px,1.4vw,15px)", fontWeight: "700", letterSpacing: "-0.01em", position: "relative", overflow: "hidden" }} hoverStyle={{ color: "var(--color-accent-pale)" }}><span aria-hidden="true" className="ann-sweep"><span className="ann-slash ann-slash-1"></span><span className="ann-slash ann-slash-2"></span></span>Meta Ads
             Manager inside Converse360{' '}
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={BRAND_LIGHT} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flex: "none" }}>
+              <path d="M5 12h14M13 6l6 6-6 6"></path>
+            </svg></Hx>
+        </div>
+        <div style={{ gridArea: "1/1", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "8px 14px", animation: "annB 11s ease-in-out infinite", opacity: "0" }}>
+          <span style={{ border: "1.5px solid rgba(255,255,255,0.75)", color: "var(--color-bg)", borderRadius: "999px", padding: "5px 15px", fontSize: "11px", fontWeight: "700", letterSpacing: "0.11em", textTransform: "uppercase", whiteSpace: "nowrap", flex: "none" }}>New</span>
+          <span aria-hidden="true" className="ann-rule" style={{ width: "1px", height: "22px", background: "rgba(255,255,255,0.28)", flex: "none" }}></span>
+          <Hx link href="/contact" style={{ display: "inline-flex", alignItems: "center", gap: "11px", color: "var(--color-bg)", fontSize: "clamp(12.5px,1.4vw,15px)", fontWeight: "700", letterSpacing: "-0.01em", position: "relative", overflow: "hidden" }} hoverStyle={{ color: "var(--color-accent-pale)" }}><span aria-hidden="true" className="ann-sweep"><span className="ann-slash ann-slash-1"></span><span className="ann-slash ann-slash-2"></span></span>Build AI Agents
+            on WhatsApp that qualify &amp; convert 24/7{' '}
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={BRAND_LIGHT} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ flex: "none" }}>
               <path d="M5 12h14M13 6l6 6-6 6"></path>
             </svg></Hx>

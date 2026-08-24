@@ -270,7 +270,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px", marginBottom: "16px" }}>
             <Hx link className="btn-fx btn-fx-brand" href="/contact" style={{ background: "var(--brand)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px", boxShadow: "0 8px 24px rgba(0,171,86,0.24)" }} hoverStyle={{ background: "var(--color-text)", boxShadow: "0 16px 30px -10px rgba(24,24,24,0.5)" }}>Book a Free Demo</Hx>
-            <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ background: "var(--color-text)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px", boxShadow: "0 8px 24px rgba(24,24,24,0.18)" }} hoverStyle={{ background: "#000", boxShadow: "0 16px 30px -10px rgba(24,24,24,0.5)" }}>Start Free</Hx>
+            <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ background: "var(--color-text)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px", boxShadow: "0 8px 24px rgba(24,24,24,0.18)", border: "1px solid transparent" }} hoverStyle={{ background: "var(--color-bg)", color: "var(--color-text)", border: "1px solid var(--color-text)", boxShadow: "0 16px 30px -10px rgba(24,24,24,0.18)" }}>Start Free</Hx>
           </div>
           <div style={{ fontSize: "13.5px", color: "var(--color-text-muted)" }}>No setup fee · Live in days, not months</div>
         </div>

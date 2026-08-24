@@ -77,6 +77,28 @@ export default function WhatsAppEssentialPost() {
 
             <h2>WhatsApp Business: The Emergence of a Powerful Communication Channel</h2>
 
+            <div style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit, minmax(min(280px, 100%), 1fr))',
+              gap: '20px',
+              margin: '30px 0 35px'
+            }}>
+              <div style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--color-divider)', aspectRatio: '4/3' }}>
+                <img
+                  src="/assets/whatsapp_business_interaction.jpg"
+                  alt="WhatsApp business interaction flow"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+              </div>
+              <div style={{ position: 'relative', borderRadius: '16px', overflow: 'hidden', border: '1px solid var(--color-divider)', aspectRatio: '4/3' }}>
+                <img
+                  src="/assets/whatsapp_business_dashboard.jpg"
+                  alt="WhatsApp business dashboard view"
+                  style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+                />
+              </div>
+            </div>
+
             <p>Today's customers demand interaction and not communication, and WhatsApp Business allows them to interact
               in a personal manner.</p>
 

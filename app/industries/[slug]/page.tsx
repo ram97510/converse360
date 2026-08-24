@@ -185,7 +185,7 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
         <div className="ind-wrap">
           <div style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(min(400px, 100%), 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))',
             gap: 'clamp(32px, 5vw, 64px)',
             alignItems: 'center'
           }}>
