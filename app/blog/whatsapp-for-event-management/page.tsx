@@ -200,7 +200,7 @@ export default function EventManagementPost() {
                   <path d="M19 12H5M11 18l-6-6 6-6"></path>
                 </svg>All articles</Link>
               <span style={{ flex: "1" }}></span>
-              <Hx link className="btn-fx btn-fx-brand" href="/contact" style={{ background: "var(--brand)", color: "var(--color-bg)", fontSize: "15px", fontWeight: "700", padding: "13px 24px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-text)" }}>Book a Free Demo</Hx>
+              <Hx link className="btn-fx btn-fx-brand" href="/book-a-demo" style={{ background: "var(--brand)", color: "var(--color-bg)", fontSize: "15px", fontWeight: "700", padding: "13px 24px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-text)" }}>Book a Free Demo</Hx>
             </div>
           </div>
         </div>

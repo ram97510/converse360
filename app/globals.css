@@ -1579,7 +1579,7 @@ summary::-webkit-details-marker {
 .page-landing .tst-name {
   display: block;
   font-family: var(--font-heading);
-  font-size: 16px;
+  font-size: 17.5px;
   font-weight: 700;
   letter-spacing: -0.015em;
   color: var(--color-text);
@@ -1706,24 +1706,13 @@ summary::-webkit-details-marker {
   transform: translateY(18px);
 }
 
+/* The per-child delay is --reveal-d, stamped on by RevealAnimator when the
+   container is revealed: one step across each row, one larger step per row
+   down. nth-child rules can't do that — they can't see where the grid wrapped,
+   and they run out at whatever count the stylesheet happened to spell out. */
 .reveal-on .page-landing [data-reveal="rise"].is-in>* {
   animation: riseOnly .62s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.reveal-on .page-landing [data-reveal="rise"].is-in>*:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.reveal-on .page-landing [data-reveal="rise"].is-in>*:nth-child(2) {
-  animation-delay: .1s;
-}
-
-.reveal-on .page-landing [data-reveal="rise"].is-in>*:nth-child(3) {
-  animation-delay: .2s;
-}
-
-.reveal-on .page-landing [data-reveal="rise"].is-in>*:nth-child(4) {
-  animation-delay: .3s;
+  animation-delay: var(--reveal-d, 0s);
 }
 
 .reveal-on .page-landing [data-reveal="stagger"]>* {
@@ -1731,32 +1720,12 @@ summary::-webkit-details-marker {
   transform: translateY(24px);
 }
 
-.reveal-on .page-landing [data-reveal="stagger"].is-in>* {
+/* .is-in lands on the CHILD here, not the container: each card is observed on
+   its own, so a grid taller than the viewport animates row by row as you reach
+   it instead of firing every card the moment its first row appears. */
+.reveal-on .page-landing [data-reveal="stagger"]>.is-in {
   animation: revealUp .68s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-
-.reveal-on .page-landing [data-reveal="stagger"].is-in>*:nth-child(1) {
-  animation-delay: 0s;
-}
-
-.reveal-on .page-landing [data-reveal="stagger"].is-in>*:nth-child(2) {
-  animation-delay: .11s;
-}
-
-.reveal-on .page-landing [data-reveal="stagger"].is-in>*:nth-child(3) {
-  animation-delay: .22s;
-}
-
-.reveal-on .page-landing [data-reveal="stagger"].is-in>*:nth-child(4) {
-  animation-delay: .33s;
-}
-
-.reveal-on .page-landing [data-reveal="stagger"].is-in>*:nth-child(5) {
-  animation-delay: .44s;
-}
-
-.reveal-on .page-landing [data-reveal="stagger"].is-in>*:nth-child(6) {
-  animation-delay: .55s;
+  animation-delay: var(--reveal-d, 0s);
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1890,12 +1859,6 @@ summary::-webkit-details-marker {
   transition: transform .32s cubic-bezier(0.16, 1, 0.3, 1), box-shadow .32s ease, border-color .32s ease;
 }
 
-/* !important so a real hover always beats the travelling highlight below */
-.page-landing .flow-card:hover {
-  transform: translateY(-4px) !important;
-  border-color: rgba(0, 171, 86, 0.32) !important;
-  box-shadow: 0 22px 42px -24px rgba(0, 143, 72, 0.32) !important;
-}
 
 /* short green tab straddling the card's top edge */
 /* Loading bar on the card's top edge: a pale track that fills while this step
@@ -7025,6 +6988,25 @@ body {
   margin-top: 28px;
 }
 
+/* Hero reassurance line — sits under the buttons on the verticals whose copy
+   ships one ("No setup fee · Live in days, not months"). */
+.page-ind .ind-hero-note {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin: 18px 0 0;
+  font-size: 13.5px;
+  line-height: 1.5;
+  color: var(--color-text-subtle);
+}
+
+.page-ind .ind-hero-note-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  flex: none;
+}
+
 .page-ind .ind-btn {
   display: inline-flex;
   align-items: center;
@@ -7068,6 +7050,7 @@ body {
   border-top: 1px solid var(--color-divider);
   border-bottom: 1px solid var(--color-divider);
   padding: clamp(20px, 2.4vw, 28px) 0;
+  text-align: center;
 }
 
 .page-ind .ind-metric strong {

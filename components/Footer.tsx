@@ -29,6 +29,7 @@ export default function Footer({ id }: { id?: string }) {
               {' '}Quick links</div>
             <div style={{ display: "flex", flexDirection: "column", gap: "13px" }}>
               <Hx link href="/about" style={{ fontSize: "15px", color: "var(--color-text-muted)", width: "fit-content" }} hoverStyle={{ color: "var(--brand)" }}>About us</Hx>
+              <Hx link href="/book-a-demo" style={{ fontSize: "15px", color: "var(--color-text-muted)", width: "fit-content" }} hoverStyle={{ color: "var(--brand)" }}>Book a free demo</Hx>
               <Hx link href="/contact" style={{ fontSize: "15px", color: "var(--color-text-muted)", width: "fit-content" }} hoverStyle={{ color: "var(--brand)" }}>Contact us</Hx>
               {/* <a href="#industries" style="font-size:15px;color:#4A4A4A;width:fit-content;"
                 style-hover="color:#00AB56">Industries</a> */}

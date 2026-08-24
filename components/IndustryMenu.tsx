@@ -164,7 +164,7 @@ export default function IndustryMenu({ active = false }: { active?: boolean }) {
                 <p className="ind-mega-promo-body">
                   Twenty minutes, mapped to how enquiries reach you today.
                 </p>
-                <Link href="/contact" className="ind-mega-promo-cta">
+                <Link href="/book-a-demo" className="ind-mega-promo-cta">
                   Book your demo
                   <span>
                     <svg

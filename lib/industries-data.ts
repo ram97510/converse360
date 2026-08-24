@@ -2,16 +2,14 @@
  * Industries — the six verticals behind the header's "Industries" mega menu
  * and the `/industries/[slug]` pages.
  *
- * The conversational content (blurb, capability points, sample thread, headline
- * metrics) is not restated here: it already exists in `landing-data.ts`, which
- * drives the landing page's industry picker. Both surfaces read the same
- * constants so a copy change lands in one place. What lives here is only what
- * the standalone page needs on top of that — the slug, the menu label, the
- * accent tint, the hero copy, the problem/answer pairs, the workflow and the
- * FAQ.
+ * All page copy lives here: hero, metric strip, the problem / capability /
+ * workflow sections with their own per-industry headings, the FAQ and the
+ * closing CTA. The only thing still read from `landing-data.ts` is the sample
+ * WhatsApp thread, which the landing page's industry picker plays for the same
+ * vertical — so a thread edit lands on both surfaces at once.
  */
 
-import { DATA, EXTRA, type Industry, type Extra, type Message } from './landing-data';
+import { DATA, type Message } from './landing-data';
 
 export type IndustryIconKey =
   | 'retail'
@@ -34,7 +32,7 @@ export interface IndustryQA {
 export interface IndustryDef {
   /** URL segment under /industries */
   slug: string;
-  /** Must match a `name` in landing-data's DATA / EXTRA. */
+  /** Must match a `name` in landing-data's DATA — that record carries the thread. */
   name: string;
   /** Short label used in the mega menu. */
   menuLabel: string;
@@ -43,16 +41,30 @@ export interface IndustryDef {
   tint: string;
   tintSoft: string;
   heroEyebrow: string;
-  /** Rendered as: {heroTitle} <em>{heroTitleAccent}</em> {heroTitleTail} */
+  /** Rendered as: {heroTitle} <em>{heroTitleAccent}</em>{heroTitleTail} */
   heroTitle: string;
   heroTitleAccent: string;
   heroTitleTail: string;
   heroBody: string;
-  /** What goes wrong today, and what Converse360 does about it. */
+  /** Reassurance line under the hero buttons. Retail & D2C ships without one. */
+  heroNote?: string;
+  /** The three-up strip under the hero: [value, label]. */
+  metrics: [string, string][];
+  /** What goes wrong today. */
+  problemsTitle: string;
+  problemsIntro: string;
   problems: IndustryStep[];
+  /** What Converse360 does about it. */
+  capabilitiesTitle: string;
+  capabilitiesIntro: string;
+  capabilities: string[];
   /** The chat-to-outcome path, four steps. */
+  workflowTitle: string;
   workflow: IndustryStep[];
+  faqTitle: string;
   faqs: IndustryQA[];
+  ctaTitle: string;
+  ctaBody: string;
 }
 
 export const INDUSTRIES: IndustryDef[] = [
@@ -64,36 +76,79 @@ export const INDUSTRIES: IndustryDef[] = [
     tint: '#00AB56',
     tintSoft: '#E7F6EE',
     heroEyebrow: 'Retail & D2C',
-    heroTitle: 'Turn every product question into',
-    heroTitleAccent: 'an order',
-    heroTitleTail: 'before the customer leaves the chat.',
+    heroTitle: 'Keep the conversation going until the customer is',
+    heroTitleAccent: 'ready to buy',
+    heroTitleTail: '.',
     heroBody:
-      'Shoppers ask about size, price and delivery at 11 PM and buy from whoever answers first. Converse360 keeps your catalog, stock and checkout inside WhatsApp, so a browsing customer never has to open another app to place the order.',
+      'A product gets attention on Instagram. A question comes through WhatsApp. Someone checks your website and leaves without asking anything. Converse360 brings those interactions together, helps AI handle the routine questions, and gives your team the context to take the conversation further.',
+    metrics: [
+      ['3 sec', 'Average first reply'],
+      ['24/7', 'Customer assistance'],
+      ['1 place', 'Every customer conversation'],
+    ],
+    problemsTitle: 'Where retail conversations lose momentum',
+    problemsIntro:
+      "Interest can disappear quickly. The problem is rarely getting a message. It's what happens after it arrives.",
     problems: [
       {
-        title: 'Enquiries arrive after hours and go cold',
-        body: 'An always-on agent answers price, size and availability the moment the message lands, then holds the conversation until the order is placed.',
+        title: 'A customer wants an answer now',
+        body: "They ask about a product, price, size, colour or availability outside your team's working hours. Waiting until tomorrow can mean losing the conversation today.",
       },
       {
-        title: 'Carts are abandoned with no way back',
-        body: 'One broadcast brings the shopper back to the same thread, with the product they left behind already in front of them.',
+        title: 'Interested customers get left behind',
+        body: 'Not every enquiry turns into a purchase immediately. Without organised follow-ups, customers who showed genuine interest can easily disappear from your radar.',
       },
       {
-        title: 'Nobody knows which ad produced the sale',
-        body: 'Click-to-WhatsApp ads carry their source into the conversation, so every order is traced to the campaign that paid for it.',
+        title: "Marketing and sales don't see the same picture",
+        body: "Your campaign generates a message. Your team handles the enquiry. The sale happens later. When these activities sit separately, it's difficult to understand what actually worked.",
       },
     ],
+    capabilitiesTitle: 'Give your retail team the full picture.',
+    capabilitiesIntro:
+      'Converse360 connects the conversations happening around your brand with the information your team needs to act on them.',
+    capabilities: [
+      'Bring WhatsApp, Instagram and website enquiries into one workspace',
+      'Let AI handle repetitive product and customer questions',
+      'Keep customer details, conversations and lead activity together',
+      'Connect Meta campaigns with the conversations and leads they generate',
+    ],
+    workflowTitle: 'One customer. One connected conversation.',
     workflow: [
-      { title: 'Customer taps your ad', body: 'A click-to-WhatsApp ad or your website widget opens a thread with the product already in context.' },
-      { title: 'The agent answers instantly', body: 'Price, sizes, stock, delivery window and returns — pulled from your catalog, replied to in seconds.' },
-      { title: 'Order is confirmed in chat', body: 'A payment link goes out in the same thread and the order is written back to your system on payment.' },
-      { title: 'Delivery updates run themselves', body: 'Dispatch, tracking and delivery confirmations go out automatically, and replies come back to the same inbox.' },
+      {
+        title: 'They discover something they like',
+        body: 'A customer comes from an Instagram post, Meta campaign, your website or directly through WhatsApp. Wherever they start, the conversation has a place to go.',
+      },
+      {
+        title: 'They get the information they need',
+        body: 'AI can handle the questions that normally slow your team down — product details, pricing, availability, delivery information and other configured queries.',
+      },
+      {
+        title: 'Your team sees the opportunity',
+        body: 'Instead of searching through different platforms, your team can see the conversation and customer information together, making it easier to understand the enquiry.',
+      },
+      {
+        title: 'The relationship continues',
+        body: "Some customers need a quick answer. Others need recommendations, follow-ups or a human conversation. Your team can step in when it's time to move things forward.",
+      },
     ],
+    faqTitle: 'Questions retail & D2C teams ask',
     faqs: [
-      { q: 'Can it show my full product catalog on WhatsApp?', a: 'Yes. Your catalog is synced to WhatsApp, so customers browse products, prices and images without leaving the conversation.' },
-      { q: 'Does it take payments?', a: 'Payment links are sent inside the chat and the order is marked paid automatically once the customer completes it.' },
-      { q: 'Will it work with the store platform we already use?', a: 'Orders, stock and contacts sync both ways with common commerce platforms, and anything else connects over our API.' },
+      {
+        q: 'Can Converse360 handle enquiries from Instagram and WhatsApp together?',
+        a: 'Yes. Supported conversations can be brought into one inbox, giving your team a single place to manage customer interactions instead of switching between platforms.',
+      },
+      {
+        q: 'Can we control what the AI knows about our products?',
+        a: 'Yes. You can provide the information, keywords and instructions the AI should use when responding to your customers.',
+      },
+      {
+        q: 'Can we see which campaigns are bringing enquiries?',
+        a: 'Yes. Meta campaign activity can be connected with the conversations and leads generated from those campaigns, giving your team more visibility into campaign performance.',
+      },
     ],
+    ctaTitle: "See Converse360 through your customers' eyes.",
+    ctaBody:
+      "Bring us the kind of enquiry your team handles every day. We'll show you how it can move from a simple product question to a conversation your team can actually act on.",
   },
   {
     slug: 'education',
@@ -103,36 +158,84 @@ export const INDUSTRIES: IndustryDef[] = [
     tint: '#2C7BE5',
     tintSoft: '#E8F1FD',
     heroEyebrow: 'Education',
-    heroTitle: 'Answer admission questions',
-    heroTitleAccent: 'the moment',
-    heroTitleTail: 'a parent asks them.',
+    heroTitle: 'From the first enquiry to enrolment, keep every',
+    heroTitleAccent: 'conversation moving',
+    heroTitleTail: '.',
     heroBody:
-      'Parents compare institutions at night and on weekends, and the first clear answer usually wins the seat. Converse360 handles fees, batches, eligibility and documents around the clock, and hands your counsellors only the enquiries worth a phone call.',
+      'A parent wants to know about fees. A student asks about a course. Someone wants to check eligibility or the next admission date. These conversations can happen on WhatsApp, Instagram, your website or email. Converse360 brings them together, helps AI handle routine questions, and gives your admissions team a clear view of every enquiry.',
+    heroNote: 'No setup fee · Live in days, not months',
+    metrics: [
+      ['3 sec', 'Average first reply'],
+      ['24/7', 'Admission assistance'],
+      ['1 place', 'Every student enquiry'],
+    ],
+    problemsTitle: 'Where admission enquiries get lost',
+    problemsIntro:
+      "Education enquiries don't always arrive when your counsellors are available. What happens between the question and the follow-up can make all the difference.",
     problems: [
       {
-        title: 'Enquiries peak when the office is closed',
-        body: 'Fee structures, batch dates and eligibility are answered instantly at any hour, and the brochure goes out in the same reply.',
+        title: 'Questions keep coming after office hours',
+        body: "Course fees, eligibility, batch timings, documents and admission dates don't follow a timetable. When answers have to wait for the admissions team, students and parents may simply move on.",
       },
       {
-        title: 'Counsellors spend the day on cold leads',
-        body: 'The agent qualifies course, budget and timeline in chat, so the team calls only parents who are ready to enrol.',
+        title: 'Counsellors spend time on basic questions',
+        body: "Your team shouldn't have to repeat the same information throughout the day. The more time spent answering routine queries, the less time there is for serious applicants who need personal guidance.",
       },
       {
-        title: 'Enquiries are lost between forms and phone calls',
-        body: 'Every conversation becomes a tracked application with its full history, from first question to confirmed seat.',
+        title: "Enquiries don't always get the follow-up they need",
+        body: 'A student may enquire today and take a few days to decide. Without a clear way to track the conversation and follow up, promising enquiries can quietly disappear.',
       },
     ],
+    capabilitiesTitle: 'Give your admissions team more time for the conversations that matter.',
+    capabilitiesIntro:
+      'Converse360 helps education businesses manage enquiries, automate routine interactions and keep prospective students connected throughout the admission process.',
+    capabilities: [
+      'Bring WhatsApp, Instagram, website and other supported conversations into one workspace',
+      'Let AI answer common questions about courses, fees, eligibility and admission details',
+      'Keep student enquiries and conversation history organised for your team',
+      'Follow up with prospective students instead of letting enquiries go cold',
+    ],
+    workflowTitle: 'From curiosity to classroom.',
     workflow: [
-      { title: 'Parent asks about a course', body: 'From an ad, your website widget or a QR code on a printed brochure.' },
-      { title: 'The agent qualifies the enquiry', body: 'Course, batch, budget and start date are captured in a natural conversation.' },
-      { title: 'A counsellor call is booked', body: 'The parent picks a slot in chat and the counsellor gets the full thread before dialling.' },
-      { title: 'Follow-ups run until admission', body: 'Reminders for documents, deadlines and fee instalments go out on their own.' },
+      {
+        title: 'A student starts asking questions',
+        body: 'They discover your institution, course or programme through an ad, social media, your website or a direct message and want to know more.',
+      },
+      {
+        title: 'Answers are available straight away',
+        body: "AI can respond to the questions you've configured — course information, eligibility, fees, documents, timings and other frequently requested details.",
+      },
+      {
+        title: 'The enquiry becomes easier to manage',
+        body: 'The conversation and student details remain together, giving counsellors the context they need before they step into the conversation.',
+      },
+      {
+        title: 'Counsellors focus on serious prospects',
+        body: 'When someone needs guidance, clarification or a personal conversation, your admissions team can take over and continue from where AI stopped.',
+      },
     ],
+    faqTitle: 'Questions education teams ask',
     faqs: [
-      { q: 'Can it send brochures and fee structures?', a: 'Yes. PDFs, fee tables and prospectuses are sent inside the chat, and you can see who opened them.' },
-      { q: 'Does it handle multiple courses or campuses?', a: 'Each course, batch and campus can have its own answers, counsellor routing and follow-up sequence.' },
-      { q: 'What happens to enquiries the agent cannot answer?', a: 'They are handed to a counsellor in the shared inbox with the whole conversation attached.' },
+      {
+        q: 'Can the AI answer course and admission questions?',
+        a: 'Yes. You can provide the information and instructions the AI should use, allowing it to handle common questions around courses, fees, eligibility, documents, timings and other configured topics.',
+      },
+      {
+        q: 'Can enquiries from different channels come to one place?',
+        a: 'Yes. Supported conversations from channels such as WhatsApp, Instagram and your website can be managed through one unified inbox.',
+      },
+      {
+        q: 'Can our counsellors take over a conversation?',
+        a: 'Yes. When an enquiry needs personal guidance, your team can step in and continue the conversation with the existing context available.',
+      },
+      {
+        q: "Can we follow up with students who haven't enrolled yet?",
+        a: 'Yes. Keeping enquiries and conversation history organised makes it easier for your team to identify prospective students and continue the conversation at the right time.',
+      },
     ],
+    ctaTitle: 'See how Converse360 can work for your admissions team.',
+    ctaBody:
+      "Bring us a real student or parent enquiry. We'll show you how Converse360 can handle the routine questions, keep the conversation organised and help your team focus on the people ready to take the next step.",
   },
   {
     slug: 'real-estate',
@@ -142,36 +245,83 @@ export const INDUSTRIES: IndustryDef[] = [
     tint: '#7C5CE0',
     tintSoft: '#EFEBFC',
     heroEyebrow: 'Real Estate',
-    heroTitle: 'Qualify site-visit enquiries while the buyer',
-    heroTitleAccent: 'is still interested',
+    heroTitle: "Don't let a property enquiry disappear between the first call and the",
+    heroTitleAccent: 'site visit',
     heroTitleTail: '.',
     heroBody:
-      'Property enquiries lose their heat within the hour. Converse360 captures budget, locality and possession timeline in chat, books the site visit, and sends the floor plan and location pin — before your sales team has picked up the phone.',
+      'A buyer asks about a 2BHK on WhatsApp. Another wants the price of a plot through Instagram. Someone fills out your website form and waits for a callback. Converse360 brings these conversations together, helps AI handle the initial questions, and gives your sales team the information they need to move serious prospects forward.',
+    heroNote: 'No setup fee · Live in days, not months',
+    metrics: [
+      ['3 sec', 'Average first reply'],
+      ['24/7', 'Property assistance'],
+      ['1 place', 'Every property enquiry'],
+    ],
+    problemsTitle: 'Where property enquiries lose momentum',
+    problemsIntro: "Real estate decisions take time. But the first response often can't wait.",
     problems: [
       {
-        title: 'Portal leads go stale before anyone calls',
-        body: 'The agent replies in seconds with availability, configuration and price, and keeps the buyer talking.',
+        title: 'Buyers want answers before they book a visit',
+        body: 'Price, location, configuration, possession, amenities and availability are usually the first things a buyer asks. If those answers take too long, the enquiry can lose momentum.',
       },
       {
-        title: 'Sales teams chase unqualified walk-ins',
-        body: 'Budget, preferred locality, loan status and timeline are captured up front, so only serious buyers reach the site.',
+        title: 'Sales teams chase too many cold enquiries',
+        body: 'Not every person who asks about a property is ready for a site visit. Without the right information upfront, sales teams spend valuable time trying to qualify enquiries manually.',
       },
       {
-        title: 'Floor plans and directions get lost in email',
-        body: 'Plans, price sheets and a location pin go out inside the same thread the buyer is already reading.',
+        title: 'Valuable leads get buried in different channels',
+        body: "A Meta lead, WhatsApp conversation, website enquiry and Instagram message can all belong to the same sales pipeline. When they're handled separately, keeping track becomes difficult.",
       },
     ],
+    capabilitiesTitle: 'Give your property team a clearer way to sell.',
+    capabilitiesIntro:
+      'Converse360 helps real estate businesses handle enquiries, qualify prospects and keep every conversation connected from the first interaction.',
+    capabilities: [
+      'Bring property enquiries from supported channels into one workspace',
+      'Let AI handle common questions about pricing, configurations, locations and project details',
+      'Capture important buyer information such as budget, preferred location and requirements',
+      "Keep follow-ups and sales opportunities organised so promising enquiries don't get overlooked",
+    ],
+    workflowTitle: 'From property search to site visit.',
     workflow: [
-      { title: 'Buyer enquires about a project', body: 'From a listing portal, an ad, or the widget on your project microsite.' },
-      { title: 'The agent qualifies the buyer', body: 'Configuration, budget, locality and possession timeline, captured conversationally.' },
-      { title: 'Site visit is booked', body: 'The buyer picks a slot, gets the floor plan and location pin, and receives a reminder before the visit.' },
-      { title: 'The deal is tracked to close', body: 'Every enquiry sits in a pipeline stage with its full chat history for the sales manager to review.' },
+      {
+        title: 'A buyer shows interest',
+        body: 'They discover your property through a Meta campaign, social media, your website or WhatsApp and start asking about a project.',
+      },
+      {
+        title: 'AI starts the conversation',
+        body: "Instead of making the buyer wait, AI can provide the information you've configured around the project — pricing, configurations, amenities, location and other common questions.",
+      },
+      {
+        title: 'The enquiry gets qualified',
+        body: 'The conversation can help identify what the buyer is actually looking for, including budget, preferred area, property type and buying timeline.',
+      },
+      {
+        title: 'Your sales team takes it forward',
+        body: 'Once the buyer is ready for a detailed discussion or site visit, your team can step in with the conversation history and enquiry details already available.',
+      },
     ],
+    faqTitle: 'Questions real estate teams ask',
     faqs: [
-      { q: 'Can it handle several projects at once?', a: 'Yes. Each project has its own inventory, pricing, media and routing rules.' },
-      { q: 'Does it integrate with our CRM?', a: 'Qualified enquiries are pushed into your CRM as they happen, with the conversation attached.' },
-      { q: 'Can channel partners use the same system?', a: 'Partners can be given their own numbers and inbox access while reporting rolls up to you.' },
+      {
+        q: 'Can the AI answer questions about our properties?',
+        a: 'Yes. You can provide project information and instructions for the AI to use when answering common questions around configurations, pricing, amenities, location and other details.',
+      },
+      {
+        q: 'Can we qualify buyers before our sales team speaks to them?',
+        a: 'Yes. You can configure the conversation to collect relevant information such as budget, preferred location, property type and other requirements.',
+      },
+      {
+        q: 'Can our team manage enquiries from different channels together?',
+        a: 'Yes. Supported conversations from channels such as WhatsApp, Instagram and your website can be brought into one unified inbox.',
+      },
+      {
+        q: 'Can we track where our property enquiries came from?',
+        a: 'Yes. Campaign-originated conversations can be connected with their source, helping your team understand which campaigns are generating enquiries.',
+      },
     ],
+    ctaTitle: 'See how Converse360 can fit into your property sales process.',
+    ctaBody:
+      "Bring us a real property enquiry. We'll show you how Converse360 can handle the first questions, qualify the prospect and give your sales team a better starting point for the conversation.",
   },
   {
     slug: 'healthcare',
@@ -181,36 +331,84 @@ export const INDUSTRIES: IndustryDef[] = [
     tint: '#E1306C',
     tintSoft: '#FCEAF1',
     heroEyebrow: 'Healthcare',
-    heroTitle: 'Fill appointment slots without the front desk',
-    heroTitleAccent: 'phone ringing',
+    heroTitle: 'Make it easier for patients to reach the',
+    heroTitleAccent: 'right care',
     heroTitleTail: '.',
     heroBody:
-      'Patients ask about timings, fees and directions all day, and every call takes a receptionist away from the person standing in front of them. Converse360 books appointments, sends reminders and delivers reports in chat, and routes anything clinical straight to your staff.',
+      "A patient wants to book an appointment. Someone needs to know the doctor's availability. Another person is checking how to reach the clinic or asking about a service. These conversations can come through WhatsApp, Instagram, your website or other channels. Converse360 brings them together so your team can respond, organise enquiries and spend more time on patients who need personal assistance.",
+    heroNote: 'No setup fee · Live in days, not months',
+    metrics: [
+      ['3 sec', 'Average first reply'],
+      ['24/7', 'Patient assistance'],
+      ['1 place', 'Every patient conversation'],
+    ],
+    problemsTitle: 'Where patient communication gets difficult',
+    problemsIntro:
+      'Healthcare conversations need clarity and timely responses. But managing every enquiry manually can put pressure on your front desk.',
     problems: [
       {
-        title: 'The front desk is buried in routine calls',
-        body: 'Timings, fees, directions and doctor availability are answered automatically, day and night.',
+        title: "The phone isn't the only place patients ask",
+        body: 'Patients reach out through WhatsApp, social media and your website for appointments, availability and general information. Keeping up across every channel can quickly become difficult.',
       },
       {
-        title: 'No-shows leave slots empty',
-        body: 'Automatic reminders the day before and the morning of the appointment cut no-shows sharply.',
+        title: 'Your front desk keeps answering the same things',
+        body: 'Doctor availability, appointment timings, clinic information and other routine questions take up valuable staff time throughout the day.',
       },
       {
-        title: 'Reports and prescriptions are chased over phone',
-        body: 'Documents are delivered in the patient’s own thread, where they can find them again later.',
+        title: 'Missed follow-ups create unnecessary gaps',
+        body: 'A patient may enquire about an appointment and not confirm immediately. Without organised conversations and follow-ups, it becomes harder for your team to know who still needs attention.',
       },
     ],
+    capabilitiesTitle: 'Give your healthcare team a simpler way to communicate.',
+    capabilitiesIntro:
+      'Converse360 helps healthcare businesses bring patient conversations together and automate the routine interactions that keep the front desk busy.',
+    capabilities: [
+      'Manage conversations from supported channels through one unified inbox',
+      'Let AI handle configured questions around appointments, timings, services and general information',
+      'Keep patient enquiries and conversation history organised for your team',
+      'Route conversations to your staff when personal assistance is required',
+    ],
+    workflowTitle: 'From enquiry to appointment.',
     workflow: [
-      { title: 'Patient messages the clinic', body: 'From your website, a Google listing, or a number printed on the prescription pad.' },
-      { title: 'The agent finds a slot', body: 'Doctor, department and available times are offered, and the booking is confirmed in chat.' },
-      { title: 'Reminders go out on their own', body: 'Confirmation, a reminder the day before, and preparation instructions where the visit needs them.' },
-      { title: 'Follow-up stays in one thread', body: 'Reports, prescriptions and review-visit reminders continue in the same conversation.' },
+      {
+        title: 'A patient reaches out',
+        body: 'They find your clinic, hospital or healthcare service through social media, your website, WhatsApp or another supported channel and start a conversation.',
+      },
+      {
+        title: 'AI handles the basics',
+        body: 'The AI agent can respond to configured questions around services, appointment information, timings, doctor availability and other general enquiries.',
+      },
+      {
+        title: 'The conversation stays organised',
+        body: 'Instead of searching through different platforms, your team can see the conversation and relevant enquiry details together.',
+      },
+      {
+        title: "Your team steps in when it's personal",
+        body: 'When a patient needs assistance that requires your staff, the conversation can be handed over so the right person can take it forward.',
+      },
     ],
+    faqTitle: 'Questions healthcare teams ask',
     faqs: [
-      { q: 'Is patient information handled securely?', a: 'Conversations run on the official WhatsApp Business API with end-to-end encryption in transit, role-based inbox access and full audit history.' },
-      { q: 'Can it escalate clinical questions to staff?', a: 'Anything clinical is handed to a human immediately, with the conversation history in view.' },
-      { q: 'Does it work with our appointment system?', a: 'Slots and bookings sync with common practice-management systems, or over our API.' },
+      {
+        q: 'Can the AI handle appointment-related questions?',
+        a: 'Yes. You can configure the AI with the information and instructions it needs to respond to common appointment-related enquiries, such as timings, availability and booking information.',
+      },
+      {
+        q: 'Can patients reach us through WhatsApp and our website?',
+        a: 'Yes. Supported conversations from channels such as WhatsApp, Instagram and your website can be brought into one unified inbox.',
+      },
+      {
+        q: 'Can our staff take over when a patient needs personal assistance?',
+        a: 'Yes. Your team can step into a conversation whenever human support is required, with the existing conversation context available.',
+      },
+      {
+        q: 'Can we automate routine patient communication?',
+        a: 'Yes. You can configure AI responses and conversation flows for recurring enquiries, helping your team reduce repetitive manual responses.',
+      },
     ],
+    ctaTitle: 'See how Converse360 can work for your healthcare team.',
+    ctaBody:
+      "Bring us a real patient enquiry. We'll show you how Converse360 can handle the routine questions, keep conversations organised and help your team respond when personal attention is needed.",
   },
   {
     slug: 'finance',
@@ -220,36 +418,84 @@ export const INDUSTRIES: IndustryDef[] = [
     tint: '#00828A',
     tintSoft: '#E6F8F9',
     heroEyebrow: 'Finance',
-    heroTitle: 'Move enquiries to documents to disbursal, in',
-    heroTitleAccent: 'one thread',
+    heroTitle: 'Make financial conversations easier to manage from the',
+    heroTitleAccent: 'first enquiry',
     heroTitleTail: '.',
     heroBody:
-      'Eligibility questions, document collection and advisor handover normally sprawl across calls, email and courier. Converse360 keeps all of it in a single conversation that is time-stamped, searchable and ready for audit.',
+      "A customer wants to know if they're eligible for a loan. Someone asks about interest rates. Another person needs help understanding the documents required. These conversations can start through WhatsApp, a website, social media or another channel. Converse360 brings them together and helps your team respond with speed, consistency and the right context.",
+    heroNote: 'No setup fee · Live in days, not months',
+    metrics: [
+      ['3 sec', 'Average first reply'],
+      ['24/7', 'Financial assistance'],
+      ['1 place', 'Every customer enquiry'],
+    ],
+    problemsTitle: 'Where financial enquiries slow down',
+    problemsIntro:
+      "People looking for financial services usually have questions before they're ready to submit an application. Those first conversations need to be handled well.",
     problems: [
       {
-        title: 'Applicants drop off during document collection',
-        body: 'The agent lists exactly what is needed, accepts files in chat, and nudges for whatever is still missing.',
+        title: 'Customers want clarity before they commit',
+        body: 'Eligibility, loan amounts, interest rates, documents and process details can create a long list of questions. Delayed answers can make the decision harder.',
       },
       {
-        title: 'Eligibility questions tie up advisors',
-        body: 'Common eligibility, rate and tenure questions are answered instantly, so advisors handle only real applications.',
+        title: 'Teams spend too much time on repetitive enquiries',
+        body: 'The same questions come in every day. When staff have to answer each one manually, valuable time goes into information that could be handled automatically.',
       },
       {
-        title: 'Records are scattered across channels',
-        body: 'Every message, document and handover stays on one record you can pull up months later.',
+        title: 'Good prospects need more than one interaction',
+        body: "A customer may enquire today, compare options and return later. Without an organised conversation history and follow-up process, it's easy to lose track of where they are.",
       },
     ],
+    capabilitiesTitle: 'Give your finance team a better way to handle enquiries.',
+    capabilitiesIntro:
+      'Converse360 helps financial businesses automate the first layer of communication while keeping more complex conversations with the right people.',
+    capabilities: [
+      'Bring customer conversations from supported channels into one workspace',
+      'Let AI handle configured questions around products, eligibility and processes',
+      'Collect relevant enquiry details before handing conversations to your team',
+      "Keep conversations organised so follow-ups don't depend on scattered notes",
+    ],
+    workflowTitle: 'From enquiry to application.',
     workflow: [
-      { title: 'Applicant asks about a product', body: 'Loan, policy or investment enquiry from an ad, your site, or a branch QR code.' },
-      { title: 'Eligibility is checked in chat', body: 'Income, tenure and documentation requirements are explained in plain language.' },
-      { title: 'Documents arrive in the thread', body: 'PDFs and images are uploaded in chat and filed against the application automatically.' },
-      { title: 'An advisor takes over', body: 'Handover happens with the full history, so the applicant never repeats themselves.' },
+      {
+        title: 'A customer wants to know more',
+        body: 'They discover a financial product through an advertisement, social media, your website or a direct message and begin asking questions.',
+      },
+      {
+        title: 'AI provides the first answers',
+        body: "The AI agent can respond using the information you've configured around eligibility, products, documentation, processes and other general enquiries.",
+      },
+      {
+        title: 'The enquiry becomes clearer',
+        body: 'As the conversation develops, relevant customer information can be captured so your team has a better understanding of what the person is looking for.',
+      },
+      {
+        title: 'The right person takes over',
+        body: 'When the conversation requires financial guidance, verification or human assistance, your team can step in with the context already available.',
+      },
     ],
+    faqTitle: 'Questions finance teams ask',
     faqs: [
-      { q: 'Can customers send documents through WhatsApp?', a: 'Yes. Files are attached in the conversation and stored against that customer’s record.' },
-      { q: 'Is the conversation record usable for compliance?', a: 'Every message is time-stamped and retained, and the export includes attachments and agent handovers.' },
-      { q: 'Can we restrict who sees a conversation?', a: 'Inbox access is role-based, so a conversation is visible only to the team that owns it.' },
+      {
+        q: 'Can the AI answer questions about our financial products?',
+        a: 'Yes. You can provide the information and instructions the AI should use for configured enquiries around products, eligibility, documents and processes.',
+      },
+      {
+        q: 'Can we collect information before our team takes over?',
+        a: 'Yes. You can design conversation flows to gather relevant details before routing the enquiry to your team.',
+      },
+      {
+        q: 'Can customers reach us through WhatsApp and our website?',
+        a: 'Yes. Supported conversations from channels such as WhatsApp, Instagram and your website can be managed through one unified inbox.',
+      },
+      {
+        q: 'Can our team take over an AI conversation?',
+        a: 'Yes. Your team can step in whenever an enquiry requires personal assistance, with the existing conversation available for context.',
+      },
     ],
+    ctaTitle: 'See how Converse360 can work for your finance business.',
+    ctaBody:
+      "Bring us a real customer enquiry. We'll show you how Converse360 can handle the initial questions, organise the conversation and help your team focus on enquiries that need their attention.",
   },
   {
     slug: 'logistics',
@@ -259,36 +505,84 @@ export const INDUSTRIES: IndustryDef[] = [
     tint: '#B26A00',
     tintSoft: '#FBF0DF',
     heroEyebrow: 'Logistics',
-    heroTitle: 'Stop answering',
-    heroTitleAccent: '"where is my order"',
-    heroTitleTail: 'one message at a time.',
+    heroTitle: 'Keep customers informed',
+    heroTitleAccent: 'from pickup to delivery',
+    heroTitleTail: '.',
     heroBody:
-      'Tracking questions are the single largest share of support volume, and almost none of them need a human. Converse360 answers them from your live data, raises pickup requests, reschedules deliveries, and routes only genuine escalations to the branch.',
+      'A customer wants to know where their shipment is. Another needs to reschedule a delivery. Someone wants to raise a pickup request or check when their package will arrive. These conversations can come through WhatsApp, your website, social media or other channels. Converse360 brings them together so customers get faster answers and your team has fewer repetitive queries to handle.',
+    heroNote: 'No setup fee · Live in days, not months',
+    metrics: [
+      ['3 sec', 'Average first reply'],
+      ['24/7', 'Shipment assistance'],
+      ['1 place', 'Every customer conversation'],
+    ],
+    problemsTitle: 'Where logistics communication breaks down',
+    problemsIntro:
+      "When a shipment is moving, customers want visibility. Your team shouldn't have to answer every update manually.",
     problems: [
       {
-        title: 'Tracking questions swamp the support team',
-        body: 'Live status is answered from your system in seconds, at any hour, in the customer’s own thread.',
+        title: '“Where is my shipment?”',
+        body: 'Tracking questions can make up a large part of daily customer communication. When every customer needs a separate response, your support team gets stuck repeating the same update.',
       },
       {
-        title: 'Failed deliveries repeat because nobody could reach the customer',
-        body: 'The customer reschedules in chat before the driver leaves, and the route is updated.',
+        title: 'Delivery issues need quick attention',
+        body: 'A missed delivery, address change or rescheduling request needs to reach the right person quickly. Delays in communication can create another round of calls and messages.',
       },
       {
-        title: 'Escalations reach the wrong branch',
-        body: 'Complaints are routed by pincode, branch or shipment type, so they land with the team that can act.',
+        title: 'Important conversations get scattered',
+        body: 'Customers may contact different branches or teams through different channels. Without one place to see the conversation, keeping track of the issue becomes harder.',
       },
     ],
+    capabilitiesTitle: 'Give your logistics team fewer repetitive conversations.',
+    capabilitiesIntro:
+      'Converse360 helps logistics businesses automate routine communication while keeping exceptions and important requests with the right team.',
+    capabilities: [
+      'Bring customer conversations from supported channels into one workspace',
+      'Let AI handle configured questions around shipment status, delivery and pickup',
+      'Keep requests and conversation history together for better visibility',
+      'Route issues that need human attention to the right team',
+    ],
+    workflowTitle: 'From shipment update to resolution.',
     workflow: [
-      { title: 'Customer asks for status', body: 'Message the number on the docket, or reply to the dispatch notification.' },
-      { title: 'The agent answers from live data', body: 'Current status, expected window and driver details, pulled from your tracking system.' },
-      { title: 'Changes are made in chat', body: 'Reschedule a delivery, change an address, or raise a pickup without a phone call.' },
-      { title: 'Escalations reach the right desk', body: 'Anything that needs a human is routed to the owning branch with the shipment history attached.' },
+      {
+        title: 'A customer needs an update',
+        body: 'They want to check a shipment, ask about delivery timing, raise a pickup request or get help with an ongoing delivery.',
+      },
+      {
+        title: 'AI responds with the information available',
+        body: 'The AI agent can handle configured questions around tracking, delivery information, pickup details and other routine enquiries.',
+      },
+      {
+        title: 'The request stays connected',
+        body: 'The conversation and customer information remain together, giving your team visibility instead of forcing them to search through different channels.',
+      },
+      {
+        title: 'Exceptions reach the right team',
+        body: 'When a delivery issue, escalation or special request needs human attention, the conversation can be handed over to the appropriate person.',
+      },
     ],
+    faqTitle: 'Questions logistics teams ask',
     faqs: [
-      { q: 'Can it read our live tracking data?', a: 'Yes. The agent calls your tracking API and replies with the current status rather than a canned message.' },
-      { q: 'Can customers raise pickup requests?', a: 'Pickups, reschedules and address changes are all raised in chat and pushed into your system.' },
-      { q: 'Does it send proactive updates?', a: 'Dispatch, out-for-delivery and delivered notifications go out automatically, and replies land in your inbox.' },
+      {
+        q: 'Can the AI answer shipment-related questions?',
+        a: 'Yes. You can configure the AI with the information and instructions it needs to handle common enquiries around shipment status, delivery and pickup.',
+      },
+      {
+        q: 'Can customers raise requests through chat?',
+        a: 'Yes. You can create conversation flows for requests such as pickups, delivery-related queries and other configured requirements.',
+      },
+      {
+        q: 'Can our team manage conversations from different channels together?',
+        a: 'Yes. Supported conversations from channels such as WhatsApp, Instagram and your website can be managed through one unified inbox.',
+      },
+      {
+        q: 'Can difficult delivery issues be handed to our team?',
+        a: 'Yes. When an enquiry needs human intervention, your team can take over the conversation with the existing context available.',
+      },
     ],
+    ctaTitle: 'See how Converse360 can work for your logistics team.',
+    ctaBody:
+      "Bring us a real shipment or delivery enquiry. We'll show you how Converse360 can handle the routine questions, keep requests organised and help your team respond when something needs personal attention.",
   },
 ];
 
@@ -308,15 +602,23 @@ export function getIndustry(slug: string): IndustryDef | undefined {
   return INDUSTRIES.find((i) => i.slug === slug);
 }
 
-/** The landing-page record for the same vertical — blurb, points and thread. */
-export function getIndustryContent(def: IndustryDef): { base: Industry; extra: Extra; thread: Message[] } {
+/** The sample WhatsApp thread the landing page plays for the same vertical. */
+export function getIndustryThread(def: IndustryDef): Message[] {
   const base = DATA.find((d) => d.name === def.name);
-  const extra = EXTRA[def.name];
-  if (!base || !extra) {
+  if (!base) {
     // A slug can only exist here if landing-data carries the same name; this
-    // guard exists so a rename fails loudly at build rather than rendering
-    // an empty section.
+    // guard exists so a rename fails loudly at build rather than rendering an
+    // empty chat.
     throw new Error(`industries-data: "${def.name}" is missing from landing-data`);
   }
-  return { base, extra, thread: base.thread };
+  return base.thread;
+}
+
+/** One-line summary used by the /industries index tiles and the mega menu. */
+export function getIndustryBlurb(def: IndustryDef): string {
+  const base = DATA.find((d) => d.name === def.name);
+  if (!base) {
+    throw new Error(`industries-data: "${def.name}" is missing from landing-data`);
+  }
+  return base.blurb;
 }

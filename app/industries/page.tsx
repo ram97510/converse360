@@ -7,7 +7,7 @@ import Footer from '@/components/Footer';
 import PageShell from '@/components/PageShell';
 import IndustryIcon from '@/components/industries/IndustryIcon';
 import { BRAND, WHITE } from '@/lib/tokens';
-import { INDUSTRIES, getIndustryContent } from '@/lib/industries-data';
+import { INDUSTRIES, getIndustryBlurb } from '@/lib/industries-data';
 
 export const metadata: Metadata = {
   title: 'Industries — Converse360',
@@ -66,7 +66,7 @@ export default function IndustriesPage() {
             }}
           >
             {INDUSTRIES.map((ind) => {
-              const { base } = getIndustryContent(ind);
+              const blurb = getIndustryBlurb(ind);
               return (
                 <Link key={ind.slug} href={`/industries/${ind.slug}`} className="ind-tile">
                   <span
@@ -104,7 +104,7 @@ export default function IndustriesPage() {
                     {ind.menuLabel}
                   </h2>
                   <p style={{ fontSize: '14.5px', lineHeight: 1.65, color: 'var(--color-text-muted)', margin: 0 }}>
-                    {base.blurb}
+                    {blurb}
                   </p>
                   <span className="ind-tile-go">
                     Explore {ind.menuLabel}
@@ -129,7 +129,7 @@ export default function IndustriesPage() {
             </p>
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', justifyContent: 'center' }}>
-            <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ background: 'var(--color-bg)', color: 'var(--color-text)', fontSize: '16px', fontWeight: '700', padding: '16px 30px', borderRadius: '999px' }} hoverStyle={{ background: 'var(--color-surface)' }}>
+            <Hx link className="btn-fx btn-fx-dark" href="/book-a-demo" style={{ background: 'var(--color-bg)', color: 'var(--color-text)', fontSize: '16px', fontWeight: '700', padding: '16px 30px', borderRadius: '999px' }} hoverStyle={{ background: 'var(--color-surface)' }}>
               Book a one-to-one meeting
             </Hx>
           </div>

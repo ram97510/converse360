@@ -9,7 +9,7 @@ import Footer from '@/components/Footer';
 import PageShell from '@/components/PageShell';
 import IndustryIcon from '@/components/industries/IndustryIcon';
 import { BRAND, WHITE } from '@/lib/tokens';
-import { INDUSTRIES, getIndustry, getIndustryContent } from '@/lib/industries-data';
+import { INDUSTRIES, getIndustry, getIndustryThread } from '@/lib/industries-data';
 
 type Params = { slug: string };
 
@@ -22,10 +22,9 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   const { slug } = await params;
   const ind = getIndustry(slug);
   if (!ind) return {};
-  const { base } = getIndustryContent(ind);
   return {
     title: `${ind.name} — WhatsApp automation | Converse360`,
-    description: base.blurb,
+    description: ind.heroBody,
     alternates: { canonical: `/industries/${ind.slug}` },
   };
 }
@@ -68,8 +67,7 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
   const ind = getIndustry(slug);
   if (!ind) notFound();
 
-  const { base, extra, thread } = getIndustryContent(ind);
-  const others = INDUSTRIES.filter((i) => i.slug !== ind.slug);
+  const thread = getIndustryThread(ind);
 
   return (
     <PageShell scope="industry">
@@ -122,7 +120,7 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
               <p className="ind-lede">{ind.heroBody}</p>
 
               <div className="ind-cta-row">
-                <Link href="/contact" className="ind-btn ind-btn-primary">
+                <Link href="/book-a-demo" className="ind-btn ind-btn-primary">
                   Book a demo
                   <Arrow />
                 </Link>
@@ -130,6 +128,14 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
                   See pricing
                 </Link>
               </div>
+
+              {/* Reassurance line — only the verticals whose copy carries one. */}
+              {ind.heroNote ? (
+                <p className="ind-hero-note">
+                  <span aria-hidden="true" className="ind-hero-note-dot" style={{ background: ind.tint }} />
+                  {ind.heroNote}
+                </p>
+              ) : null}
             </div>
 
             {/* Sample conversation — the same thread the landing page plays for
@@ -139,7 +145,7 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
 
           {/* METRICS */}
           <div className="ind-metrics">
-            {extra.metrics.map(([value, label]) => (
+            {ind.metrics.map(([value, label]) => (
               <div className="ind-metric" key={label}>
                 <strong>{value}</strong>
                 <span>{label}</span>
@@ -152,8 +158,8 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
       {/* WHAT GETS IN THE WAY */}
       <section style={{ background: 'var(--color-bg)', padding: 'clamp(48px,6.5vw,84px) 0' }}>
         <div className="ind-wrap">
-          <h2 className="ind-h2" style={{ textAlign: 'center' }}>What gets in the way today</h2>
-          <p className="ind-sub" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>{base.blurb}</p>
+          <h2 className="ind-h2" style={{ textAlign: 'center' }}>{ind.problemsTitle}</h2>
+          <p className="ind-sub" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>{ind.problemsIntro}</p>
 
           <div className="ind-cards">
             {ind.problems.map((p) => (
@@ -190,11 +196,11 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
             alignItems: 'center'
           }}>
             <div>
-              <h2 className="ind-h2" style={{ margin: '0 0 16px', textAlign: 'left' }}>What Converse360 does for {ind.name.toLowerCase()}</h2>
-              <p className="ind-sub" style={{ margin: '0 0 32px', textAlign: 'left', maxWidth: '100%' }}>{extra.note}</p>
+              <h2 className="ind-h2" style={{ margin: '0 0 16px', textAlign: 'left' }}>{ind.capabilitiesTitle}</h2>
+              <p className="ind-sub" style={{ margin: '0 0 32px', textAlign: 'left', maxWidth: '100%' }}>{ind.capabilitiesIntro}</p>
 
               <ul className="ind-points">
-                {base.points.map((point) => (
+                {ind.capabilities.map((point) => (
                   <li key={point}>
                     <Check color={ind.tint} />
                     <span>{point}</span>
@@ -228,10 +234,7 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
       {/* HOW IT WORKS */}
       <section style={{ background: 'var(--color-bg)', padding: 'clamp(48px,6.5vw,84px) 0' }}>
         <div className="ind-wrap">
-          <h2 className="ind-h2" style={{ textAlign: 'center' }}>From first message to finished outcome</h2>
-          <p className="ind-sub" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
-            Four steps, all of them inside one conversation your customer never has to leave.
-          </p>
+          <h2 className="ind-h2" style={{ textAlign: 'center', marginBottom: 'clamp(26px,3vw,40px)' }}>{ind.workflowTitle}</h2>
 
           <div className="ind-cards">
             {ind.workflow.map((step, i) => (
@@ -251,8 +254,8 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
       <section style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 clamp(20px,4vw,32px) clamp(56px,8vw,84px)' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(320px,100%),1fr))', gap: 'clamp(32px,5vw,56px)', alignItems: 'start' }}>
           <div>
-            <h2 style={{ fontSize: 'clamp(30px,4.5vw,42px)', fontWeight: '700', letterSpacing: '-0.03em', marginBottom: '12px', textAlign: 'left' }}>Questions {ind.name.toLowerCase()} teams ask</h2>
-            <p style={{ fontSize: '15.5px', lineHeight: '1.55', color: 'var(--color-text-muted)', textAlign: 'left' }}>Still unsure? <Link href="/contact" style={{ color: 'var(--brand)', textDecoration: 'none', fontWeight: '500' }}>Book a demo</Link> and we'll walk you through it.</p>
+            <h2 style={{ fontSize: 'clamp(30px,4.5vw,42px)', fontWeight: '700', letterSpacing: '-0.03em', marginBottom: '12px', textAlign: 'left' }}>{ind.faqTitle}</h2>
+            <p style={{ fontSize: '15.5px', lineHeight: '1.55', color: 'var(--color-text-muted)', textAlign: 'left' }}>Still unsure? <Link href="/book-a-demo" style={{ color: 'var(--brand)', textDecoration: 'none', fontWeight: '500' }}>Book a demo</Link> and we&apos;ll walk you through it.</p>
           </div>
           <div style={{ borderTop: '1px solid var(--color-divider)' }}>
             {ind.faqs.map((f) => (
@@ -275,15 +278,14 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
         <div style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(48px,6.5vw,76px) clamp(20px,4vw,32px)', display: 'flex', flexDirection: 'column', flexWrap: 'wrap', alignItems: 'center', gap: '24px', textAlign: 'center' }}>
           <div>
             <h2 style={{ fontSize: 'clamp(24px,3.2vw,36px)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '10px' }}>
-              See it running on your own {ind.name.toLowerCase()} enquiries.
+              {ind.ctaTitle}
             </h2>
             <p style={{ fontSize: '16.5px', color: 'rgba(255,255,255,0.9)', maxWidth: '42em', margin: '0 auto' }}>
-              Bring us a real conversation your team handles every week. In twenty minutes we will show you the exact
-              flow that answers it automatically — and what it takes to go live.
+              {ind.ctaBody}
             </p>
           </div>
           <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', justifyContent: 'center' }}>
-            <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ background: 'var(--color-bg)', color: 'var(--color-text)', fontSize: '16px', fontWeight: '700', padding: '16px 30px', borderRadius: '999px' }} hoverStyle={{ background: 'var(--color-surface)' }}>
+            <Hx link className="btn-fx btn-fx-dark" href="/book-a-demo" style={{ background: 'var(--color-bg)', color: 'var(--color-text)', fontSize: '16px', fontWeight: '700', padding: '16px 30px', borderRadius: '999px' }} hoverStyle={{ background: 'var(--color-surface)' }}>
               Book a Free Demo
             </Hx>
             <Hx link className="btn-fx" href="/industries" style={{ border: '1px solid rgba(255,255,255,0.5)', color: 'var(--color-bg)', fontSize: '16px', fontWeight: '500', padding: '16px 30px', borderRadius: '999px' }} hoverStyle={{ background: 'rgba(255,255,255,0.12)' }}>

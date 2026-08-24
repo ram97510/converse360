@@ -88,11 +88,11 @@ export const EXTRA: Record<string, Extra> = {
  * `ico` is that colour, kept for reference as the source does.
  */
 export const FEATURE_TABS: FeatureTab[] = [
+  { name: 'Unified Inbox', ico: '#7C5CE0', iconFile: '/assets/icons/Unified%20box.svg', filter: 'brightness(0) saturate(100%) invert(41%) sepia(35%) saturate(2250%) hue-rotate(218deg) brightness(96%) contrast(92%)' },
+  { name: 'Chatbot Builder', ico: '#D6336C', iconFile: '/assets/icons/chatbot%20builder.svg', filter: 'brightness(0) saturate(100%) invert(33%) sepia(85%) saturate(1485%) hue-rotate(314deg) brightness(91%) contrast(92%)' },
   { name: 'WhatsApp Catalog', ico: '#00AB56', iconFile: '/assets/icons/Whatsapp%20catlog.svg', filter: 'brightness(0) saturate(100%) invert(53%) sepia(87%) saturate(1450%) hue-rotate(125deg) brightness(94%) contrast(101%)' },
   { name: 'WhatsApp Store', ico: '#099250', iconFile: '/assets/icons/Whatsapp%20store.svg', filter: 'brightness(0) saturate(100%) invert(37%) sepia(87%) saturate(1281%) hue-rotate(135deg) brightness(94%) contrast(101%)' },
-  { name: 'Unified Inbox', ico: '#7C5CE0', iconFile: '/assets/icons/Unified%20box.svg', filter: 'brightness(0) saturate(100%) invert(41%) sepia(35%) saturate(2250%) hue-rotate(218deg) brightness(96%) contrast(92%)' },
   { name: 'Converse360 Agent', ico: '#2C7BE5', iconFile: '/assets/icons/Converse%20agent.svg', filter: 'brightness(0) saturate(100%) invert(41%) sepia(86%) saturate(1476%) hue-rotate(193deg) brightness(97%) contrast(92%)' },
-  { name: 'Chatbot Builder', ico: '#D6336C', iconFile: '/assets/icons/chatbot%20builder.svg', filter: 'brightness(0) saturate(100%) invert(33%) sepia(85%) saturate(1485%) hue-rotate(314deg) brightness(91%) contrast(92%)' },
 ];
 
 /** The grey filter every unselected feature tab icon carries. */

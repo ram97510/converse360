@@ -269,10 +269,10 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
               Manager</span>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px", marginBottom: "16px" }}>
-            <Hx link className="btn-fx btn-fx-brand" href="/contact" style={{ background: "var(--brand)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px", boxShadow: "0 8px 24px rgba(0,171,86,0.24)" }} hoverStyle={{ background: "var(--color-text)", boxShadow: "0 16px 30px -10px rgba(24,24,24,0.5)" }}>Book a Free Demo</Hx>
-            <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ background: "var(--color-text)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px", boxShadow: "0 8px 24px rgba(24,24,24,0.18)", border: "1px solid transparent" }} hoverStyle={{ background: "var(--color-bg)", color: "var(--color-text)", border: "1px solid var(--color-text)", boxShadow: "0 16px 30px -10px rgba(24,24,24,0.18)" }}>Start Free</Hx>
+            <Hx link className="btn-fx btn-fx-brand" href="/book-a-demo" style={{ background: "var(--brand)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-text)" }}>Book a Free Demo</Hx>
+            <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ background: "var(--color-text)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px", border: "1px solid transparent" }} hoverStyle={{ background: "var(--color-bg)", color: "var(--color-text)", border: "1px solid var(--color-text)" }}>Start Free</Hx>
           </div>
-          <div style={{ fontSize: "13.5px", color: "var(--color-text-muted)" }}>No setup fee · Live in days, not months</div>
+          <div style={{ fontSize: "13.5px", color: "var(--color-text-muted)", paddingTop: "12px" }}>No setup fee · Live in days, not months</div>
         </div>
       </section>
 
@@ -284,7 +284,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
       <section style={{ background: "var(--color-bg)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 clamp(20px,4vw,32px)" }}>
-          <div style={{ maxWidth: "760px", margin: "0 auto clamp(32px,4vw,44px)" }}>
+          <div data-reveal style={{ maxWidth: "760px", margin: "0 auto clamp(32px,4vw,44px)" }}>
             <h2 style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "12px", textAlign: "center" }}>
               {' '}Why
               WhatsApp comes first</h2>
@@ -292,7 +292,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
               customers already have
               open.</p> */}
           </div>
-          <div className="wa-stats" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(228px,100%),1fr))", gap: "20px" }}>
+          <div className="wa-stats" data-reveal="stagger" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(228px,100%),1fr))", gap: "20px" }}>
             <Hx as="div" style={{ position: "relative", overflow: "hidden", border: "1px solid #E9EDEB", borderRadius: "16px", background: "linear-gradient(180deg,#F1FAF3 0%,var(--color-bg) 55%,var(--color-bg) 100%)", padding: "26px 20px 38px", textAlign: "center", boxShadow: "0 1px 2px rgba(24,24,24,0.04)", transition: "box-shadow .25s ease" }} hoverStyle={{ boxShadow: "0 12px 30px rgba(24,24,24,0.09)" }}>
               <span aria-hidden="true" style={{ position: "absolute", top: "18px", left: "16px", width: "42px", height: "34px", backgroundImage: "radial-gradient(#A5D8BC 1.15px,transparent 1.15px)", backgroundSize: "8px 8px", opacity: "0.85" }}></span>
               <span aria-hidden="true" style={{ position: "absolute", top: "18px", right: "16px", width: "42px", height: "34px", backgroundImage: "radial-gradient(#A5D8BC 1.15px,transparent 1.15px)", backgroundSize: "8px 8px", opacity: "0.85" }}></span>
@@ -376,7 +376,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
             </Hx>
           </div>
 
-          <div className="proof-shot" style={{ maxWidth: "950px", margin: "22px auto 0" }}>
+          <div className="proof-shot" data-reveal style={{ maxWidth: "950px", margin: "22px auto 0" }}>
             <img src="/assets/new/why-whatsapp-comesfirst.webp" alt="A customer sees a WhatsApp ad for a backpack, asks about it in chat, gets the price and an offer code, and the order is confirmed — with result badges for higher conversions, more orders and customer satisfaction." style={{ width: "100%", height: "auto", display: "block" }} />
           </div>
 
@@ -514,7 +514,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
       <section style={{ background: "var(--color-bg)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(56px,8vw,84px) clamp(20px,4vw,32px)" }}>
-          <div style={{ textAlign: "center", marginBottom: "clamp(40px,5vw,60px)" }}>
+          <div data-reveal style={{ textAlign: "center", marginBottom: "clamp(40px,5vw,60px)" }}>
             <h2 style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.035em", lineHeight: "1.06", maxWidth: "20em", marginLeft: "auto", marginRight: "auto" }}>
               {' '}One message. Start to finish.</h2>
           </div>
@@ -680,9 +680,10 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
               <div className="flow-card">
                 <span className="flow-tab" aria-hidden="true"></span>
                 <h3 className="flow-title">Your Team Steps In When It Matters</h3>
-                <p className="flow-text">When a real decision is needed —whether it's a negotiation or a complaint—it’s
-                  routed to the right person on your team instantly. Some requests are also resolved without human
-                  intervention.</p>
+                <p className="flow-text">When a conversation needs
+                  a human touch, it’s routed
+                  to the right person on your
+                  team with full context.</p>
               </div>
             </div>
 
@@ -711,35 +712,35 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
             {p1 && (<>
               <div className="plat-panel" style={{ display: "flex", flexDirection: "column" }}>
                 <figure className="plat-shot" style={{ borderRadius: "16px", overflow: "hidden" }}>
-                  <img src="/assets/whatsapp_catalog_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="WhatsApp catalog and store — products, prices and pay in chat, without leaving WhatsApp" />
+                  <img src="/assets/unified_inbox_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="Converse360 unified inbox — WhatsApp, Instagram and website chats on one screen, with customer details and deals beside the conversation" />
                 </figure>
               </div>
             </>)}
             {p2 && (<>
               <div className="plat-panel" style={{ display: "flex", flexDirection: "column" }}>
                 <figure className="plat-shot" style={{ borderRadius: "16px", overflow: "hidden" }}>
-                  <img src="/assets/whatsapp_store_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="WhatsApp Commerce — seamless product checkout, catalog browsing, and automated transactions directly inside WhatsApp" />
+                  <img src="/assets/chatbot_builder_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="No-code chatbot builder — steps dragged onto a canvas: trigger, question, send catalog, book a call, assign to a person" />
                 </figure>
               </div>
             </>)}
             {p3 && (<>
               <div className="plat-panel" style={{ display: "flex", flexDirection: "column" }}>
                 <figure className="plat-shot" style={{ borderRadius: "16px", overflow: "hidden" }}>
-                  <img src="/assets/unified_inbox_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="Converse360 unified inbox — WhatsApp, Instagram and website chats on one screen, with customer details and deals beside the conversation" />
+                  <img src="/assets/whatsapp_catalog_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="WhatsApp catalog and store — products, prices and pay in chat, without leaving WhatsApp" />
                 </figure>
               </div>
             </>)}
             {p4 && (<>
               <div className="plat-panel" style={{ display: "flex", flexDirection: "column" }}>
                 <figure className="plat-shot" style={{ borderRadius: "16px", overflow: "hidden" }}>
-                  <img src="/assets/converse_agent_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="Converse360 Agent — AI agents answering enquiries day and night, and handing a conversation to the team when it matters" />
+                  <img src="/assets/whatsapp_store_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="WhatsApp Commerce — seamless product checkout, catalog browsing, and automated transactions directly inside WhatsApp" />
                 </figure>
               </div>
             </>)}
             {p5 && (<>
               <div className="plat-panel" style={{ display: "flex", flexDirection: "column" }}>
                 <figure className="plat-shot" style={{ borderRadius: "16px", overflow: "hidden" }}>
-                  <img src="/assets/chatbot_builder_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="No-code chatbot builder — steps dragged onto a canvas: trigger, question, send catalog, book a call, assign to a person" />
+                  <img src="/assets/converse_agent_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="Converse360 Agent — AI agents answering enquiries day and night, and handing a conversation to the team when it matters" />
                 </figure>
               </div>
             </>)}
@@ -1163,14 +1164,14 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
 
       <section id="industries" style={{ position: "relative", zIndex: "7", background: "var(--color-bg)", maxWidth: "1440px", margin: "0 auto", padding: "clamp(56px,8vw,84px) clamp(20px,4vw,32px)" }}>
-        <h2 style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "40px", maxWidth: "22em", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
+        <h2 data-reveal style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "40px", maxWidth: "22em", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
           {' '}Built for how your business actually sells</h2>
-        <div role="tablist" aria-label="Industries" className="scroll-tabs ind-tabs" style={{ display: "flex", flexWrap: "nowrap", gap: "12px", marginBottom: "clamp(28px,3.4vw,40px)", overflowX: "auto" }}>
+        <div role="tablist" aria-label="Industries" className="scroll-tabs ind-tabs" data-reveal style={{ display: "flex", flexWrap: "nowrap", gap: "12px", marginBottom: "clamp(28px,3.4vw,40px)", overflowX: "auto" }}>
           {industries.map((ind, i) => (<Fragment key={i}>
             <Hx as="button" type="button" role="tab" aria-selected={ind.selected} onClick={ind.select} style={{ font: "inherit", cursor: "pointer", whiteSpace: "nowrap", flex: "none", borderWidth: "1px", borderStyle: "solid", borderColor: ind.border, background: ind.bg, color: ind.fg, borderRadius: "999px", padding: "12px 24px", fontSize: "16px", fontWeight: "500" }} hoverStyle={{ borderColor: "var(--brand)" }}>{ind.name}</Hx>
           </Fragment>))}
         </div>
-        <div className="ind-grid" style={{ gap: "clamp(36px,5vw,56px)", alignItems: "stretch" }}>
+        <div className="ind-grid" data-reveal="stagger" style={{ gap: "clamp(36px,5vw,56px)", alignItems: "stretch" }}>
           <div className="ind-copy" style={{ display: "flex", flexDirection: "column" }}>
             <h3 style={{ fontSize: "24px", fontWeight: "700", letterSpacing: "-0.02em", marginBottom: "10px" }}>{activeName}</h3>
             <p style={{ fontSize: "16.5px", lineHeight: "1.6", color: "var(--color-text-muted)", marginBottom: "26px" }}>{activeBlurb}</p>
@@ -1453,7 +1454,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
       <section style={{ background: "var(--color-bg)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(56px,8vw,84px) clamp(20px,4vw,32px)" }}>
-          <h2 style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "clamp(30px,3.6vw,44px)", textAlign: "center" }}>
+          <h2 data-reveal style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "clamp(30px,3.6vw,44px)", textAlign: "center" }}>
             {' '}What our clients say</h2>
           <div className="tst-grid" data-reveal="stagger">
 
@@ -1467,10 +1468,9 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                   one place.</p>
               </div>
               <div className="tst-author">
-                <span className="tst-avatar" aria-hidden="true">M</span>
+                <span className="tst-avatar" aria-hidden="true">D</span>
                 <span>
-                  <span className="tst-name">Mahesh</span>
-                  <span className="tst-company">Dffrnt</span>
+                  <span className="tst-name">Dffrnt</span>
                 </span>
               </div>
             </div>
@@ -1485,10 +1485,9 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                   conversations that actually need a person.</p>
               </div>
               <div className="tst-author">
-                <span className="tst-avatar" aria-hidden="true">S</span>
+                <span className="tst-avatar" aria-hidden="true">T</span>
                 <span>
-                  <span className="tst-name">Selva</span>
-                  <span className="tst-company">TMR</span>
+                  <span className="tst-name">TMR</span>
                 </span>
               </div>
             </div>
@@ -1503,10 +1502,9 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                   we spend.</p>
               </div>
               <div className="tst-author">
-                <span className="tst-avatar" aria-hidden="true">P</span>
+                <span className="tst-avatar" aria-hidden="true">C</span>
                 <span>
-                  <span className="tst-name">Pradeep</span>
-                  <span className="tst-company">Conceps</span>
+                  <span className="tst-name">Conceps</span>
                 </span>
               </div>
             </div>
@@ -1518,13 +1516,13 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
       <section id="faq" style={{ maxWidth: "1440px", margin: "0 auto", padding: "30px clamp(20px,4vw,32px) clamp(56px,8vw,84px)" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(320px,100%),1fr))", gap: "clamp(32px,5vw,56px)", alignItems: "start" }}>
-          <div>
+          <div data-reveal>
             <h2 style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "12px", textAlign: "left" }}>
               {' '}Questions, answered plainly</h2>
-            <p style={{ fontSize: "15.5px", lineHeight: "1.55", color: "var(--color-text-muted)", textAlign: "left" }}>Still unsure? <Link href="/contact">Book a
+            <p style={{ fontSize: "15.5px", lineHeight: "1.55", color: "var(--color-text-muted)", textAlign: "left" }}>Still unsure? <Link href="/book-a-demo">Book a
               demo</Link> and we'll walk you through it.</p>
           </div>
-          <div style={{ borderTop: "1px solid var(--color-divider)" }}>
+          <div data-reveal="stagger" style={{ borderTop: "1px solid var(--color-divider)" }}>
             <details style={{ borderBottom: "1px solid var(--color-divider)" }}>
               <summary style={{ cursor: "pointer", padding: "22px 0", fontSize: "17.5px", fontWeight: "500", display: "flex", alignItems: "center", gap: "16px" }}>
                 <span style={{ flex: "1" }}>Is Converse360 an official WhatsApp API provider?</span>
@@ -1574,13 +1572,13 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
       </section>
 
       <section id="cta" style={{ background: "var(--brand)", color: "var(--color-bg)" }}>
-        <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(56px,8vw,88px) clamp(20px,4vw,32px)" }}>
+        <div data-reveal="stagger" style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(56px,8vw,88px) clamp(20px,4vw,32px)" }}>
           <h2 style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.035em", lineHeight: "1.05", marginBottom: "18px", maxWidth: "20em", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
             {' '}Your next reply could be automatic.</h2>
           <p style={{ fontSize: "18.5px", lineHeight: "1.5", color: "rgba(255,255,255,0.85)", maxWidth: "30em", marginBottom: "34px", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
             {' '}See it working on your own channels. Fifteen minutes, no slides.</p>
           <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "14px" }}>
-            <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ background: "var(--color-bg)", color: "var(--color-text)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-surface)" }}>Book a Free Demo</Hx>
+            <Hx link className="btn-fx btn-fx-dark" href="/book-a-demo" style={{ background: "var(--color-bg)", color: "var(--color-text)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-surface)" }}>Book a Free Demo</Hx>
             <Hx link className="btn-fx" href="/contact" style={{ border: "1px solid rgba(255,255,255,0.5)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "rgba(255,255,255,0.12)" }}>Start Free</Hx>
           </div>
         </div>
