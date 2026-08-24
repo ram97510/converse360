@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Hx from '@/components/Hx';
 import AnnouncementBar from '@/components/AnnouncementBar';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -97,6 +98,7 @@ export default function IndustriesPage() {
                       fontWeight: 700,
                       letterSpacing: '-0.025em',
                       margin: '15px 0 8px',
+                      color: 'black'
                     }}
                   >
                     {ind.menuLabel}
@@ -115,38 +117,21 @@ export default function IndustriesPage() {
         </div>
       </section>
 
-      <section style={{ background: 'var(--color-bg)', padding: '0 0 clamp(48px,6.5vw,84px)' }}>
-        <div className="ind-wrap">
-          <div className="ind-band">
-            <span aria-hidden="true" className="ind-band-dots" />
-            <div style={{ position: 'relative', maxWidth: '46em' }}>
-              <h2
-                style={{
-                  fontSize: 'clamp(24px,3.4vw,38px)',
-                  fontWeight: 800,
-                  letterSpacing: '-0.035em',
-                  lineHeight: 1.15,
-                  margin: '0 0 14px',
-                  textWrap: 'balance',
-                }}
-              >
-                Not sure which one fits you?
-              </h2>
-              <p style={{ fontSize: 'clamp(15px,1.5vw,17px)', lineHeight: 1.7, color: 'rgba(255,255,255,0.9)', margin: 0 }}>
-                Most businesses sit across two or three of these. Tell us how enquiries reach you today and we will map
-                the flow to your own process in a twenty-minute session.
-              </p>
-              <div className="ind-cta-row">
-                <Link
-                  href="/contact"
-                  className="ind-btn"
-                  style={{ background: 'var(--color-bg)', color: 'var(--color-accent-deep)', fontWeight: 600 }}
-                >
-                  Book a one-to-one meeting
-                  <Arrow color="#0F7A3D" />
-                </Link>
-              </div>
-            </div>
+      <section style={{ background: 'var(--brand)', color: 'var(--color-bg)' }}>
+        <div style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(48px,6.5vw,76px) clamp(20px,4vw,32px)', display: 'flex', flexDirection: 'column', flexWrap: 'wrap', alignItems: 'center', gap: '24px', textAlign: 'center' }}>
+          <div>
+            <h2 style={{ fontSize: 'clamp(24px,3.2vw,36px)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '10px' }}>
+              Not sure which one fits you?
+            </h2>
+            <p style={{ fontSize: '16.5px', color: 'rgba(255,255,255,0.9)', maxWidth: '42em', margin: '0 auto' }}>
+              Most businesses sit across two or three of these. Tell us how enquiries reach you today and we will map
+              the flow to your own process in a twenty-minute session.
+            </p>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', justifyContent: 'center' }}>
+            <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ background: 'var(--color-bg)', color: 'var(--color-text)', fontSize: '16px', fontWeight: '700', padding: '16px 30px', borderRadius: '999px' }} hoverStyle={{ background: 'var(--color-surface)' }}>
+              Book a one-to-one meeting
+            </Hx>
           </div>
         </div>
       </section>

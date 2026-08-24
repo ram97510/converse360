@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Hx from '@/components/Hx';
+import IndustryChat from '@/components/industries/IndustryChat';
 import { notFound } from 'next/navigation';
 import AnnouncementBar from '@/components/AnnouncementBar';
 import Header from '@/components/Header';
@@ -111,24 +113,6 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
                 <span style={{ color: 'var(--color-text)' }}>{ind.name}</span>
               </nav>
 
-              <span className="ind-eyebrow">
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '26px',
-                    height: '26px',
-                    borderRadius: '8px',
-                    background: ind.tintSoft,
-                    color: ind.tint,
-                  }}
-                >
-                  <IndustryIcon name={ind.icon} size={15} />
-                </span>
-                {ind.heroEyebrow}
-              </span>
-
               <h1 className="ind-h1">
                 {ind.heroTitle} <span style={{ color: ind.tint }}>{ind.heroTitleAccent}</span>
                 {ind.heroTitleTail.startsWith('.') ? '' : ' '}
@@ -149,48 +133,8 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
             </div>
 
             {/* Sample conversation — the same thread the landing page plays for
-                this vertical, rendered here in full. */}
-            <div className="ind-chat">
-              <div className="ind-chat-head">
-                <span className="ind-chat-avatar">C3</span>
-                <div>
-                  <div style={{ fontSize: '14px', fontWeight: 600 }}>Converse360 Agent</div>
-                  <div style={{ fontSize: '11.5px', color: 'var(--brand)' }}>online · replies in seconds</div>
-                </div>
-              </div>
-              <div className="ind-chat-body">
-                {thread.map((m, i) => {
-                  const [dir, text, file, meta] = m as [string, string, string?, string?];
-                  return (
-                    <div key={i} className={`ind-bubble ind-bubble-${dir === 'in' ? 'in' : 'out'}`}>
-                      {text}
-                      {file && (
-                        <span className="ind-bubble-file">
-                          <svg
-                            width="15"
-                            height="15"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke={BRAND}
-                            strokeWidth="2"
-                            strokeLinecap="round"
-                            strokeLinejoin="round"
-                            aria-hidden="true"
-                          >
-                            <path d="M14 3v5h5" />
-                            <path d="M6 3h8l5 5v13H6z" />
-                          </svg>
-                          <span>
-                            <strong style={{ display: 'block', fontWeight: 600 }}>{file}</strong>
-                            <span style={{ color: 'var(--color-text-subtle)' }}>{meta}</span>
-                          </span>
-                        </span>
-                      )}
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
+                this vertical, rendered dynamically. */}
+            <IndustryChat thread={thread} tint={ind.tint} />
           </div>
 
           {/* METRICS */}
@@ -208,8 +152,8 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
       {/* WHAT GETS IN THE WAY */}
       <section style={{ background: 'var(--color-bg)', padding: 'clamp(48px,6.5vw,84px) 0' }}>
         <div className="ind-wrap">
-          <h2 className="ind-h2">What gets in the way today</h2>
-          <p className="ind-sub">{base.blurb}</p>
+          <h2 className="ind-h2" style={{ textAlign: 'center' }}>What gets in the way today</h2>
+          <p className="ind-sub" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>{base.blurb}</p>
 
           <div className="ind-cards">
             {ind.problems.map((p) => (
@@ -239,25 +183,53 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
       {/* CAPABILITIES */}
       <section style={{ background: 'var(--color-surface-2)', padding: 'clamp(48px,6.5vw,84px) 0' }}>
         <div className="ind-wrap">
-          <h2 className="ind-h2">What Converse360 does for {ind.name.toLowerCase()}</h2>
-          <p className="ind-sub">{extra.note}</p>
+          <div style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(400px, 100%), 1fr))',
+            gap: 'clamp(32px, 5vw, 64px)',
+            alignItems: 'center'
+          }}>
+            <div>
+              <h2 className="ind-h2" style={{ margin: '0 0 16px', textAlign: 'left' }}>What Converse360 does for {ind.name.toLowerCase()}</h2>
+              <p className="ind-sub" style={{ margin: '0 0 32px', textAlign: 'left', maxWidth: '100%' }}>{extra.note}</p>
 
-          <ul className="ind-points">
-            {base.points.map((point) => (
-              <li key={point}>
-                <Check color={ind.tint} />
-                <span>{point}</span>
-              </li>
-            ))}
-          </ul>
+              <ul className="ind-points">
+                {base.points.map((point) => (
+                  <li key={point}>
+                    <Check color={ind.tint} />
+                    <span>{point}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+
+            <div style={{
+              position: 'relative',
+              borderRadius: '20px',
+              overflow: 'hidden',
+              boxShadow: '0 20px 40px rgba(16, 43, 30, 0.05)',
+              border: '1px solid var(--color-divider)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              aspectRatio: '4/3'
+            }}>
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={`/assets/ind-${ind.slug}.jpg`}
+                alt={`Converse360 ${ind.name} features dashboard illustration`}
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            </div>
+          </div>
         </div>
       </section>
 
       {/* HOW IT WORKS */}
       <section style={{ background: 'var(--color-bg)', padding: 'clamp(48px,6.5vw,84px) 0' }}>
         <div className="ind-wrap">
-          <h2 className="ind-h2">From first message to finished outcome</h2>
-          <p className="ind-sub">
+          <h2 className="ind-h2" style={{ textAlign: 'center' }}>From first message to finished outcome</h2>
+          <p className="ind-sub" style={{ textAlign: 'center', marginLeft: 'auto', marginRight: 'auto' }}>
             Four steps, all of them inside one conversation your customer never has to leave.
           </p>
 
@@ -275,102 +247,48 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
         </div>
       </section>
 
-      {/* BAND CTA */}
-      <section style={{ background: 'var(--color-bg)', padding: '0 0 clamp(48px,6.5vw,84px)' }}>
-        <div className="ind-wrap">
-          <div className="ind-band">
-            <span aria-hidden="true" className="ind-band-dots" />
-            <div style={{ position: 'relative', maxWidth: '46em' }}>
-              <h2
-                style={{
-                  fontSize: 'clamp(24px,3.4vw,38px)',
-                  fontWeight: 800,
-                  letterSpacing: '-0.035em',
-                  lineHeight: 1.15,
-                  margin: '0 0 14px',
-                  textWrap: 'balance',
-                }}
-              >
-                See it running on your own {ind.name.toLowerCase()} enquiries.
-              </h2>
-              <p style={{ fontSize: 'clamp(15px,1.5vw,17px)', lineHeight: 1.7, color: 'rgba(255,255,255,0.9)', margin: 0 }}>
-                Bring us a real conversation your team handles every week. In twenty minutes we will show you the exact
-                flow that answers it automatically — and what it takes to go live.
-              </p>
-              <div className="ind-cta-row">
-                <Link
-                  href="/contact"
-                  className="ind-btn"
-                  style={{ background: 'var(--color-bg)', color: 'var(--color-accent-deep)', fontWeight: 600 }}
-                >
-                  Book your demo
-                  <Arrow color="#0F7A3D" />
-                </Link>
-                <Link
-                  href="/industries"
-                  className="ind-btn"
-                  style={{ border: '1px solid rgba(255,255,255,0.5)', color: '#fff' }}
-                >
-                  Other industries
-                </Link>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-
       {/* FAQ */}
-      <section style={{ background: 'var(--color-bg)', padding: '0 0 clamp(48px,6.5vw,84px)' }}>
-        <div className="ind-wrap">
-          <h2 className="ind-h2">Questions {ind.name.toLowerCase()} teams ask</h2>
-          <div className="ind-faq" style={{ marginTop: '22px' }}>
+      <section style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 clamp(20px,4vw,32px) clamp(56px,8vw,84px)' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(320px,100%),1fr))', gap: 'clamp(32px,5vw,56px)', alignItems: 'start' }}>
+          <div>
+            <h2 style={{ fontSize: 'clamp(30px,4.5vw,42px)', fontWeight: '700', letterSpacing: '-0.03em', marginBottom: '12px', textAlign: 'left' }}>Questions {ind.name.toLowerCase()} teams ask</h2>
+            <p style={{ fontSize: '15.5px', lineHeight: '1.55', color: 'var(--color-text-muted)', textAlign: 'left' }}>Still unsure? <Link href="/contact" style={{ color: 'var(--brand)', textDecoration: 'none', fontWeight: '500' }}>Book a demo</Link> and we'll walk you through it.</p>
+          </div>
+          <div style={{ borderTop: '1px solid var(--color-divider)' }}>
             {ind.faqs.map((f) => (
-              <details key={f.q}>
-                <summary>{f.q}</summary>
-                <p>{f.a}</p>
+              <details key={f.q} style={{ borderBottom: '1px solid var(--color-divider)' }}>
+                <summary style={{ cursor: 'pointer', padding: '22px 0', fontSize: '17.5px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '16px' }}>
+                  <span style={{ flex: '1' }}>{f.q}</span>
+                  <span style={{ fontSize: '22px', color: 'var(--brand)', lineHeight: '1' }}>+</span>
+                </summary>
+                <p style={{ fontSize: '15.5px', lineHeight: '1.6', color: 'var(--color-text-muted)', padding: '0 0 22px', maxWidth: '44em' }}>
+                  {f.a}
+                </p>
               </details>
             ))}
           </div>
         </div>
       </section>
 
-      {/* OTHER INDUSTRIES */}
-      <section style={{ background: 'var(--color-surface-2)', padding: 'clamp(44px,5.5vw,72px) 0' }}>
-        <div className="ind-wrap">
-          <h2 className="ind-h2" style={{ fontSize: 'clamp(21px,2.6vw,28px)' }}>
-            Explore other industries
-          </h2>
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(auto-fit,minmax(min(220px,100%),1fr))',
-              gap: '14px',
-              marginTop: '22px',
-            }}
-          >
-            {others.map((o) => (
-              <Link key={o.slug} href={`/industries/${o.slug}`} className="ind-tile" style={{ padding: '18px' }}>
-                <span
-                  style={{
-                    display: 'inline-flex',
-                    alignItems: 'center',
-                    justifyContent: 'center',
-                    width: '36px',
-                    height: '36px',
-                    borderRadius: '11px',
-                    background: o.tintSoft,
-                    color: o.tint,
-                  }}
-                >
-                  <IndustryIcon name={o.icon} size={18} />
-                </span>
-                <div style={{ fontSize: '15.5px', fontWeight: 600, marginTop: '12px' }}>{o.menuLabel}</div>
-                <span className="ind-tile-go">
-                  View
-                  <Arrow color={BRAND} />
-                </span>
-              </Link>
-            ))}
+      {/* BAND CTA */}
+      <section style={{ background: 'var(--brand)', color: 'var(--color-bg)' }}>
+        <div style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(48px,6.5vw,76px) clamp(20px,4vw,32px)', display: 'flex', flexDirection: 'column', flexWrap: 'wrap', alignItems: 'center', gap: '24px', textAlign: 'center' }}>
+          <div>
+            <h2 style={{ fontSize: 'clamp(24px,3.2vw,36px)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '10px' }}>
+              See it running on your own {ind.name.toLowerCase()} enquiries.
+            </h2>
+            <p style={{ fontSize: '16.5px', color: 'rgba(255,255,255,0.9)', maxWidth: '42em', margin: '0 auto' }}>
+              Bring us a real conversation your team handles every week. In twenty minutes we will show you the exact
+              flow that answers it automatically — and what it takes to go live.
+            </p>
+          </div>
+          <div style={{ display: 'flex', flexWrap: 'wrap', gap: '14px', justifyContent: 'center' }}>
+            <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ background: 'var(--color-bg)', color: 'var(--color-text)', fontSize: '16px', fontWeight: '700', padding: '16px 30px', borderRadius: '999px' }} hoverStyle={{ background: 'var(--color-surface)' }}>
+              Book a Free Demo
+            </Hx>
+            <Hx link className="btn-fx" href="/industries" style={{ border: '1px solid rgba(255,255,255,0.5)', color: 'var(--color-bg)', fontSize: '16px', fontWeight: '500', padding: '16px 30px', borderRadius: '999px' }} hoverStyle={{ background: 'rgba(255,255,255,0.12)' }}>
+              Other industries
+            </Hx>
           </div>
         </div>
       </section>
