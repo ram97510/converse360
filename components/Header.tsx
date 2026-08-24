@@ -14,7 +14,7 @@ import { INK } from '@/lib/tokens';
  * in by each page: the pages were duplicating that knowledge, and a new route
  * under an existing section (a second blog post, another industry) then had to
  * remember to declare it. `isActive` matches the section, so
- * `/industries/finance` lights the Industries item and `/blog/one-inbox`
+ * `/industries/finance` lights the Industries item and `/blog/whatsapp-for-event-management`
  * lights Blog.
  *
  * The Industries item is its own client component because it owns a hover mega
@@ -91,7 +91,9 @@ export default function Header() {
           style={{
             display: 'none',
             background: 'none',
-            border: '1px solid var(--color-divider)',
+            borderWidth: '1px',
+            borderStyle: 'solid',
+            borderColor: 'var(--color-divider)',
             borderRadius: '999px',
             padding: '9px 10px',
             cursor: 'pointer',

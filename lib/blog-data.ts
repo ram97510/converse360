@@ -20,7 +20,7 @@ export interface Post {
 
 export const POSTS: Post[] = [
   {
-    url: '/blog/first-reply',
+    url: '/blog/why-whatsapp-is-essential-for-business',
     tag: 'WhatsApp',
     title: 'Why WhatsApp Is Essential for Business in 2026: Benefits, Use Cases & Customer Engagement',
     excerpt: 'The rise of WhatsApp has been so quiet and understated that it has emerged as one of the most powerful business communication tools of the decade.',
@@ -30,7 +30,7 @@ export const POSTS: Post[] = [
     alt: 'WhatsApp on mobile screen representing business conversation and customer engagement',
   },
   {
-    url: '/blog/one-inbox',
+    url: '/blog/whatsapp-for-event-management',
     tag: 'Event management',
     title: 'How to Use WhatsApp for Event Management: A Complete Guide for Event Organisers',
     excerpt: 'In the organisation of any event, there are a lot of things to do, like guest list management, coordination with vendors, booking of tickets and much more in one go.',
@@ -40,7 +40,7 @@ export const POSTS: Post[] = [
     alt: 'Event details and chats handled seamlessly inside WhatsApp',
   },
   {
-    url: '/blog/ad-attribution',
+    url: '/blog/conversational-sales-strategy',
     tag: 'Conversational sales',
     title: 'Conversational Sales Strategy: How to Engage Customers and Increase Conversions',
     excerpt: 'The traditional sales funnel is fast becoming irrelevant compared to something much more efficient: conversation. The buyers of today do not want to go through the trouble of filling out forms and waiting for follow-ups.',

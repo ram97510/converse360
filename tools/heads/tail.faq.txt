@@ -1,4 +1,0 @@
-      <Footer id="about" />
-    </PageShell>
-  );
-}

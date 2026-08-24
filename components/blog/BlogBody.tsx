@@ -73,7 +73,7 @@ export default function BlogBody() {
           <div className="blog-index-grid">
 
             {show1 && (<>
-              <Link className="blog-card" href="/blog/first-reply">
+              <Link className="blog-card" href="/blog/why-whatsapp-is-essential-for-business">
                 <div className="blog-shot">
                   <img src="/assets/blog-whatsapp-essential.jpg" alt="WhatsApp on mobile screen representing business conversation and customer engagement" />
                 </div>
@@ -102,7 +102,7 @@ export default function BlogBody() {
             </>)}
 
             {show2 && (<>
-              <Link className="blog-card" href="/blog/one-inbox">
+              <Link className="blog-card" href="/blog/whatsapp-for-event-management">
                 <div className="blog-shot">
                   <img src="/assets/blog-event-management.jpg" alt="Event details and chats handled seamlessly inside WhatsApp" />
                 </div>
@@ -131,7 +131,7 @@ export default function BlogBody() {
             </>)}
 
             {show3 && (<>
-              <Link className="blog-card" href="/blog/ad-attribution">
+              <Link className="blog-card" href="/blog/conversational-sales-strategy">
                 <div className="blog-shot">
                   <img src="/assets/blog-conversational-sales.jpg" alt="Conversational sales flow on screen representing automated engagement and team conversion" />
                 </div>
