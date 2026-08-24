@@ -3453,6 +3453,22 @@ summary::-webkit-details-marker {
   box-shadow: 0 12px 22px -10px rgba(24, 24, 24, 0.42);
 }
 
+.page-landing .hero-cta-pulse {
+  animation: heroPulse 2.4s infinite;
+}
+
+@keyframes heroPulse {
+  0% {
+    box-shadow: 0 4px 14px rgba(0, 171, 86, 0.2), 0 0 0 0 rgba(0, 171, 86, 0.45);
+  }
+  70% {
+    box-shadow: 0 4px 14px rgba(0, 171, 86, 0.2), 0 0 0 12px rgba(0, 171, 86, 0);
+  }
+  100% {
+    box-shadow: 0 4px 14px rgba(0, 171, 86, 0.2), 0 0 0 0 rgba(0, 171, 86, 0);
+  }
+}
+
 .page-landing .btn-fx-dark:hover {
   box-shadow: 0 12px 22px -10px rgba(24, 24, 24, 0.4);
 }

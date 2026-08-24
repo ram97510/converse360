@@ -269,7 +269,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
               Manager</span>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px", marginBottom: "16px" }}>
-            <Hx link className="btn-fx btn-fx-brand" href="/book-a-demo" style={{ background: "var(--brand)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-text)" }}>Book a Free Demo</Hx>
+            <Hx link className="btn-fx btn-fx-brand hero-cta-pulse" href="/book-a-demo" style={{ background: "var(--brand)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-text)" }}>Book a Free Demo</Hx>
             <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ background: "var(--color-text)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px", border: "1px solid transparent" }} hoverStyle={{ background: "var(--color-bg)", color: "var(--color-text)", border: "1px solid var(--color-text)" }}>Start Free</Hx>
           </div>
           <div style={{ fontSize: "13.5px", color: "var(--color-text-muted)", paddingTop: "12px" }}>No setup fee · Live in days, not months</div>
