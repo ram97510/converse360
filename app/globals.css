@@ -7546,3 +7546,20 @@ body {
     display: none;
   }
 }
+
+/* ---------------------------------------------------------------------------
+   Book a demo — the date/time picker. Two columns side by side, stacked once
+   the calendar can no longer hold seven readable day cells.
+   --------------------------------------------------------------------------- */
+@media (max-width: 640px) {
+  .demo-picker {
+    grid-template-columns: 1fr !important;
+  }
+
+  .demo-picker > :last-child {
+    border-left: 0 !important;
+    border-top: 1px solid var(--color-divider);
+    padding-left: 0 !important;
+    padding-top: 22px;
+  }
+}
