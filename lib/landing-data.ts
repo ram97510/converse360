@@ -30,6 +30,8 @@ export interface FeatureTab {
   ico: string;
   iconFile: string;
   filter: string;
+  /** One line telling a first-time visitor what this tab actually is. */
+  blurb: string;
 }
 
 export interface DailyFeature {
@@ -68,31 +70,31 @@ export const DATA: Industry[] = [
 ];
 
 export const EXTRA: Record<string, Extra> = {
-  'Retail & D2C': { metrics: [['3 sec','Average first reply'],['24/7','Catalog open'],['1 thread','Ad to order']],
+  'Retail & D2C': { metrics: [['3 sec','Average first reply'],['24/7','Catalog open'],['1 place','Every customer enquiry']],
     note: 'Product questions, sizes, delivery dates and payment all happen in the same chat, so a browsing customer never has to open another app to buy.' },
-  'Education': { metrics: [['3 sec','Average first reply'],['24/7','Admission desk'],['1 thread','Enquiry to seat']],
+  'Education': { metrics: [['3 sec','Average first reply'],['24/7','Admission desk'],['1 place','Every customer enquiry']],
     note: 'Parents ask about fees, batches and documents at night and on weekends. The agent answers then, and your counsellors start the day with only the serious ones.' },
-  'Real Estate': { metrics: [['3 sec','Average first reply'],['24/7','Site visit booking'],['1 thread','Enquiry to visit']],
+  'Real Estate': { metrics: [['3 sec','Average first reply'],['24/7','Site visit booking'],['1 place','Every customer enquiry']],
     note: 'Budget, locality and possession timeline are captured before anyone picks up the phone, so your sales team spends its day on buyers who are ready to see the property.' },
-  'Healthcare': { metrics: [['3 sec','Average first reply'],['24/7','Appointment desk'],['1 thread','Booking to reminder']],
+  'Healthcare': { metrics: [['3 sec','Average first reply'],['24/7','Appointment desk'],['1 place','Every customer enquiry']],
     note: 'Slots, fees and directions are answered instantly, reminders go out on their own, and anything clinical is handed straight to your staff.' },
-  'Finance': { metrics: [['3 sec','Average first reply'],['24/7','Eligibility answers'],['1 thread','Enquiry to advisor']],
+  'Finance': { metrics: [['3 sec','Average first reply'],['24/7','Eligibility answers'],['1 place','Every customer enquiry']],
     note: 'Documents arrive in the same conversation as the enquiry, so nothing is chased over email and an advisor picks up with the full history in front of them.' },
-  'Logistics': { metrics: [['3 sec','Average first reply'],['24/7','Tracking replies'],['1 thread','Pickup to delivery']],
+  'Logistics': { metrics: [['3 sec','Average first reply'],['24/7','Tracking replies'],['1 place','Every customer enquiry']],
     note: 'Tracking, rescheduling and pickup requests are handled automatically, and only genuine escalations reach the branch team.' },
 };
 
 /**
  * The "Everything in one place" tab strip. `filter` is the CSS filter chain
  * that recolours the flat SVG icon to the tab's own colour when it is selected;
- * `ico` is that colour, kept for reference as the source does.
+ * `ico` is that colour, and also tints the one-line brief under the row.
  */
 export const FEATURE_TABS: FeatureTab[] = [
-  { name: 'Unified Inbox', ico: '#7C5CE0', iconFile: '/assets/icons/Unified%20box.svg', filter: 'brightness(0) saturate(100%) invert(41%) sepia(35%) saturate(2250%) hue-rotate(218deg) brightness(96%) contrast(92%)' },
-  { name: 'Chatbot Builder', ico: '#D6336C', iconFile: '/assets/icons/chatbot%20builder.svg', filter: 'brightness(0) saturate(100%) invert(33%) sepia(85%) saturate(1485%) hue-rotate(314deg) brightness(91%) contrast(92%)' },
-  { name: 'WhatsApp Catalog', ico: '#00AB56', iconFile: '/assets/icons/Whatsapp%20catlog.svg', filter: 'brightness(0) saturate(100%) invert(53%) sepia(87%) saturate(1450%) hue-rotate(125deg) brightness(94%) contrast(101%)' },
-  { name: 'WhatsApp Store', ico: '#099250', iconFile: '/assets/icons/Whatsapp%20store.svg', filter: 'brightness(0) saturate(100%) invert(37%) sepia(87%) saturate(1281%) hue-rotate(135deg) brightness(94%) contrast(101%)' },
-  { name: 'Converse360 Agent', ico: '#2C7BE5', iconFile: '/assets/icons/Converse%20agent.svg', filter: 'brightness(0) saturate(100%) invert(41%) sepia(86%) saturate(1476%) hue-rotate(193deg) brightness(97%) contrast(92%)' },
+  { name: 'Unified Inbox', blurb: 'Bring every customer conversation together and give your team one place to act', ico: '#7C5CE0', iconFile: '/assets/icons/Unified%20box.svg', filter: 'brightness(0) saturate(100%) invert(41%) sepia(35%) saturate(2250%) hue-rotate(218deg) brightness(96%) contrast(92%)' },
+  { name: 'Chatbot Builder', blurb: 'Design smarter conversations that respond, guide, qualify, and convert automatically', ico: '#D6336C', iconFile: '/assets/icons/chatbot%20builder.svg', filter: 'brightness(0) saturate(100%) invert(33%) sepia(85%) saturate(1485%) hue-rotate(314deg) brightness(91%) contrast(92%)' },
+  { name: 'WhatsApp Catalog', blurb: 'Showcase your products where your customers are already talking to you', ico: '#00AB56', iconFile: '/assets/icons/Whatsapp%20catlog.svg', filter: 'brightness(0) saturate(100%) invert(53%) sepia(87%) saturate(1450%) hue-rotate(125deg) brightness(94%) contrast(101%)' },
+  { name: 'WhatsApp Store', blurb: 'Let customers shop, pay, and track orders without leaving the conversation', ico: '#099250', iconFile: '/assets/icons/Whatsapp%20store.svg', filter: 'brightness(0) saturate(100%) invert(37%) sepia(87%) saturate(1281%) hue-rotate(135deg) brightness(94%) contrast(101%)' },
+  { name: 'Converse360 Agent', blurb: 'Let AI handle conversations instantly while your team steps in when it matters', ico: '#2C7BE5', iconFile: '/assets/icons/Converse%20agent.svg', filter: 'brightness(0) saturate(100%) invert(41%) sepia(86%) saturate(1476%) hue-rotate(193deg) brightness(97%) contrast(92%)' },
 ];
 
 /** The grey filter every unselected feature tab icon carries. */

@@ -135,14 +135,30 @@ export default function ContactBody() {
             <div style={{ border: "1px solid var(--color-divider)", borderRadius: "16px", padding: "clamp(24px,3vw,34px)", marginTop: "20px", flex: "1", display: "flex", flexDirection: "column" }}>
               <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "700", letterSpacing: "-0.02em", marginBottom: "16px" }}>Follow Us</h3>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
-                <Hx as="a" className="btn-fx btn-fx-dark" href="https://www.instagram.com/converse.360/" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "10px", borderWidth: "1px", borderStyle: "solid", borderColor: "var(--color-divider)", borderRadius: "999px", padding: "10px 18px", fontSize: "14.5px", fontWeight: "500", color: "var(--color-text)", background: "var(--color-bg)" }} hoverStyle={{ borderColor: "var(--brand)", color: "var(--brand)" }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" aria-hidden="true">
-                    <rect x="2.5" y="2.5" width="19" height="19" rx="5.5"></rect>
-                    <circle cx="12" cy="12" r="4"></circle>
-                    <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle>
-                  </svg>Instagram</Hx><Hx as="a" className="btn-fx btn-fx-dark" href="https://www.facebook.com/converse360/" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "10px", borderWidth: "1px", borderStyle: "solid", borderColor: "var(--color-divider)", borderRadius: "999px", padding: "10px 18px", fontSize: "14.5px", fontWeight: "500", color: "var(--color-text)", background: "var(--color-bg)" }} hoverStyle={{ borderColor: "var(--brand)", color: "var(--brand)" }}><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-                    <path d="M13.5 22v-8h2.9l.4-3.4h-3.3V8.4c0-1 .3-1.7 1.7-1.7h1.7V3.6c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.8H7.3V14h2.9v8z">
-                    </path>
-                  </svg>Facebook</Hx>
+                <Hx as="a" className="btn-fx btn-fx-dark" href="https://www.instagram.com/converse.360/" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "10px", borderWidth: "1px", borderStyle: "solid", borderColor: "var(--color-divider)", borderRadius: "999px", padding: "10px 18px", fontSize: "14.5px", fontWeight: "500", color: "var(--color-text)", background: "var(--color-bg)", transition: "all .24s ease" }} hoverStyle={{ boxShadow: "0 6px 18px rgba(0,0,0,0.06)", transform: "translateY(-1px)" }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true" style={{ display: "block" }}>
+                    <defs>
+                      <linearGradient id="instagram-grad-contact-pill" x1="0%" y1="100%" x2="100%" y2="0%">
+                        <stop offset="0%" stopColor="#f09433" />
+                        <stop offset="25%" stopColor="#e6683c" />
+                        <stop offset="50%" stopColor="#dc2743" />
+                        <stop offset="75%" stopColor="#cc2366" />
+                        <stop offset="100%" stopColor="#bc1888" />
+                      </linearGradient>
+                    </defs>
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#instagram-grad-contact-pill)"></rect>
+                    <circle cx="12" cy="12" r="4" stroke="url(#instagram-grad-contact-pill)"></circle>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="url(#instagram-grad-contact-pill)" strokeWidth="3"></line>
+                  </svg>
+                  Instagram
+                </Hx>
+                
+                <Hx as="a" className="btn-fx btn-fx-dark" href="https://www.facebook.com/converse360/" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "10px", borderWidth: "1px", borderStyle: "solid", borderColor: "var(--color-divider)", borderRadius: "999px", padding: "10px 18px", fontSize: "14.5px", fontWeight: "500", color: "var(--color-text)", background: "var(--color-bg)", transition: "all .24s ease" }} hoverStyle={{ boxShadow: "0 6px 18px rgba(0,0,0,0.06)", transform: "translateY(-1px)" }}>
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#1877F2" aria-hidden="true" style={{ display: "block" }}>
+                    <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
+                  </svg>
+                  Facebook
+                </Hx>
               </div>
             </div>
 

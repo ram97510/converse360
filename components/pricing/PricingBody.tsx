@@ -765,7 +765,7 @@ export default function PricingBody() {
               point you to the right one.</p>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "14px" }}>
-            <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ background: "var(--color-bg)", color: "var(--color-text)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-surface)" }}>Contact us</Hx>
+            <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ background: "var(--color-bg)", color: "var(--color-text)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-surface)" }}>Talk to our Expert</Hx>
             <Hx link className="btn-fx" href="/book-a-demo" style={{ border: "1px solid rgba(255,255,255,0.5)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "rgba(255,255,255,0.12)" }}>Book a demo</Hx>
           </div>
         </div>

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import Hx from '@/components/Hx';
-import { BRAND } from '@/lib/tokens';
+import { WHITE } from '@/lib/tokens';
 import AnnouncementBar from '@/components/AnnouncementBar';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
@@ -12,204 +12,279 @@ export const metadata: Metadata = {
   description: 'Agency-made, product-driven. Why businesses choose Converse360.',
 };
 
+/**
+ * The three things the agency heritage buys you, listed beside the story.
+ *
+ * Each was a stat tile in the old layout ("Meta Official Business Partner",
+ * "24/7 always-on chat assistant", "3 channels, one unified inbox"); the row
+ * form says what the number meant. The first icon fills its disc, the rest
+ * sit on a tint — one accent, then supporting detail.
+ */
+const AGENCY_POINTS: { title: string; desc: string; icon: React.ReactNode }[] = [
+  {
+    title: 'Meta Official Partner',
+    desc: 'Official WhatsApp Cloud API access, direct from Meta.',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M20.5 11.2V12a8.5 8.5 0 1 1-5-7.8" />
+        <path d="M21 4.4 12 13.5l-2.8-2.8" />
+      </svg>
+    ),
+  },
+  {
+    title: 'Always-On Assistant',
+    desc: 'A 24/7 chat assistant that answers the moment a customer writes.',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <circle cx="12" cy="12" r="9.2" />
+        <path d="M12 7.2V12l3.4 2" />
+      </svg>
+    ),
+  },
+  {
+    title: 'One Unified Inbox',
+    desc: 'WhatsApp, Instagram and your website in a single place for the team.',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+        <path d="M2.8 13.4h4l1.4 2.6h7.6l1.4-2.6h4" />
+        <path d="M4.6 5.4h14.8l2 8v4a1.6 1.6 0 0 1-1.6 1.6H4.2a1.6 1.6 0 0 1-1.6-1.6v-4z" />
+      </svg>
+    ),
+  },
+];
+
+/**
+ * The five things we do, as they appear in the What We Do row.
+ *
+ * Each card carries its own colour: `ink` is the glyph and `tint` the card it
+ * sits on, handed to CSS as custom properties so one rule paints the card, its
+ * border and its hover glow from the same hue. The icons are filled brand
+ * glyphs drawn on a 24-unit box — one CSS size governs all five — and they draw
+ * in `currentColor`, which the card sets to its own ink.
+ */
+const WHAT_WE_DO: {
+  title: string;
+  desc: string;
+  ink: string;
+  tint: string;
+  icon: React.ReactNode;
+}[] = [
+    {
+      title: 'WhatsApp Chat Automation',
+      desc: 'Automate customer replies, order updates, appointment reminders, and support on WhatsApp Business.',
+      ink: '#0F9D4F',
+      tint: '#F1FAF4',
+      icon: (
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <circle cx="12" cy="12" r="11.4" fill="currentColor" />
+          <g transform="translate(5.15 5.15) scale(0.57)" fill={WHITE}>
+            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.347-.347.52-.52.174-.174.232-.298.347-.497.115-.198.057-.371-.03-.52-.086-.148-.66-1.59-.905-2.174-.234-.556-.47-.48-.646-.487-.174-.007-.373-.008-.572-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884" />
+          </g>
+        </svg>
+      ),
+    },
+    {
+      title: 'Website Chat Automation',
+      desc: 'A smart chat assistant embedded on your website to capture leads and answer visitor questions in real time.',
+      ink: '#2C7BE5',
+      tint: '#F1F6FE',
+      icon: (
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4.4 3h15.2A2.4 2.4 0 0 1 22 5.4v9.2a2.4 2.4 0 0 1-2.4 2.4h-8.3l-4.6 3.7A1 1 0 0 1 5.1 20v-3H4.4A2.4 2.4 0 0 1 2 14.6V5.4A2.4 2.4 0 0 1 4.4 3Z" fill="currentColor" />
+          <g fill={WHITE}>
+            <circle cx="8.1" cy="10" r="1.35" />
+            <circle cx="12" cy="10" r="1.35" />
+            <circle cx="15.9" cy="10" r="1.35" />
+          </g>
+        </svg>
+      ),
+    },
+    {
+      title: 'Custom Conversation Flows',
+      desc: 'Tailored chat journeys built around your business — from FAQs to lead qualification to post-sale support.',
+      ink: '#7C5CE0',
+      tint: '#F5F3FE',
+      icon: (
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M12 7.6v3.1M5.2 16.2v-3.2h13.6v3.2" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" fill="none" />
+          <g fill="currentColor">
+            <rect x="8.6" y="2.2" width="6.8" height="5.6" rx="1.9" />
+            <rect x="1.8" y="16.2" width="6.8" height="5.6" rx="1.9" />
+            <rect x="15.4" y="16.2" width="6.8" height="5.6" rx="1.9" />
+          </g>
+        </svg>
+      ),
+    },
+    {
+      title: 'Seamless Handover',
+      desc: 'Smooth escalation to a human team member whenever a conversation needs a personal touch.',
+      ink: '#D6336C',
+      tint: '#FEF2F6',
+      icon: (
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4.4 4.2a7.6 7.6 0 0 1 15.2 0v4.3" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" fill="none" />
+          <g fill="currentColor">
+            <rect x="1.7" y="4.4" width="3.5" height="5.4" rx="1.7" />
+            <rect x="18.8" y="4.4" width="3.5" height="5.4" rx="1.7" />
+            <circle cx="12" cy="9.6" r="3.7" />
+            <path d="M4.6 22c0-3.7 3.3-6.6 7.4-6.6s7.4 2.9 7.4 6.6z" />
+          </g>
+        </svg>
+      ),
+    },
+    {
+      title: 'Marketing Broadcasts',
+      desc: 'Send bulk WhatsApp campaigns, offers, product launches, and updates with delivery and read tracking.',
+      ink: '#E1830B',
+      tint: '#FFF7EA',
+      icon: (
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <g fill="currentColor">
+            <path d="M2.6 10.1 14.4 4.3v11.9L2.6 13.9z" />
+            <path d="M5.2 14.5l4 .8-.9 4.6a1.3 1.3 0 0 1-1.6 1l-1-.2a1.3 1.3 0 0 1-1-1.5z" />
+          </g>
+          <path d="M17.6 5.6l2.6-1.7M18.6 10.2h3.1M17.6 14.8l2.6 1.7" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" fill="none" />
+        </svg>
+      ),
+    },
+  ];
+
 export default function AboutPage() {
   return (
     <PageShell scope="about">
       <StatAnimator />
       <AnnouncementBar />
       <Header />
-      <section style={{ background: "linear-gradient(180deg,#F5FAF7 0%,var(--color-bg) 72%)", color: "var(--color-text)", position: "relative", overflow: "hidden" }}>
-        {/* Decorative elements */}
-        <span aria-hidden="true" style={{ position: "absolute", right: "6%", top: "22%", width: "64px", height: "64px", backgroundImage: "radial-gradient(#A5D8BC 1.2px,transparent 1.2px)", backgroundSize: "10px 10px", opacity: "0.55" }}></span>
-        <span aria-hidden="true" style={{ position: "absolute", left: "6%", bottom: "18%", width: "52px", height: "52px", backgroundImage: "radial-gradient(#BFD6F7 1.2px,transparent 1.2px)", backgroundSize: "10px 10px", opacity: "0.45" }}></span>
+      {/* HERO — copy on the left, a WhatsApp conversation on the right */}
+      <section className="abh">
+        <div className="abh-inner">
 
-        <div style={{ position: "relative", maxWidth: "1440px", margin: "0 auto", padding: "clamp(52px,7.5vw,96px) clamp(20px,4vw,32px) clamp(52px,7vw,86px)" }}>
-          <div className="ab-hero" style={{ maxWidth: "920px", margin: "0 auto", textAlign: "center" }}>
-
-            <h1 style={{ fontSize: "var(--fs-hero)", fontWeight: "var(--fw-hero)", letterSpacing: "-0.04em", lineHeight: "1.06", color: "var(--color-text)", marginBottom: "22px", textWrap: "balance" }}>
-              {' '}We help businesses turn <span style={{ color: "var(--brand)" }}>everyday conversations</span> into real
-              growth.{' '}
+          <div className="abh-copy">
+            <h1 className="abh-title">
+              Conversations<br />That <span>Drive Growth</span>
             </h1>
-
-            <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "54em", margin: "0 auto 16px", textWrap: "pretty" }}>
-              {' '}We build smart WhatsApp and website chat automation that lets companies respond to customers instantly,
-              around the clock — without adding to their support workload.</p>
-            <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "54em", margin: "0 auto 16px", textWrap: "pretty" }}>
-              {' '}FAQs, lead qualification, orders, updates, or guiding a customer through a purchase — Converse360 puts an
-              always-on, intelligent chat assistant to work so no message ever goes unanswered.</p>
-
-            {/* Badge row */}
-            <div className="ab-hero-badges" style={{ display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "center", gap: "12px" }}>
-              <span className="ab-chip">
-                <img src="/assets/meta-mark.png" alt="" style={{ height: "18px", width: "auto" }} /> Meta Tech Provider{' '}
-              </span>
-              <span className="ab-chip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={BRAND} strokeWidth="2.5" strokeLinecap="round">
-                  <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                  <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                </svg> 24/7 AI Automation{' '}
-              </span>
-              <span className="ab-chip">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
-                </svg> Enterprise Security{' '}
-              </span>
+            <p className="abh-lede">At Converse360, we help businesses turn everyday conversations into
+              real growth. We build smart <strong>WhatsApp</strong> and <strong>website chat automation</strong>{' '}
+              solutions that let companies respond to customers instantly, around the clock — without adding
+              to their support workload.</p>
+            <p className="abh-lede">Whether it’s answering FAQs, qualifying leads, taking orders, sending
+              updates, or guiding a customer through a purchase, Converse360 puts an always-on, intelligent
+              chat assistant to work on your website and WhatsApp — so no message ever goes unanswered, and
+              no opportunity slips through the cracks.</p>
+            {/* the site's pill CTAs — brand fill then dark, as on the landing hero */}
+            <div className="abh-cta">
+              <Hx link className="btn-fx btn-fx-brand abh-btn" href="/book-a-demo" style={{ background: "var(--brand)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-text)" }}>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <rect x="3" y="4.5" width="18" height="16" rx="2.5"></rect>
+                  <path d="M3 9.5h18M8 2.5v4M16 2.5v4"></path>
+                </svg>
+                Book a Demo
+              </Hx>
+              <Hx link className="btn-fx btn-fx-dark btn-fx-arrow abh-btn" href="/industries" style={{ background: "var(--color-bg)", color: "var(--color-text)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px", border: "1.5px solid var(--brand)" }} hoverStyle={{ background: "var(--brand)", color: "var(--color-bg)", border: "1.5px solid var(--brand)" }}>
+                Explore Solutions
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                  <path d="M5 12h14M13 6l6 6-6 6"></path>
+                </svg>
+              </Hx>
             </div>
-
           </div>
+
+          {/* The art is illustration only — everything it says, the copy says too,
+              so it is hidden from assistive tech rather than read out as a chat. */}
+          <div className="abh-art" aria-hidden="true">
+            <img src="/assets/about-hero-art.png" alt="" loading="eager" decoding="async" />
+          </div>
+
         </div>
       </section>
 
-      {/* OUR ROOTS & AGENCY FOUNDATION WITH METRICS & IMAGE */}
-      <section style={{ background: "var(--color-bg)" }}>
-        <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 clamp(20px,4vw,32px) clamp(50px,7vw,90px)" }}>
-          <div className="ab-roots-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(32px,5vw,64px)", alignItems: "center", paddingBottom: "clamp(32px,4vw,48px)" }}>
-            <div>
-              <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "800", letterSpacing: "-0.035em", lineHeight: "1.15", textWrap: "balance", marginBottom: "20px", textAlign: "left" }}>
-                {' '}Agency-Made, Product-Driven.</h2>
-              <div style={{ borderLeft: "3px solid var(--brand)", paddingLeft: "clamp(16px,2vw,22px)" }}>
-                <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.7", color: "var(--color-text-muted)" }}><img src="/assets/converse360-logo.png" alt="Converse360" style={{ height: "22px", width: "auto", display: "inline-block", verticalAlign: "-4px", marginRight: "4px" }} /> operates
-                  under <strong>Conceps Media Works</strong>, a Coimbatore-based branding, advertising, and digital
-                  media agency with 18+ years of experience helping brands grow through creative strategy and
-                  technology.</p>
-                <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.7", color: "var(--color-text-muted)", marginTop: "12px" }}>That
-                  heritage shapes how we build Converse360 solutions that aren't just technically sound, but designed
-                  with the same brand-first thinking that has powered 100+ businesses we've worked with over the years.{' '}
-                </p>
-              </div>
-            </div>
+      {/* AGENCY-MADE, PRODUCT-DRIVEN — photo composition beside the story */}
+      <section className="ab-agency">
+        <div className="ab-agency-inner">
 
-            <div style={{ background: "var(--color-surface)", border: "1px solid var(--color-divider)", borderRadius: "20px", padding: "clamp(24px,3vw,36px)", position: "relative" }}>
-              <div style={{ display: "flex", alignItems: "center", gap: "14px", background: "var(--color-bg)", border: "1px solid var(--color-divider)", borderRadius: "14px", padding: "14px 18px", marginBottom: "24px", boxShadow: "0 4px 14px rgba(0,0,0,0.03)" }}>
-                <img src="/assets/meta-tech-provider.png" alt="Meta Tech Provider" style={{ height: "38px", width: "auto", display: "block" }} />
-                <div>
-                  <div style={{ fontSize: "14px", fontWeight: "700", color: "var(--color-text)" }}>Meta Official Business Partner</div>
-                  <div style={{ fontSize: "12.5px", color: "var(--color-text-muted)" }}>Official WhatsApp Cloud API Access</div>
-                </div>
-              </div>
-              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "20px" }}>
-                <div style={{ background: "var(--color-bg)", border: "1px solid var(--color-divider)", borderRadius: "12px", padding: "20px" }}>
-                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(28px,3.5vw,42px)", fontWeight: "800", color: "var(--brand)", lineHeight: "1" }}>
-                    {' '}18+</div>
-                  <div style={{ fontSize: "13px", color: "var(--color-text-muted)", marginTop: "8px", fontWeight: "500" }}>Years of agency experience{' '}
-                  </div>
-                </div>
-                <div style={{ background: "var(--color-bg)", border: "1px solid var(--color-divider)", borderRadius: "12px", padding: "20px" }}>
-                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(28px,3.5vw,42px)", fontWeight: "800", color: "var(--color-text)", lineHeight: "1" }}>
-                    {' '}100+</div>
-                  <div style={{ fontSize: "13px", color: "var(--color-text-muted)", marginTop: "8px", fontWeight: "500" }}>Businesses worked with</div>
-                </div>
-                <div style={{ background: "var(--color-bg)", border: "1px solid var(--color-divider)", borderRadius: "12px", padding: "20px" }}>
-                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(28px,3.5vw,42px)", fontWeight: "800", color: "var(--color-text)", lineHeight: "1" }}>
-                    {' '}24/7</div>
-                  <div style={{ fontSize: "13px", color: "var(--color-text-muted)", marginTop: "8px", fontWeight: "500" }}>Always-on chat assistant{' '}
-                  </div>
-                </div>
-                <div style={{ background: "var(--color-bg)", border: "1px solid var(--color-divider)", borderRadius: "12px", padding: "20px" }}>
-                  <div style={{ fontFamily: "var(--font-heading)", fontSize: "clamp(28px,3.5vw,42px)", fontWeight: "800", color: "var(--brand)", lineHeight: "1" }}>
-                    {' '}3</div>
-                  <div style={{ fontSize: "13px", color: "var(--color-text-muted)", marginTop: "8px", fontWeight: "500" }}>Channels, one unified inbox{' '}
-                  </div>
-                </div>
-              </div>
+          <div className="ab-agency-art">
+            <figure className="ab-agency-shot ab-agency-main">
+              <img src="/assets/whatsapp_business_interaction.jpg" alt="A Conceps Media Works team member answering a customer on WhatsApp Business" loading="lazy" decoding="async" />
+            </figure>
+            <figure className="ab-agency-shot ab-agency-inset">
+              <img src="/assets/whatsapp_business_dashboard.jpg" alt="The Converse360 inbox open on a laptop, with response times and tickets solved beside the conversation" loading="lazy" decoding="async" />
+            </figure>
+            <div className="ab-agency-badge">
+              <strong>100+</strong>
+              <span>Businesses served</span>
             </div>
           </div>
+
+          <div className="ab-agency-copy">
+            {/* <span className="ab-agency-eyebrow">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+                <circle cx="12" cy="12" r="9.2" />
+                <circle cx="12" cy="12" r="3.2" fill="currentColor" stroke="none" />
+              </svg>
+              About Company
+            </span> */}
+
+            <h2 className="ab-agency-title">Agency-Made, Product-Driven.</h2>
+
+            <p className="ab-agency-text">
+              <img
+                src="/assets/converse360-logo.png"
+                alt="Converse360"
+                style={{
+                  height: "30px",
+                  width: "auto",
+                  display: "inline-block",
+                  verticalAlign: "middle",
+                  marginRight: "8px",
+                  position: "relative",
+
+                }}
+              /> operates under <strong>Conceps Media Works</strong>, a
+              Coimbatore-based branding, advertising, and digital media agency with 18+ years of experience helping
+              brands grow through creative strategy and technology. That heritage shapes how we build Converse360:
+              solutions that aren’t just technically sound, but designed with the same brand-first thinking that has
+              powered 100+ businesses we’ve worked with over the years.</p>
+
+            <ul className="ab-agency-list">
+              {AGENCY_POINTS.map((pt, i) => (
+                <li className="ab-agency-item" key={pt.title}>
+                  <span className={`ab-agency-ico${i === 0 ? ' is-solid' : ''}`} aria-hidden="true">{pt.icon}</span>
+                  <div className="ab-agency-item-copy">
+                    <h3 className="ab-agency-item-title">{pt.title}</h3>
+                    <p className="ab-agency-item-text">{pt.desc}</p>
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+
         </div>
       </section>
 
-      {/* WHAT WE DO SECTION — PREMIUM CARD GRID */}
+      {/* WHAT WE DO — five equal cards, icon over centred copy */}
       <section style={{ background: "var(--color-surface)", borderTop: "1px solid var(--color-divider)", borderBottom: "1px solid var(--color-divider)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(60px,8vw,100px) clamp(20px,4vw,32px)" }}>
 
           <div style={{ maxWidth: "52em", margin: "0 auto clamp(36px,5vw,56px)", textAlign: "center" }}>
             <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "800", letterSpacing: "-0.035em", lineHeight: "1.15", marginBottom: "14px", color: "var(--color-text)" }}>
               {' '}What We Do</h2>
-            <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.7", color: "var(--color-text-muted)", margin: "0" }}>
+            {/* <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.7", color: "var(--color-text-muted)", margin: "0" }}>
               {' '}Five ways we put conversations to work for your business — designed for maximum conversion and engagement.{' '}
-            </p>
+            </p> */}
           </div>
 
           <div className="what-we-do-grid">
-            {/* Card 1: WhatsApp Chat Automation (spans 3 columns = 50% width) */}
-            <div className="what-we-do-card col-span-3">
-              <div className="what-we-do-icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                </svg>
+            {WHAT_WE_DO.map((item) => (
+              <div
+                className="what-we-do-card"
+                key={item.title}
+                style={{ '--wwd-ink': item.ink, '--wwd-tint': item.tint } as React.CSSProperties}
+              >
+                <span className="what-we-do-icon" aria-hidden="true">{item.icon}</span>
+                <h3 className="what-we-do-title">{item.title}</h3>
+                <p className="what-we-do-desc">{item.desc}</p>
               </div>
-              <span className="what-we-do-tag">WhatsApp Official API</span>
-              <h3 className="what-we-do-title">WhatsApp Chat Automation</h3>
-              <p className="what-we-do-desc">Automate customer replies, order updates, appointment reminders, and support on
-                WhatsApp Business safely and reliably.</p>
-
-            </div>
-
-            {/* Card 2: Website Chat Automation (spans 3 columns = 50% width) */}
-            <div className="what-we-do-card col-span-3">
-              <div className="what-we-do-icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect>
-                  <line x1="8" y1="21" x2="16" y2="21"></line>
-                  <line x1="12" y1="17" x2="12" y2="21"></line>
-                </svg>
-              </div>
-              <span className="what-we-do-tag">Website Widget</span>
-              <h3 className="what-we-do-title">Website Chat Automation</h3>
-              <p className="what-we-do-desc">A smart chat assistant embedded on your website to capture leads and answer
-                visitor questions in real time 24/7.</p>
-
-            </div>
-
-            {/* Card 3: Custom Conversation Flows (spans 2 columns = 33.3% width) */}
-            <div className="what-we-do-card col-span-2">
-              <div className="what-we-do-icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <circle cx="18" cy="5" r="3"></circle>
-                  <circle cx="6" cy="12" r="3"></circle>
-                  <circle cx="18" cy="19" r="3"></circle>
-                  <line x1="8.5" y1="10.5" x2="15.5" y2="6.5"></line>
-                  <line x1="8.5" y1="13.5" x2="15.5" y2="17.5"></line>
-                </svg>
-              </div>
-              <span className="what-we-do-tag">Custom Flows</span>
-              <h3 className="what-we-do-title">Custom Conversation Flows</h3>
-              <p className="what-we-do-desc">Tailored chat journeys built around your business — from FAQs to lead
-                qualification, stock check, and post-sale support.</p>
-
-            </div>
-
-            {/* Card 4: Seamless Handover (spans 2 columns = 33.3% width) */}
-            <div className="what-we-do-card col-span-2">
-              <div className="what-we-do-icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path>
-                  <circle cx="9" cy="7" r="4"></circle>
-                  <path d="M23 21v-2a4 4 0 0 0-3-3.87"></path>
-                  <path d="M16 3.13a4 4 0 0 1 0 7.75"></path>
-                </svg>
-              </div>
-              <span className="what-we-do-tag">Human Handover</span>
-              <h3 className="what-we-do-title">Seamless Handover</h3>
-              <p className="what-we-do-desc">Smooth escalation to a human team member whenever a conversation needs personal
-                attention or custom closing.</p>
-
-            </div>
-
-            {/* Card 5: Marketing Broadcasts (spans 2 columns = 33.3% width, and full-width on tablet) */}
-            <div className="what-we-do-card col-span-2 col-span-last-tablet">
-              <div className="what-we-do-icon-box">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M11 5L6 9H2v6h4l5 4V5z"></path>
-                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
-                </svg>
-              </div>
-              <span className="what-we-do-tag">Bulk Messaging &amp; Analytics</span>
-              <h3 className="what-we-do-title">Marketing Broadcasts</h3>
-              <p className="what-we-do-desc">Send bulk WhatsApp campaigns, offers, product launches, and updates to your
-                customer list in one go, with real-time tracking.</p>
-
-            </div>
+            ))}
           </div>
 
         </div>
@@ -332,7 +407,7 @@ export default function AboutPage() {
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "14px" }}>
             <Hx link className="btn-fx btn-fx-dark" href="/book-a-demo" style={{ background: "var(--color-bg)", color: "var(--color-text)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-surface)" }}>Book a Free Demo</Hx>
-            <Hx link className="btn-fx" href="/pricing" style={{ border: "1px solid rgba(255,255,255,0.5)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "rgba(255,255,255,0.12)" }}>Pricing</Hx>
+            <Hx link className="btn-fx" href="/pricing" style={{ border: "1px solid rgba(255,255,255,0.5)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "rgba(255,255,255,0.12)" }}>See Pricing</Hx>
           </div>
         </div>
       </section>

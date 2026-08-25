@@ -20,7 +20,7 @@ export default function Footer({ id }: { id?: string }) {
             <p style={{ fontSize: "15px", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "24em", marginTop: "18px" }}>One AI-powered
               inbox for WhatsApp, Instagram, and your website. Built for businesses that sell in conversations.</p>
             <div style={{ marginTop: "24px" }}>
-              <img src="/assets/meta-tech-provider.webp" alt="Meta Tech Provider" style={{ width: "100%", maxWidth: "170px", height: "auto", display: "block" }} />
+              <img src="/assets/meta-tech-provider.png" alt="Meta Tech Provider" style={{ width: "100%", maxWidth: "170px", height: "auto", display: "block" }} />
             </div>
           </div>
 
@@ -82,22 +82,30 @@ export default function Footer({ id }: { id?: string }) {
         <div className="foot-bar" style={{ display: "flex", alignItems: "center", justifyContent: "space-between", flexWrap: "wrap", gap: "16px", paddingTop: "20px", borderTop: "1px solid var(--color-divider)" }}>
           <div style={{ fontSize: "15px", color: "var(--color-text-muted)" }}>© 2026 Converse360. All rights reserved.</div>
           <div className="foot-follow" style={{ display: "flex", alignItems: "center", flexWrap: "wrap", gap: "12px" }}>
-            <span style={{ fontFamily: "var(--font-heading)", fontSize: "11.5px", fontWeight: "700", letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--color-text-faint)", whiteSpace: "nowrap" }}>Follow
-              us</span>
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <Hx as="a" href="https://www.instagram.com/converse.360/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style={{ width: "38px", height: "38px", background: "var(--color-bg)", borderWidth: "1px", borderStyle: "solid", borderColor: "var(--color-divider)", borderRadius: "11px", display: "grid", placeItems: "center", color: "var(--color-text-soft)", transition: "background .24s ease,border-color .24s ease,transform .24s cubic-bezier(0.16,1,0.3,1)" }} hoverStyle={{ background: "var(--brand)", borderColor: "var(--brand)", color: "var(--color-bg)", transform: "translateY(-2px)" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round">
-                  <rect x="2.5" y="2.5" width="19" height="19" rx="5.5"></rect>
-                  <circle cx="12" cy="12" r="4"></circle>
-                  <circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"></circle>
+            <span style={{ fontSize: "15px", color: "var(--color-text-muted)", whiteSpace: "nowrap" }}>Follow us</span>
+            <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
+              <a href="https://www.instagram.com/converse.360/" target="_blank" rel="noopener noreferrer" aria-label="Instagram" style={{ display: "inline-flex", transition: "transform .2s ease" }} onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"} onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" style={{ display: "block" }}>
+                  <defs>
+                    <linearGradient id="instagram-grad" x1="0%" y1="100%" x2="100%" y2="0%">
+                      <stop offset="0%" stopColor="#f09433" />
+                      <stop offset="25%" stopColor="#e6683c" />
+                      <stop offset="50%" stopColor="#dc2743" />
+                      <stop offset="75%" stopColor="#cc2366" />
+                      <stop offset="100%" stopColor="#bc1888" />
+                    </linearGradient>
+                  </defs>
+                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5" stroke="url(#instagram-grad)"></rect>
+                  <circle cx="12" cy="12" r="4" stroke="url(#instagram-grad)"></circle>
+                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" stroke="url(#instagram-grad)" strokeWidth="3"></line>
                 </svg>
-              </Hx>
-              <Hx as="a" href="https://www.facebook.com/converse360/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" style={{ width: "38px", height: "38px", background: "var(--color-bg)", borderWidth: "1px", borderStyle: "solid", borderColor: "var(--color-divider)", borderRadius: "11px", display: "grid", placeItems: "center", color: "var(--color-text-soft)", transition: "background .24s ease,border-color .24s ease,transform .24s cubic-bezier(0.16,1,0.3,1)" }} hoverStyle={{ background: "var(--brand)", borderColor: "var(--brand)", color: "var(--color-bg)", transform: "translateY(-2px)" }}>
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M13.4 21v-8.2h2.8l.42-3.2H13.4V7.5c0-.92.3-1.55 1.62-1.55h1.72V3.12c-.3-.04-1.32-.12-2.5-.12-2.47 0-4.16 1.5-4.16 4.27v2.33H7.5v3.2h2.58V21z">
-                  </path>
+              </a>
+
+              <a href="https://www.facebook.com/converse360/" target="_blank" rel="noopener noreferrer" aria-label="Facebook" style={{ display: "inline-flex", transition: "transform .2s ease" }} onMouseEnter={(e) => e.currentTarget.style.transform = "translateY(-2px)"} onMouseLeave={(e) => e.currentTarget.style.transform = "translateY(0)"}>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="#1877F2" style={{ display: "block" }}>
+                  <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
                 </svg>
-              </Hx>
+              </a>
             </div>
           </div>
         </div>

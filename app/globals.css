@@ -1446,43 +1446,143 @@ summary::-webkit-details-marker {
 
 /* Balanced halves. This used to be 1fr | 360px, which left the copy column
    960px wide while its text was capped near 540px — a ~420px hole down the
-   middle with the phone pinned to the far right. */
+   middle with the phone pinned to the far right.
+
+   The copy is two elements, not one: .ind-copy (name, blurb, what you get)
+   and .ind-copy-rest (the numbers, the channel note, the link). Here they are
+   the two rows of the left column and the phone spans both, so the layout
+   reads exactly as it did when the copy was a single column — row-gap stays 0
+   and the children keep carrying their own spacing. On a phone the areas
+   re-order so the handset lands between the two halves. */
 .page-landing .ind-grid {
   display: grid;
   grid-template-columns: minmax(0, 1.02fr) minmax(0, 0.98fr);
+  /* the two empty rows are what .ind-copy{justify-content:center} used to do:
+     they take the slack the taller phone column leaves, so the copy sits
+     centred against it with no gap opened between its own two halves */
+  grid-template-areas:
+    ".     stage"
+    "copy  stage"
+    "rest  stage"
+    ".     stage";
+  grid-template-rows: 1fr auto auto 1fr;
   align-items: stretch;
 }
 
-/* spread the copy blocks so the column fills its height instead of leaving
-   a gap under the last card */
 .page-landing .ind-copy {
-  justify-content: space-between;
-  row-gap: 6px;
+  grid-area: copy;
 }
 
-/* the phone now sits on a tinted stage that fills its column */
+.page-landing .ind-copy-rest {
+  grid-area: rest;
+}
+
+/* the phone floats on concentric brand rings - no tinted card behind it */
 .page-landing .ind-stage {
+  grid-area: stage;
   position: relative;
   display: grid;
   place-items: center;
   padding: clamp(24px, 3vw, 40px);
-  border-radius: 26px;
-  overflow: hidden;
-  background:
-    radial-gradient(90% 70% at 50% 8%, rgba(0, 171, 86, 0.13) 0%, transparent 62%),
-    linear-gradient(170deg, #F4FAF7 0%, #F7FAF9 60%, #F2F6F4 100%);
-  border: 1px solid #E7EFEA;
+  border: 0;
+  background: none;
+  overflow: visible;
+  isolation: isolate;
 }
 
-/* soft brand halo behind the handset */
+/* concentric hairline rings, drawn as one repeating radial gradient. the box
+   is capped to the stage on both axes so no ring is ever cut off, and the
+   mask dissolves the outermost ring instead of ending it on a hard edge */
 .page-landing .ind-stage::before {
+  display: none !important;
+}
+
+.page-landing .ind-ring {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  border: 1px solid rgba(0, 171, 86, 0.35);
+  pointer-events: none;
+  z-index: -2;
+  box-shadow: 0 0 16px rgba(0, 171, 86, 0.22), inset 0 0 12px rgba(0, 171, 86, 0.12);
+  max-width: 100%;
+  box-sizing: border-box;
+  animation: pulseRing 3.2s ease-in-out infinite;
+}
+
+@keyframes pulseRing {
+  0% {
+    transform: translate(-50%, -50%) scale(0.97);
+    box-shadow: 0 0 12px rgba(0, 171, 86, 0.16), inset 0 0 10px rgba(0, 171, 86, 0.08);
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1.03);
+    box-shadow: 0 0 24px rgba(0, 171, 86, 0.3), inset 0 0 16px rgba(0, 171, 86, 0.16);
+    border-color: rgba(0, 171, 86, 0.55);
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.97);
+    box-shadow: 0 0 12px rgba(0, 171, 86, 0.16), inset 0 0 10px rgba(0, 171, 86, 0.08);
+  }
+}
+
+/* soft brand glow so the handset reads as lit, not pasted on */
+.page-landing .ind-stage::after {
   content: "";
   position: absolute;
-  width: 78%;
+  left: 50%;
+  top: 50%;
+  width: min(380px, 78%);
   aspect-ratio: 1;
+  transform: translate(-50%, -50%);
   border-radius: 50%;
-  background: radial-gradient(circle, rgba(0, 171, 86, 0.16) 0%, transparent 68%);
+  background: radial-gradient(circle closest-side, rgba(0, 171, 86, 0.10) 0%, rgba(0, 171, 86, 0.03) 52%, transparent 74%);
   pointer-events: none;
+  z-index: -1;
+}
+
+/* keep the handset above the rings, floating on a softer shadow. the first
+   ring is the polished frame edge of a real handset, not a drop shadow */
+.page-landing .ind-phone {
+  position: relative;
+  z-index: 1;
+  box-shadow:
+    0 0 0 1.5px #3A3A3C,
+    0 2px 6px rgba(24, 24, 24, 0.06),
+    0 26px 56px -20px rgba(24, 24, 24, 0.30),
+    0 44px 80px -46px rgba(0, 171, 86, 0.28) !important;
+}
+
+/* dynamic island, centred in the status bar row */
+.page-landing .ind-island {
+  position: absolute;
+  left: 50%;
+  top: 7px;
+  transform: translateX(-50%);
+  width: 84px;
+  height: 25px;
+  border-radius: 999px;
+  background: #0B0B0C;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 9px;
+  pointer-events: none;
+}
+
+.page-landing .ind-island-cam {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #1F2933;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.10);
+}
+
+/* the time and the icons have to clear the island on the narrowest phones */
+.page-landing .ind-statusbar>span:first-child {
+  min-width: 44px;
 }
 
 /* ── What our clients say — speech bubbles with the author below ── */
@@ -1659,12 +1759,30 @@ summary::-webkit-details-marker {
 }
 
 @media (max-width:900px) {
+  /* one column, and the phone sits between the two halves of the copy rather
+     than after all of it — otherwise the handset is 600px below the industry
+     you just picked, with the numbers and the link stranded below that. */
   .page-landing .ind-grid {
     grid-template-columns: 1fr;
+    grid-template-areas:
+      "copy"
+      "stage"
+      "rest";
+    grid-template-rows: auto auto auto;
+    row-gap: 8px;
   }
 
   .page-landing .ind-stage {
     padding: clamp(20px, 4vw, 32px);
+  }
+
+  /* keep the rings inside the viewport once the column goes full-width */
+  .page-landing .ind-stage::before {
+    width: min(640px, 100%);
+  }
+
+  .page-landing .ind-stage::after {
+    width: min(340px, 70%);
   }
 
   .page-landing .ind-phone {
@@ -1674,8 +1792,26 @@ summary::-webkit-details-marker {
     height: 610px !important;
   }
 
-  .page-landing .ind-copy {
+  /* the frame gets slimmer with the handset so the screen keeps its room */
+  .page-landing .ind-island {
+    width: 76px;
+    height: 23px;
+  }
+
+  .page-landing .ind-copy,
+  .page-landing .ind-copy-rest {
     width: 100%;
+  }
+
+  /* full-width column: the numbers and the link read as centred blocks under
+     the handset rather than as a left rail with nothing to its right */
+  .page-landing .ind-metrics {
+    justify-items: center;
+    text-align: center;
+  }
+
+  .page-landing .ind-cta {
+    text-align: center;
   }
 }
 
@@ -2232,6 +2368,52 @@ summary::-webkit-details-marker {
   }
 }
 
+/* the one-line brief under the tab row — a tinted pill that takes its colour
+   from the selected tab, so the highlight moves with the row */
+.page-landing .plat-blurb {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: fit-content;
+  max-width: 58em;
+  margin: 0 auto clamp(26px, 3.2vw, 38px);
+  padding: 12px clamp(18px, 2vw, 24px);
+  border: 1px solid color-mix(in srgb, var(--plat-tint) 32%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--plat-tint) 9%, var(--color-bg));
+  font-size: var(--fs-body);
+  font-weight: 500;
+  line-height: 1.5;
+  color: var(--color-text);
+  text-align: center;
+  text-wrap: pretty;
+  animation: rise .45s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+.page-landing .plat-blurb-dot {
+  flex: none;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--plat-tint);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--plat-tint) 18%, transparent);
+}
+
+@media (max-width:768px) {
+
+  /* wrapped over two or three lines a pill reads badly — square it off */
+  .page-landing .plat-blurb {
+    align-items: flex-start;
+    border-radius: 14px;
+    text-align: left;
+  }
+
+  .page-landing .plat-blurb-dot {
+    margin-top: 7px;
+  }
+}
+
 .page-landing .plat-panel {
   animation: rise .45s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
@@ -2466,6 +2648,9 @@ summary::-webkit-details-marker {
   background: linear-gradient(90deg, #00874A 0%, var(--brand) 45%, #4FE39B 100%);
   box-shadow: 0 0 12px rgba(79, 227, 155, 0.55);
   width: 0%;
+}
+
+.page-landing .daily-showcase-wrap[data-playing] .daily-progress-fill {
   animation: dailyProgressTimer 6s linear infinite;
 }
 
@@ -2482,6 +2667,215 @@ summary::-webkit-details-marker {
   padding: clamp(24px, 3vw, 36px);
   overflow: hidden;
   animation: showcaseFadeIn 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ── Phone layout: one heading and its example at a time ────────────────────
+   Below 768px the rail/showcase split stops working: the rail collapses to
+   full width and only the auto-playing item has an example. Under that width
+   .daily-grid is dropped for .daily-stack — each of the six headings carries
+   its own showcase, laid out as a snap carousel so exactly one pair is in
+   view and a swipe brings the next one in. .carousel-dots says where you are,
+   and is shared with the platform carousel below. */
+.page-landing .daily-stack,
+.page-landing .plat-stack,
+.page-landing .carousel-dots {
+  display: none;
+}
+
+@media (max-width: 767px) {
+  .page-landing .daily-grid {
+    display: none;
+  }
+
+  .page-landing .daily-stack {
+    display: flex;
+    /* the gap keeps the neighbouring slide — and its shadow — fully out of
+       view, since only the active one should ever be on screen */
+    gap: 28px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    /* room for the showcase shadow, which would otherwise be clipped */
+    padding: 4px 0 10px;
+  }
+
+  .page-landing .daily-stack::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* full width: one pair on screen at a time, nothing peeking beside it */
+  .page-landing .daily-stack-item {
+    flex: 0 0 100%;
+    min-width: 0;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .page-landing .daily-stack-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  /* no selected state in the carousel, so every number reads as the live one */
+  .page-landing .daily-stack-head .daily-nav-num {
+    color: var(--color-bg);
+    background: linear-gradient(135deg, var(--brand), var(--color-accent-600));
+    border-color: transparent;
+    box-shadow: 0 0 0 4px rgba(0, 171, 86, 0.15), 0 6px 14px -6px rgba(0, 143, 72, 0.5);
+  }
+
+  .page-landing .daily-stack-title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-card-title);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    line-height: 1.3;
+    margin: 0;
+    min-width: 0;
+  }
+
+  .page-landing .daily-stack-bullets {
+    padding-left: 44px;
+  }
+
+  /* the example is sized by its content here — no 640px floor, and no
+     auto-play bar to leave room for */
+  .page-landing .daily-stack .daily-stack-showcase,
+  .page-landing .daily-stack .daily-stack-showcase .daily-showcase {
+    height: auto;
+    min-height: 0;
+    max-height: none;
+  }
+
+  /* every slide exists at once, so the per-panel fade would fire off-screen */
+  .page-landing .daily-stack .daily-stack-showcase .daily-showcase {
+    animation: none;
+  }
+
+  /* the showcase is the tall part: let it take the slack so the six slides
+     end up the same height and the dots do not jump as you swipe */
+  .page-landing .daily-stack .daily-stack-showcase {
+    flex: 1;
+  }
+
+  .page-landing .carousel-dots {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 9px;
+    margin-top: 22px;
+  }
+
+  .page-landing .carousel-dot {
+    width: 8px;
+    height: 8px;
+    padding: 0;
+    border: none;
+    border-radius: 50%;
+    background: #D3DBD7;
+    cursor: pointer;
+    transition: width .28s cubic-bezier(0.16, 1, 0.3, 1), background .28s ease;
+  }
+
+  .page-landing .carousel-dot.is-active {
+    width: 24px;
+    border-radius: 999px;
+    background: var(--brand);
+  }
+}
+
+/* ── Phone layout for "Everything in one place" ─────────────────────────────
+   The five-up tab grid has no honest phone form: at 768px it became a stacked
+   list of five full-width buttons above the screenshot, so the picker filled
+   the screen and the thing being picked was pushed off it. Below 768px the
+   .plat-card is dropped for .plat-stack — one feature per slide, carrying its
+   own name, line of copy and screenshot — scrolled with the shared dots. */
+@media (max-width: 767px) {
+  .page-landing .plat-card {
+    display: none;
+  }
+
+  .page-landing .plat-stack {
+    display: flex;
+    /* the gap keeps the neighbouring slide out of view entirely */
+    gap: 28px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    scrollbar-width: none;
+    /* room for the screenshot's shadow, which would otherwise be clipped */
+    padding: 4px 0 12px;
+  }
+
+  .page-landing .plat-stack::-webkit-scrollbar {
+    display: none;
+  }
+
+  /* each slide is its own white card, the way .plat-card frames the whole
+     thing on desktop — without it the slides sit bare on the section’s grey */
+  .page-landing .plat-slide {
+    flex: 0 0 100%;
+    min-width: 0;
+    scroll-snap-align: start;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    background: var(--color-bg);
+    border: 1px solid #EAEDEB;
+    border-radius: 20px;
+    padding: 18px 16px;
+    box-shadow: 0 1px 2px rgba(24, 24, 24, 0.04);
+  }
+
+  .page-landing .plat-slide-head {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .page-landing .plat-slide-ico {
+    width: 26px;
+    height: 26px;
+    flex: none;
+    display: block;
+  }
+
+  .page-landing .plat-slide-title {
+    font-family: var(--font-heading);
+    font-size: var(--fs-card-title);
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    color: var(--color-text);
+    line-height: 1.25;
+    margin: 0;
+    min-width: 0;
+  }
+
+  .page-landing .plat-slide-blurb {
+    font-size: var(--fs-body-sm);
+    line-height: 1.55;
+    color: var(--color-text-muted);
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  /* the slides all exist at once, so the per-panel animation would fire
+     off-screen; and the shot carries the slide height on its own. No drop
+     shadow either — inside the white card it only muddied the bottom edge. */
+  .page-landing .plat-stack .plat-shot {
+    animation: none;
+    margin-top: auto;
+    box-shadow: none;
+  }
 }
 
 .page-landing .showcase-bg-gradient {
@@ -3507,6 +3901,67 @@ summary::-webkit-details-marker {
   }
 }
 
+
+/* ── About: phone pass ──────────────────────────────────────────────────────
+   What the section layouts above do not cover on a narrow screen. Everything
+   here is a stacking or breathing-room fix; nothing changes the desktop. */
+
+/* the middle column of "Why Businesses Choose Converse360" is the photo. In
+   one column it landed between cards 2 and 3, splitting the four cards into
+   two pairs; send it to the end so the cards read as one set. */
+@media (max-width: 991px) {
+  .page-about .why-choose-col.why-choose-middle {
+    order: 1;
+  }
+
+  .page-about .why-choose-card {
+    border-radius: 18px;
+  }
+}
+
+@media (max-width: 620px) {
+
+  /* the roots panel and its stat tiles: the outer card already pads, so the
+     tiles only need enough of their own not to crowd the number */
+  .page-about .ab-roots-grid>div:last-child {
+    padding: 18px !important;
+  }
+
+  .page-about .ab-roots-grid>div:last-child>div:last-child {
+    gap: 12px !important;
+  }
+
+  /* the accent rule beside the agency copy eats width it cannot spare */
+  .page-about .ab-roots-grid [style*="border-left"] {
+    padding-left: 14px !important;
+  }
+
+  .page-about .approach-image-box,
+  .page-about .why-choose-image-container {
+    border-radius: 18px;
+  }
+
+  /* a 380px-tall photo is most of a phone screen for one decorative image */
+  .page-about .why-choose-image-container {
+    min-height: 220px !important;
+    max-height: 300px !important;
+  }
+}
+
+/* the CTA banner is a centred column already — the buttons just need to stop
+   being two half-width pills squeezed side by side */
+@media (max-width: 480px) {
+  .page-about .abh-title {
+    letter-spacing: -0.03em;
+  }
+
+  .page-about section:last-of-type .btn-fx {
+    flex: 1 1 100%;
+    text-align: center;
+    justify-content: center;
+  }
+}
+
 /* ── Mobile refinements ───────────────────────────────────────── */
 
 /* stop iOS inflating text when the phone is turned to landscape */
@@ -3681,6 +4136,120 @@ body {
   .page-about .ab-roots-grid {
     grid-template-columns: 1fr !important;
     gap: 36px !important;
+  }
+}
+
+
+/* ── About hero ─────────────────────────────────────────────────────────────
+   Copy on the left, a WhatsApp conversation floating on a soft green blob on
+   the right. The whole right-hand composition is sized in em off .abh-art's
+   own font-size, so one clamp() scales the bubbles, the badge and the spacing
+   together instead of each piece needing its own breakpoint. */
+.page-about .abh {
+  position: relative;
+  overflow: hidden;
+  background: var(--color-bg);
+}
+
+.page-about .abh-inner {
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(36px, 5vw, 68px) clamp(20px, 4vw, 32px) clamp(44px, 6vw, 80px);
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+  gap: clamp(28px, 4vw, 56px);
+  align-items: center;
+}
+
+.page-about .abh-title {
+  font-size: var(--fs-hero);
+  font-weight: var(--fw-hero);
+  letter-spacing: -0.04em;
+  line-height: 1.06;
+  color: var(--color-text);
+  margin: 0 0 22px;
+  text-wrap: balance;
+}
+
+.page-about .abh-title span {
+  color: var(--brand);
+}
+
+/* --fs-lede / 1.65, the same as every other hero and lede on the site */
+.page-about .abh-lede {
+  font-size: var(--fs-lede);
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  max-width: 32em;
+  margin: 0 0 16px;
+  text-wrap: pretty;
+}
+
+.page-about .abh-lede strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+.page-about .abh-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 28px;
+}
+
+/* the pill itself is styled inline, the way every other CTA on the site is;
+   this only lines the label up with its icon */
+.page-about .abh-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+/* ── the art ──
+   One flat PNG. It sizes to its own column and centres against the copy: the
+   118%-wide, scale(1.18) bleed it carried before was anchored bottom-right, so
+   the top of the artwork was cut off by this section's overflow and its lower
+   edge showed as a seam. */
+.page-about .abh-art {
+  position: relative;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.page-about .abh-art img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: 100%;
+}
+
+/* stacked: the art is the full width of the column, so cap it */
+@media (max-width: 900px) {
+  .page-about .abh-inner {
+    grid-template-columns: 1fr;
+    gap: clamp(24px, 5vw, 40px);
+  }
+
+  .page-about .abh-lede {
+    max-width: none;
+  }
+
+  .page-about .abh-art {
+    max-width: 560px;
+    width: 100%;
+    margin: 0 auto;
+  }
+}
+
+@media (max-width: 520px) {
+  .page-about .abh-btn {
+    flex: 1 1 100%;
+    justify-content: center;
   }
 }
 
@@ -3941,102 +4510,319 @@ body {
   flex: none;
 }
 
-/* What We Do Section Layout */
-.page-about .what-we-do-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: clamp(24px, 3.5vw, 36px);
-  align-items: stretch;
-}
 
-@media (min-width: 768px) and (max-width: 991px) {
-  .page-about .what-we-do-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-
-  .page-about .what-we-do-card.col-span-last-tablet {
-    grid-column: span 2;
-  }
-}
-
-@media (min-width: 992px) {
-  .page-about .what-we-do-grid {
-    grid-template-columns: repeat(6, 1fr);
-  }
-
-  .page-about .what-we-do-card.col-span-3 {
-    grid-column: span 3;
-  }
-
-  .page-about .what-we-do-card.col-span-2 {
-    grid-column: span 2;
-  }
-}
-
-.page-about .what-we-do-card {
+/* ── Agency-Made, Product-Driven ────────────────────────────────────────────
+   A photo composition on the left — one tall shot, a smaller one overlapping
+   its lower-left corner in a white frame, and a round stat badge across the
+   seam — beside the story and three supporting rows on the right. The two
+   inner pieces are positioned in percentages of the composition, so the whole
+   thing scales with the column instead of needing a breakpoint each. */
+.page-about .ab-agency {
   background: var(--color-bg);
-  border: 1px solid var(--color-divider);
-  border-radius: 24px;
-  padding: clamp(26px, 3vw, 38px);
-  box-shadow: 0 4px 20px rgba(24, 24, 24, 0.02);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+}
+
+.page-about .ab-agency-inner {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: clamp(40px, 5vw, 72px) clamp(20px, 4vw, 32px) clamp(50px, 7vw, 90px);
+  display: grid;
+  grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+  gap: clamp(32px, 5vw, 72px);
+  align-items: start;
+}
+
+/* ── the composition ── */
+.page-about .ab-agency-art {
+  position: relative;
+  /* the inset hangs below the main shot, and the badge past its left edge */
+  padding: 0 0 12% 6%;
+}
+
+.page-about .ab-agency-shot {
+  margin: 0;
+  overflow: hidden;
+  background: var(--color-surface);
+}
+
+.page-about .ab-agency-shot img {
+  display: block;
+  width: 100%;
   height: 100%;
+  object-fit: cover;
 }
 
-.page-about .what-we-do-card:hover {
-  transform: translateY(-5px);
-  box-shadow: 0 20px 38px -10px rgba(0, 171, 86, 0.1);
-  border-color: rgba(0, 171, 86, 0.35);
+.page-about .ab-agency-main {
+  border-radius: clamp(18px, 2.4vw, 30px);
+  aspect-ratio: 4 / 4.15;
+  box-shadow: 0 24px 54px -24px rgba(7, 19, 16, 0.32);
 }
 
-.page-about .what-we-do-icon-box {
-  width: 52px;
-  height: 52px;
-  background: rgba(0, 171, 86, 0.08);
-  color: var(--color-accent-600);
-  border-radius: 14px;
-  display: flex;
+.page-about .ab-agency-inset {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 52%;
+  aspect-ratio: 4 / 3.4;
+  border-radius: clamp(14px, 1.8vw, 24px);
+  border: clamp(5px, 0.7vw, 9px) solid var(--color-bg);
+  box-shadow: 0 18px 40px -18px rgba(7, 19, 16, 0.34);
+}
+
+/* the round figure sits across the seam between the two shots */
+.page-about .ab-agency-badge {
+  position: absolute;
+  /* straddling the seam: past the inset’s right edge, over the tall shot */
+  left: 36%;
+  bottom: 7%;
+  width: clamp(96px, 11vw, 132px);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: linear-gradient(145deg, var(--brand), var(--color-accent-600));
+  color: var(--color-bg);
+  display: grid;
+  place-content: center;
+  text-align: center;
+  padding: 6px;
+  box-shadow: 0 14px 30px -12px rgba(0, 143, 72, 0.55);
+}
+
+.page-about .ab-agency-badge strong {
+  font-family: var(--font-heading);
+  font-size: clamp(21px, 2.3vw, 28px);
+  font-weight: 800;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  display: block;
+}
+
+.page-about .ab-agency-badge span {
+  font-size: clamp(10.5px, 1vw, 12.5px);
+  font-weight: 600;
+  line-height: 1.25;
+  display: block;
+  margin-top: 5px;
+  opacity: 0.92;
+}
+
+/* ── the story ── */
+.page-about .ab-agency-eyebrow {
+  display: inline-flex;
   align-items: center;
-  justify-content: center;
-  margin-bottom: 22px;
-  box-shadow: 0 4px 12px rgba(0, 171, 86, 0.06);
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.page-about .what-we-do-card:hover .what-we-do-icon-box {
-  transform: scale(1.08) rotate(-3deg);
-}
-
-.page-about .what-we-do-tag {
+  gap: 9px;
   font-family: var(--font-heading);
   font-size: var(--fs-eyebrow);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--color-text-faint);
-  margin-bottom: 6px;
+  color: var(--brand);
+  margin-bottom: 14px;
+}
+
+.page-about .ab-agency-title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-section);
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 1.15;
+  color: var(--color-text);
+  margin: 0 0 18px;
+  text-wrap: balance;
+}
+
+.page-about .ab-agency-text {
+  font-size: var(--fs-lede);
+  line-height: 1.65;
+  color: var(--color-text-muted);
+  margin: 0;
+  max-width: 34em;
+  text-wrap: pretty;
+}
+
+.page-about .ab-agency-text strong {
+  color: var(--color-text);
+  font-weight: 700;
+}
+
+.page-about .ab-agency-list {
+  list-style: none;
+  margin: clamp(26px, 3vw, 36px) 0 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: clamp(18px, 2.2vw, 26px);
+}
+
+.page-about .ab-agency-item {
+  display: flex;
+  align-items: flex-start;
+  gap: clamp(14px, 1.6vw, 20px);
+}
+
+.page-about .ab-agency-ico {
+  flex: none;
+  width: clamp(44px, 4vw, 52px);
+  height: clamp(44px, 4vw, 52px);
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background: rgba(0, 171, 86, 0.09);
+  color: var(--color-accent-600);
+}
+
+/* one filled disc, then two tints — the row order carries the emphasis */
+.page-about .ab-agency-ico.is-solid {
+  background: linear-gradient(145deg, var(--brand), var(--color-accent-600));
+  color: var(--color-bg);
+  box-shadow: 0 10px 22px -10px rgba(0, 143, 72, 0.5);
+}
+
+.page-about .ab-agency-ico svg {
+  width: 45%;
+  height: 45%;
+  display: block;
+}
+
+.page-about .ab-agency-item-copy {
+  min-width: 0;
+}
+
+.page-about .ab-agency-item-title {
+  font-family: var(--font-heading);
+  font-size: var(--fs-card-title);
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.25;
+  color: var(--color-text);
+  margin: 0 0 6px;
+}
+
+.page-about .ab-agency-item-text {
+  font-size: var(--fs-body);
+  line-height: 1.6;
+  color: var(--color-text-muted);
+  margin: 0;
+  max-width: 40em;
+}
+
+/* stacked: the story leads and the composition follows it, capped so it
+   cannot dominate the screen. Source order puts the art first (it is the left
+   column on a desktop), so the order properties swap them here. */
+@media (max-width: 900px) {
+  .page-about .ab-agency-inner {
+    grid-template-columns: 1fr;
+    gap: clamp(32px, 6vw, 48px);
+  }
+
+  .page-about .ab-agency-copy {
+    order: 0;
+  }
+
+  .page-about .ab-agency-art {
+    order: 1;
+    width: 100%;
+    max-width: 460px;
+    margin: 0 auto;
+  }
+
+  .page-about .ab-agency-text {
+    max-width: none;
+  }
+}
+
+/* What We Do — five equal cards in one row, icon over centred copy */
+.page-about .what-we-do-grid {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: clamp(14px, 1.6vw, 22px);
+  align-items: stretch;
+}
+
+/* two rows of cards reads better than five cramped columns on a tablet, and
+   the last card takes the spare cell rather than sitting half-width */
+@media (max-width: 1100px) {
+  .page-about .what-we-do-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 760px) {
+  .page-about .what-we-do-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 460px) {
+  .page-about .what-we-do-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* --wwd-ink / --wwd-tint come off the card element itself, one hue per card */
+.page-about .what-we-do-card {
+  background: var(--wwd-tint, var(--color-bg));
+  border: 1px solid color-mix(in srgb, var(--wwd-ink, var(--brand)) 20%, transparent);
+  border-radius: 12px;
+  padding: clamp(22px, 2.2vw, 30px) clamp(16px, 1.6vw, 22px);
+  box-shadow: 0 4px 20px rgba(24, 24, 24, 0.02);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  height: 100%;
+}
+
+.page-about .what-we-do-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 20px 38px -12px color-mix(in srgb, var(--wwd-ink, var(--brand)) 28%, transparent);
+  border-color: color-mix(in srgb, var(--wwd-ink, var(--brand)) 42%, transparent);
+}
+
+/* the glyph carries the card — no tinted box behind it. It draws in
+   currentColor, so the card hue is the only thing that sets it. */
+.page-about .what-we-do-icon {
+  display: block;
+  color: var(--wwd-ink, var(--brand));
+  margin-bottom: 18px;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.page-about .what-we-do-icon svg {
+  display: block;
+  width: clamp(38px, 3.4vw, 46px);
+  height: clamp(38px, 3.4vw, 46px);
+}
+
+.page-about .what-we-do-card:hover .what-we-do-icon {
+  transform: scale(1.08);
 }
 
 .page-about .what-we-do-title {
   font-family: var(--font-heading);
-  font-size: var(--fs-card-title);
+  font-size: clamp(16px, 1.35vw, 18.5px);
   font-weight: 700;
   color: var(--color-text);
-  margin: 0 0 12px 0;
-  letter-spacing: -0.025em;
-  line-height: 1.25;
+  margin: 0 0 12px;
+  letter-spacing: -0.02em;
+  line-height: 1.3;
+  text-wrap: balance;
 }
 
 .page-about .what-we-do-desc {
   font-family: var(--font-body);
-  font-size: var(--fs-body);
-  line-height: 1.65;
+  font-size: clamp(13.5px, 1.05vw, 15px);
+  line-height: 1.6;
   color: var(--color-text-muted);
-  margin: 0 0 20px 0;
-  flex-grow: 1;
+  margin: 0;
+  text-wrap: pretty;
+}
+
+@media (prefers-reduced-motion: reduce) {
+
+  .page-about .what-we-do-card,
+  .page-about .what-we-do-icon {
+    transition: none;
+  }
 }
 
 /* Why Choose Converse360 Grid Layout */
@@ -7591,4 +8377,19 @@ body {
     padding-left: 0 !important;
     padding-top: 22px;
   }
+}
+
+/* ---------------------------------------------------------------------------
+   15. Global FAQ details & summary hover/active states.
+   --------------------------------------------------------------------------- */
+details summary {
+  transition: color 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+details summary:hover {
+  color: var(--brand) !important;
+}
+
+details[open] summary {
+  color: var(--brand) !important;
 }

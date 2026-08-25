@@ -1,8 +1,10 @@
 'use client';
 
 import { Fragment, useCallback, useEffect, useRef, useState } from 'react';
+import type { CSSProperties } from 'react';
 import Link from 'next/link';
 import Hx from '@/components/Hx';
+import DailyShowcase from '@/components/landing/DailyShowcase';
 import { BRAND, INK, MUTED, WHITE, WHATSAPP, INSTAGRAM } from '@/lib/tokens';
 import {
   DATA,
@@ -13,6 +15,142 @@ import {
   HERO_PHRASES,
 } from '@/lib/landing-data';
 import { INDUSTRIES } from '@/lib/industries-data';
+
+/**
+ * A phone snap-carousel: the scroller ref, which slide is in view, a way to
+ * jump to one, and optional auto-advance.
+ *
+ * `index` is read back from scrollLeft rather than driving the scroll, so a
+ * native swipe stays the source of truth and the dots only follow it. The step
+ * is measured from the first slide (width + gap) so it stays right whatever
+ * width the stylesheet gives a slide.
+ *
+ * Auto-advance follows the rule the desktop platform strip already uses: it
+ * only runs while the carousel is on screen, and the first touch of it — a
+ * swipe or a dot — holds it for good, so nothing moves under the visitor who
+ * has taken over. Scrolling the section out of view releases that hold, so
+ * coming back to it plays on from the slide they left it on.
+ *
+ * Telling our own smooth scroll apart from a swipe is what `autoScroll` is for:
+ * a programmatic scroll emits the same scroll events a finger does, so the flag
+ * is raised before the call and lowered only once the events stop arriving.
+ */
+function useCarousel(count: number, autoMs?: number) {
+  const ref = useRef<HTMLDivElement | null>(null);
+  const [index, setIndex] = useState(0);
+  const [inView, setInView] = useState(false);
+  const [held, setHeld] = useState(false);
+  const autoScroll = useRef(false);
+  const settle = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  const step = (el: HTMLDivElement) => {
+    const first = el.firstElementChild as HTMLElement | null;
+    if (!first) return el.clientWidth;
+    const gap = parseFloat(getComputedStyle(el).columnGap || '0') || 0;
+    return first.offsetWidth + gap;
+  };
+
+  const scrollToSlide = (k: number, auto: boolean) => {
+    const el = ref.current;
+    if (!el) return;
+    if (auto) autoScroll.current = true;
+    el.scrollTo({ left: step(el) * k, behavior: 'smooth' });
+  };
+
+  const onScroll = () => {
+    const el = ref.current;
+    if (!el) return;
+    const k = Math.round(el.scrollLeft / step(el));
+    setIndex(Math.max(0, Math.min(count - 1, k)));
+
+    if (autoScroll.current) {
+      // still our own scroll: keep the flag up until the events stop
+      if (settle.current) clearTimeout(settle.current);
+      settle.current = setTimeout(() => {
+        autoScroll.current = false;
+      }, 160);
+      return;
+    }
+    setHeld(true);
+  };
+
+  const go = (k: number) => {
+    setHeld(true);
+    scrollToSlide(k, false);
+  };
+
+  // only auto-advance while the carousel is actually on screen
+  useEffect(() => {
+    const el = ref.current;
+    if (!autoMs || !el) return;
+    if (!window.IntersectionObserver) {
+      setInView(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setInView(entry.isIntersecting);
+          if (!entry.isIntersecting) setHeld(false);
+        });
+      },
+      { threshold: 0.35 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [autoMs]);
+
+  useEffect(() => {
+    if (!autoMs || !inView || held) return;
+    // the rest of the page drops its motion under prefers-reduced-motion; a
+    // carousel that scrolls itself has to honour that too
+    if (window.matchMedia?.('(prefers-reduced-motion: reduce)').matches) return;
+    const t = setInterval(() => {
+      const el = ref.current;
+      if (!el) return;
+      scrollToSlide((Math.round(el.scrollLeft / step(el)) + 1) % count, true);
+    }, autoMs);
+    return () => clearInterval(t);
+  }, [autoMs, inView, held, count]);
+
+  return { ref, index, onScroll, go };
+}
+
+/** The screenshot for each platform tab, index-aligned with FEATURE_TABS.
+ *
+ * These were five near-identical inline <figure> blocks, one per `feature === n`
+ * guard. Indexed here so both layouts can reach them: the desktop card shows
+ * the active tab's shot, the phone carousel shows every one.
+ */
+const PLAT_SHOTS: { src: string; alt: string }[] = [
+  { src: '/assets/unified_inbox_showcase.jpg', alt: 'Converse360 unified inbox — WhatsApp, Instagram and website chats on one screen, with customer details and deals beside the conversation' },
+  { src: '/assets/chatbot_builder_showcase.jpg', alt: 'No-code chatbot builder — steps dragged onto a canvas: trigger, question, send catalog, book a call, assign to a person' },
+  { src: '/assets/whatsapp_catalog_showcase.jpg', alt: 'WhatsApp catalog and store — products, prices and pay in chat, without leaving WhatsApp' },
+  { src: '/assets/whatsapp_store_showcase.jpg', alt: 'WhatsApp Commerce — seamless product checkout, catalog browsing, and automated transactions directly inside WhatsApp' },
+  { src: '/assets/converse_agent_showcase.jpg', alt: 'Converse360 Agent — AI agents answering enquiries day and night, and handing a conversation to the team when it matters' },
+];
+
+/** One platform screenshot, framed the way every tab panel frames it. */
+function PlatShot({ index }: { index: number }) {
+  const shot = PLAT_SHOTS[index];
+  return (
+    <figure className="plat-shot" style={{ borderRadius: '16px', overflow: 'hidden' }}>
+      <img src={shot.src} width="1920" height="1080" loading="lazy" decoding="async" alt={shot.alt} />
+    </figure>
+  );
+}
+
+/** One ticked bullet under an everyday-feature heading, in either layout. */
+function DailyBullet({ text }: { text: string }) {
+  return (
+    <div className="daily-nav-bullet">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={BRAND} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M20 6 9 17l-5-5"></path>
+      </svg>
+      <span>{text}</span>
+    </div>
+  );
+}
 
 /**
  * The landing page body.
@@ -114,14 +252,40 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
     setPlatHeld(true);
   }, []);
 
+  const dailyRef = useRef<HTMLElement | null>(null);
+  const [dailyIn, setDailyIn] = useState(false);
+  const [dailyHeld, setDailyHeld] = useState(false);
+  useEffect(() => {
+    const el = dailyRef.current;
+    if (!el) return;
+    if (!window.IntersectionObserver) {
+      setDailyIn(true);
+      return;
+    }
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          setDailyIn(entry.isIntersecting);
+          if (!entry.isIntersecting) setDailyHeld(false);
+        });
+      },
+      { threshold: 0.15 }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+  const dailyPlaying = dailyIn && !dailyHeld;
+
   const [dailyNonce, setDailyNonce] = useState(0);
   useEffect(() => {
+    if (!dailyPlaying) return;
     const t = setInterval(() => setDaily((d) => (d + 1) % DAILY_DATA.length), 6000);
     return () => clearInterval(t);
-  }, [dailyNonce]);
+  }, [dailyNonce, dailyPlaying]);
   const selectDaily = useCallback((k: number) => {
     setDaily(k);
     setDailyNonce((n) => n + 1);
+    setDailyHeld(true);
   }, []);
 
   // The thread reveals one message at a time: the first after 500 ms, the rest
@@ -154,11 +318,13 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
     weight: k === feature ? 700 : 500,
     select: () => selectFeature(k),
   }));
-  const p1 = feature === 0;
-  const p2 = feature === 1;
-  const p3 = feature === 2;
-  const p4 = feature === 3;
-  const p5 = feature === 4;
+  const activeFeature = FEATURE_TABS[feature];
+
+  // The two phone carousels on this page: the platform tabs and the everyday
+  // features. Both replace a desktop picker that does not survive a phone width.
+  // 5000 ms per slide — the same beat the desktop tab strip runs at
+  const platCar = useCarousel(FEATURE_TABS.length, 5000);
+  const dailyCar = useCarousel(DAILY_DATA.length);
 
   const dailyRail = DAILY_DATA.map((d, k) => {
     const on = k === daily;
@@ -175,12 +341,6 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
       select: () => selectDaily(k),
     };
   });
-  const d1 = daily === 0;
-  const d2 = daily === 1;
-  const d3 = daily === 2;
-  const d4 = daily === 3;
-  const d5 = daily === 4;
-  const d6 = daily === 5;
 
   // The testimonial section is static markup in the source: three hard-coded
   // cards, no binding and no click handler. The source's renderVals() still
@@ -423,14 +583,14 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                   {' '}Three apps, three logins, one exhausted team.{' '}
                 </p>
                 <p style={{ fontSize: "var(--fs-body-sm)", lineHeight: "1.6", color: "#64748B", margin: "0" }}>
-                  {' '}Your team jumps between WhatsApp, Instagram and email all day. Context gets lost in the switch, and
+                  {' '}Your team jumps between WhatsApp, Instagram and Web all day. Context gets lost in the switch, and
                   the same customer gets asked the same question twice.{' '}
                 </p>
               </div>
 
               {/* ARTWORK CONTAINER */}
               <div style={{ flex: "1", minHeight: "236px", border: "1px solid var(--color-divider)", borderRadius: "14px", overflow: "hidden" }}>
-                <img src="/assets/problem-scattered-art.png" alt="Scattered Conversations" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
+                <img src="/assets/problem-scattered-art-new.png" alt="Scattered Conversations" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
               </div>
             </div>
 
@@ -455,7 +615,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
               {/* ARTWORK CONTAINER */}
               <div style={{ flex: "1", minHeight: "236px", border: "1px solid var(--color-divider)", borderRadius: "14px", overflow: "hidden" }}>
-                <img src="/assets/problem-slow-art1.png" alt="Slow Replies" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
+                <img src="/assets/problem-slow-art-new.jpg" alt="Slow Replies" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
               </div>
             </div>
 
@@ -480,7 +640,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
               {/* ARTWORK CONTAINER */}
               <div style={{ flex: "1", minHeight: "236px", border: "1px solid var(--color-divider)", borderRadius: "14px", overflow: "hidden" }}>
-                <img src="/assets/problem-followups-art.png" alt="Forgotten Follow-ups" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
+                <img src="/assets/problem-followups-art-new.png" alt="Forgotten Follow-ups" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
               </div>
             </div>
 
@@ -505,7 +665,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
               {/* ARTWORK CONTAINER */}
               <div style={{ flex: "1", minHeight: "236px", border: "1px solid var(--color-divider)", borderRadius: "14px", overflow: "hidden" }}>
-                <img src="/assets/problem-adspend-art.png" alt="Wasted Ad Spend" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
+                <img src="/assets/problem-adspend-art-new.jpg" alt="Wasted Ad Spend" style={{ width: "100%", height: "100%", objectFit: "cover", objectPosition: "center", display: "block" }} />
               </div>
             </div>
 
@@ -696,9 +856,9 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
       <section id="platform" style={{ backgroundColor: "var(--color-surface)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(56px,8vw,84px) clamp(20px,4vw,32px)", backgroundColor: "var(--color-surface)" }}>
           <h2 data-reveal style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "clamp(28px,3.4vw,40px)", textAlign: "center" }}>
-            {' '}Everything in one place</h2>
+            {' '}One Platform. Endless Possibilities.</h2>
           <div className="plat-card" data-reveal data-playing={platPlaying ? '' : undefined} ref={platRef}>
-            <div className="plat-tabbar" style={{ marginBottom: "clamp(32px,4vw,48px)" }}>
+            <div className="plat-tabbar" style={{ marginBottom: "clamp(18px,2.2vw,24px)" }}>
               <div role="tablist" aria-label="Platform features" className="plat-tabs">
                 {features.map((ft, i) => (<Fragment key={i}>
                   <button type="button" role="tab" className="plat-tab" aria-selected={ft.selected} onClick={ft.select} style={{ font: "inherit", cursor: "pointer", textAlign: "center", color: ft.fg, fontSize: "clamp(15.5px, 1.25vw, 17.5px)", fontWeight: ft.weight }}>
@@ -711,53 +871,85 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                 </Fragment>))}
               </div>
             </div>
-            {p1 && (<>
-              <div className="plat-panel" style={{ display: "flex", flexDirection: "column" }}>
-                <figure className="plat-shot" style={{ borderRadius: "16px", overflow: "hidden" }}>
-                  <img src="/assets/unified_inbox_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="Converse360 unified inbox — WhatsApp, Instagram and website chats on one screen, with customer details and deals beside the conversation" />
-                </figure>
+
+            {/* One block saying what the selected tab actually is, styled like the first reference image.
+                Keyed on `feature` so the rise animation replays each time the row moves on. */}
+            <div
+              key={`plat-copy-${feature}`}
+              style={{
+                textAlign: "left",
+                margin: "0 0 clamp(20px, 3.2vw, 28px)",
+                padding: "0 6px",
+                animation: "rise .45s cubic-bezier(0.16, 1, 0.3, 1) both"
+              }}
+            >
+              <h3 style={{
+                fontSize: "clamp(26px, 3vw, 32px)",
+                fontWeight: "500",
+                letterSpacing: "-0.03em",
+                color: "var(--color-text)",
+                marginBottom: "10px",
+                lineHeight: "1.2"
+              }}>
+                {activeFeature.name}
+              </h3>
+              <p style={{
+                fontSize: "clamp(15px, 1.6vw, 17.5px)",
+                lineHeight: "1.6",
+                color: "var(--color-text-muted)",
+                margin: "0",
+                textWrap: "pretty"
+              }}>
+                {activeFeature.blurb}
+              </p>
+            </div>
+
+            {/* keyed on the tab so the panel's rise animation replays on each change */}
+            <div key={`plat-panel-${feature}`} className="plat-panel" style={{ display: "flex", flexDirection: "column" }}>
+              <PlatShot index={feature} />
+            </div>
+          </div>
+
+          {/* Phone: the five-up tab row cannot hold at this width, so the tabs
+              become a snap carousel — one feature, its line of copy and its
+              screenshot per slide — with the dots below as the position and the
+              way to jump between them. */}
+          <div className="plat-stack" data-reveal ref={platCar.ref} onScroll={platCar.onScroll}>
+            {features.map((ft, i) => (<Fragment key={i}>
+              <div className="plat-slide">
+                <div className="plat-slide-head">
+                  <img className="plat-slide-ico" src={ft.iconFile} alt="" aria-hidden="true" style={{ filter: FEATURE_TABS[i].filter }} />
+                  <h3 className="plat-slide-title">{ft.name}</h3>
+                </div>
+                <p className="plat-slide-blurb">{FEATURE_TABS[i].blurb}</p>
+                <PlatShot index={i} />
               </div>
-            </>)}
-            {p2 && (<>
-              <div className="plat-panel" style={{ display: "flex", flexDirection: "column" }}>
-                <figure className="plat-shot" style={{ borderRadius: "16px", overflow: "hidden" }}>
-                  <img src="/assets/chatbot_builder_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="No-code chatbot builder — steps dragged onto a canvas: trigger, question, send catalog, book a call, assign to a person" />
-                </figure>
-              </div>
-            </>)}
-            {p3 && (<>
-              <div className="plat-panel" style={{ display: "flex", flexDirection: "column" }}>
-                <figure className="plat-shot" style={{ borderRadius: "16px", overflow: "hidden" }}>
-                  <img src="/assets/whatsapp_catalog_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="WhatsApp catalog and store — products, prices and pay in chat, without leaving WhatsApp" />
-                </figure>
-              </div>
-            </>)}
-            {p4 && (<>
-              <div className="plat-panel" style={{ display: "flex", flexDirection: "column" }}>
-                <figure className="plat-shot" style={{ borderRadius: "16px", overflow: "hidden" }}>
-                  <img src="/assets/whatsapp_store_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="WhatsApp Commerce — seamless product checkout, catalog browsing, and automated transactions directly inside WhatsApp" />
-                </figure>
-              </div>
-            </>)}
-            {p5 && (<>
-              <div className="plat-panel" style={{ display: "flex", flexDirection: "column" }}>
-                <figure className="plat-shot" style={{ borderRadius: "16px", overflow: "hidden" }}>
-                  <img src="/assets/converse_agent_showcase.jpg" width="1920" height="1080" loading="lazy" decoding="async" alt="Converse360 Agent — AI agents answering enquiries day and night, and handing a conversation to the team when it matters" />
-                </figure>
-              </div>
-            </>)}
+            </Fragment>))}
+          </div>
+
+          <div className="carousel-dots" role="tablist" aria-label="Platform features">
+            {features.map((ft, i) => (<Fragment key={i}>
+              <button
+                type="button"
+                role="tab"
+                aria-selected={i === platCar.index}
+                aria-label={ft.name}
+                className={`carousel-dot${i === platCar.index ? ' is-active' : ''}`}
+                onClick={() => platCar.go(i)}
+              />
+            </Fragment>))}
           </div>
         </div>
       </section>
 
-      <section id="daily-features" className="daily-section">
+      <section id="daily-features" className="daily-section" ref={dailyRef}>
         {/* Header */}
         <div className="daily-header" data-reveal>
-          <h2 className="daily-title">More of what you’ll use every day</h2>
+          <h2 className="daily-title">More Tools. More Ways to Grow</h2>
           {/* <p className="daily-subtitle">Six things that quietly do the work while you get on with the business.</p> */}
         </div>
 
-        {/* Main 2-Column Split Section */}
+        {/* Desktop / tablet: the rail picks one example, shown alongside it */}
         <div className="daily-grid" data-reveal="stagger">
 
           {/* Left Column: Interactive Vertical Feature Selector (Matches Images 1, 2 & 3) */}
@@ -772,13 +964,8 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                 {item.selected && (<>
                   <div className="daily-nav-body">
                     <div className="daily-nav-bullets">
-                      {item.bullets.map((b, i) => (<Fragment key={i}>
-                        <div className="daily-nav-bullet">
-                          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke={BRAND} strokeWidth="2.6" strokeLinecap="round" strokeLinejoin="round">
-                            <path d="M20 6 9 17l-5-5"></path>
-                          </svg>
-                          <span>{b.text}</span>
-                        </div>
+                      {item.bullets.map((b, j) => (<Fragment key={j}>
+                        <DailyBullet text={b.text} />
                       </Fragment>))}
                     </div>
                   </div>
@@ -788,378 +975,56 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
           </div>
 
           {/* Right Column: Interactive Showcase Container (Matches Image 1, 2, 3) */}
-          <div className="daily-showcase-wrap">
+          <div className="daily-showcase-wrap" data-playing={dailyPlaying ? '' : undefined}>
 
             {/* Top Auto-Play Loading Bar */}
             <div className="daily-progress-bar">
               <div className="daily-progress-fill"></div>
             </div>
 
-            {/* Tab 1 Showcase: Broadcasts */}
-            {d1 && (<>
-              <div className="daily-showcase">
-                <div className="showcase-bg-gradient showcase-bg--green"></div>
-                <div className="showcase-content">
-                  {/* Broadcast Manager Card */}
-                  <div className="sc-card">
-                    <div className="flex-between">
-                      <span className="sc-badge-live">
-                        <span className="sc-dot-pulse"></span> WhatsApp Broadcast Blast{' '}
-                      </span>
-                      <span className="sc-time-ago">Just now</span>
-                    </div>
-                    <h4 className="sc-title">Festive Season Flash Offer ⚡</h4>
-                    <p className="sc-sub">Targeting: <strong>4,820 VIP Contacts</strong></p>
-                    <div className="sc-progress-bar">
-                      <div className="sc-progress-fill" style={{ width: "98.4%" }}></div>
-                    </div>
-                    <div className="sc-stats-row">
-                      <div className="sc-stat">
-                        <span className="sc-stat-val">4,820</span>
-                        <span className="sc-stat-lbl">Sent</span>
-                      </div>
-                      <div className="sc-stat">
-                        <span className="sc-stat-val">4,743</span>
-                        <span className="sc-stat-lbl">Delivered (98.4%)</span>
-                      </div>
-                      <div className="sc-stat">
-                        <span className="sc-stat-val">3,890</span>
-                        <span className="sc-stat-lbl">Read (80.7%)</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* WhatsApp Phone Message Preview */}
-                  <div className="sc-card-phone-preview">
-                    <div className="wa-msg-header">
-                      <div className="wa-avatar">C3</div>
-                      <div>
-                        <span className="wa-name">Converse360 <svg width="13" height="13" viewBox="0 0 24 24" fill={BRAND}>
-                          <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
-                        </svg></span>
-                        <span className="wa-sub">Official Account</span>
-                      </div>
-                    </div>
-                    <div className="wa-bubble">
-                      <div className="wa-banner-img">
-                        <img src="/assets/feat-broadcasts.png" alt="Broadcast preview" />
-                      </div>
-                      <div className="wa-bubble-title">Exclusive Member Discount! 🎁</div>
-                      <div className="wa-bubble-text">Hey Ankit! Get 25% off on all automation plans today. Valid for next
-                        24h.</div>
-                      <button className="wa-btn-cta">Claim Offer Now</button>
-                    </div>
-                  </div>
-
-                  {/* Floating Badge pill */}
-                  <div className="sc-floating-pill">
-                    <span className="sc-pill-icon">✓</span>
-                    <span>Broadcast Delivered to 4,743 Contacts</span>
-                  </div>
-                </div>
-              </div>
-            </>)}
-
-            {/* Tab 2 Showcase: Contacts & Segments */}
-            {d2 && (<>
-              <div className="daily-showcase">
-                <div className="showcase-bg-gradient showcase-bg--blue"></div>
-                <div className="showcase-content">
-                  {/* Smart Segment Card */}
-                  <div className="sc-card">
-                    <div className="flex-between">
-                      <div>
-                        <span className="sc-tag-pill">Smart Segment</span>
-                        <h3 className="sc-card-h3">High-Intent Meta Ad Leads</h3>
-                      </div>
-                      <span className="sc-count-badge">1,420 Contacts</span>
-                    </div>
-
-                    <div className="sc-rules-box">
-                      <span className="sc-rule-chip">Filter: Source = Click to WhatsApp</span>
-                      <span className="sc-rule-chip">Filter: Engaged &lt; 24h</span>
-                      <span className="sc-rule-chip">Tag: Qualified Lead</span>
-                    </div>
-
-                    <div className="sc-contacts-list">
-                      <div className="sc-contact-row">
-                        <div className="sc-avatar av-1">AK</div>
-                        <div className="sc-c-info">
-                          <span className="sc-c-name">Ankit Kumar</span>
-                          <span className="sc-c-detail">+91 98765 43210 • Clicked Meta Ad #4</span>
-                        </div>
-                        <span className="sc-status-pill sc-status--green">Engaged</span>
-                      </div>
-                      <div className="sc-contact-row">
-                        <div className="sc-avatar av-2">MR</div>
-                        <div className="sc-c-info">
-                          <span className="sc-c-name">Michael Royce</span>
-                          <span className="sc-c-detail">+1 97856 43210 • Web Visitor</span>
-                        </div>
-                        <span className="sc-status-pill sc-status--purple">Form Submitted</span>
-                      </div>
-                      <div className="sc-contact-row">
-                        <div className="sc-avatar av-3">SL</div>
-                        <div className="sc-c-info">
-                          <span className="sc-c-name">Sophia Liu</span>
-                          <span className="sc-c-detail">+44 7700 900077 • QR Code Scan</span>
-                        </div>
-                        <span className="sc-status-pill sc-status--blue">Deal Created</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Floating Badge */}
-                  <div className="sc-floating-pill">
-                    <span className="sc-pill-icon">⚡</span>
-                    <span>Auto-syncing active contacts 24/7</span>
-                  </div>
-                </div>
-              </div>
-            </>)}
-
-            {/* Tab 3 Showcase: Ad Attribution (Direct visual match to Image 2!) */}
-            {d3 && (<>
-              <div className="daily-showcase">
-                <div className="showcase-bg-gradient showcase-bg--emerald"></div>
-                <div className="showcase-content attribution-layout">
-
-                  <div className="attr-sources-grid">
-                    {/* Source 1: Meta Ads Card */}
-                    <div className="attr-card">
-                      <div className="attr-card-lbl">Meta Ads</div>
-                      <div className="attr-card-box">
-                        <div className="attr-meta-header">
-                          <div className="attr-meta-icon">
-                            <img src="/assets/meta-mark.png" width="16" height="16" alt="Meta" />
-                          </div>
-                          <div>
-                            <div className="attr-meta-title">Arc Travel</div>
-                            <div className="attr-meta-sub">Sponsored</div>
-                          </div>
-                        </div>
-                        <div className="attr-meta-img">
-                          <img src="/assets/our-approach.jpg" alt="Meta Ad Banner" />
-                        </div>
-                        <div className="attr-wa-btn">
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill={WHITE}>
-                            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.347-.347.52-.52.174-.174.232-.298.347-.497.115-.198.057-.371-.03-.52-.086-.148-.66-1.59-.905-2.174-.234-.556-.47-.48-.646-.487-.174-.007-.373-.008-.572-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
-                          </svg> WhatsApp{' '}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Source 2: QR Code Card */}
-                    <div className="attr-card">
-                      <div className="attr-card-lbl">QR Code</div>
-                      <div className="attr-card-box attr-qr-box">
-                        <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke={INK} strokeWidth="1.8">
-                          <rect x="3" y="3" width="7" height="7" rx="1.5"></rect>
-                          <rect x="14" y="3" width="7" height="7" rx="1.5"></rect>
-                          <rect x="3" y="14" width="7" height="7" rx="1.5"></rect>
-                          <rect x="14" y="14" width="3" height="3"></rect>
-                          <rect x="18" y="18" width="3" height="3"></rect>
-                        </svg>
-                        <span className="attr-qr-sub">Scan &amp; Chat</span>
-                      </div>
-                    </div>
-
-                    {/* Source 3: Links Card */}
-                    <div className="attr-card">
-                      <div className="attr-card-lbl">Links</div>
-                      <div className="attr-card-box attr-link-box">
-                        <div className="attr-link-pill">
-                          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#2563EB" strokeWidth="2.2">
-                            <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path>
-                            <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path>
-                          </svg>
-                          <span>c360.bx05</span>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Connecting Line Graphic (Image 2) */}
-                  <div className="attr-connector-wrap">
-                    <svg className="attr-lines-svg" viewBox="0 0 400 44" fill="none" xmlns="http://www.w3.org/2000/svg">
-                      <path d="M60 0V22C60 28 65 32 72 32H192C198 32 200 34 200 40V44" stroke="#86EFAC" strokeWidth="3" strokeLinecap="round" />
-                      <path d="M200 0V44" stroke="#86EFAC" strokeWidth="3" strokeLinecap="round" />
-                      <path d="M340 0V22C340 28 335 32 328 32H208C202 32 200 34 200 40V44" stroke="#86EFAC" strokeWidth="3" strokeLinecap="round" />
-                    </svg>
-                  </div>
-
-                  {/* Bottom Lead Avatars Pill (Exact match to Image 2!) */}
-                  <div className="attr-leads-pill">
-                    <div className="attr-avatar-stack">
-                      <div className="attr-av av-pic-1"></div>
-                      <div className="attr-av av-pic-2"></div>
-                      <div className="attr-av av-pic-3"></div>
-                      <div className="attr-av av-pic-4"></div>
-                      <div className="attr-av av-pic-5"></div>
-                    </div>
-                    <span className="attr-leads-label">Leads Captured Real-Time</span>
-                  </div>
-
-                </div>
-              </div>
-            </>)}
-
-            {/* Tab 4 Showcase: Sales Pipeline */}
-            {d4 && (<>
-              <div className="daily-showcase">
-                <div className="showcase-bg-gradient showcase-bg--purple"></div>
-                <div className="showcase-content">
-                  {/* CRM Pipeline Board */}
-                  <div className="sc-card sc-card-pipeline">
-                    <div className="pipe-header flex-between">
-                      <div>
-                        <span className="pipe-tag">Visual CRM Pipeline</span>
-                        <h3 className="sc-card-h3">Converse360 Deals Tracker</h3>
-                      </div>
-                      <span className="sc-count-badge">$134,900 Total Value</span>
-                    </div>
-
-                    <div className="pipe-cols-grid">
-                      <div className="pipe-col">
-                        <div className="pipe-col-head">
-                          <span>New Enquiries</span>
-                          <span className="pipe-col-count">3</span>
-                        </div>
-                        <div className="pipe-deal-card">
-                          <div className="deal-title">Starlight Boutique</div>
-                          <div className="deal-meta flex-between">
-                            <span className="deal-source">WhatsApp</span>
-                            <span className="deal-value">$4,200</span>
-                          </div>
-                        </div>
-                      </div>
-                      <div className="pipe-col">
-                        <div className="pipe-col-head">
-                          <span>Qualified</span>
-                          <span className="pipe-col-count">2</span>
-                        </div>
-                        <div className="pipe-deal-card pipe-deal-highlight">
-                          <div className="deal-title">Arc Travel Enterprise</div>
-                          <div className="deal-meta flex-between">
-                            <span className="deal-source">Click to WA</span>
-                            <span className="deal-value">$18,000</span>
-                          </div>
-                          <div className="deal-owner">
-                            <span className="owner-av">AK</span> Assigned to Ankit{' '}
-                          </div>
-                        </div>
-                      </div>
-                      <div className="pipe-col">
-                        <div className="pipe-col-head">
-                          <span>Won Deals 🎉</span>
-                          <span className="pipe-col-count">14</span>
-                        </div>
-                        <div className="pipe-deal-card pipe-deal-won">
-                          <div className="deal-title">Apex Logistics Ltd</div>
-                          <div className="deal-meta flex-between">
-                            <span className="deal-badge-won">✓ Won</span>
-                            <span className="deal-value">$32,500</span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Floating Badge */}
-                  <div className="sc-floating-pill">
-                    <span className="sc-pill-icon">📊</span>
-                    <span>Track deals directly from WhatsApp chat</span>
-                  </div>
-                </div>
-              </div>
-            </>)}
-
-            {/* Tab 5 Showcase: Official WhatsApp Setup */}
-            {d5 && (<>
-              <div className="daily-showcase">
-                <div className="showcase-bg-gradient showcase-bg--green-dark"></div>
-                <div className="showcase-content">
-
-                  <div className="sc-card sc-card-wa-setup">
-                    <div className="wa-profile-header">
-                      <div className="wa-profile-icon">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill={WHITE}>
-                          <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.347-.347.52-.52.174-.174.232-.298.347-.497.115-.198.057-.371-.03-.52-.086-.148-.66-1.59-.905-2.174-.234-.556-.47-.48-.646-.487-.174-.007-.373-.008-.572-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
-                        </svg>
-                      </div>
-                      <div>
-                        <div className="wa-prof-title">Converse360 <span className="wa-green-check">✓</span></div>
-                        <div className="wa-prof-sub">Verified Meta Tech Partner</div>
-                      </div>
-                    </div>
-
-                    <div className="wa-cat-preview">
-                      <div className="wa-cat-header flex-between">
-                        <span>WhatsApp Business Catalog</span>
-                        <span className="wa-cat-link">View Catalog &gt;</span>
-                      </div>
-                      <div className="wa-cat-grid">
-                        <div className="wa-cat-item">
-                          <div className="wa-item-thumb">📦</div>
-                          <div className="wa-item-name">AI Sales Bot</div>
-                          <div className="wa-item-price">$99.00</div>
-                        </div>
-                        <div className="wa-cat-item">
-                          <div className="wa-item-thumb">💬</div>
-                          <div className="wa-item-name">Multi-Inbox</div>
-                          <div className="wa-item-price">$149.00</div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Floating Badge */}
-                  <div className="sc-floating-pill">
-                    <span className="sc-pill-icon">✓</span>
-                    <span>Official WhatsApp API Partner • Guaranteed Setup</span>
-                  </div>
-
-                </div>
-              </div>
-            </>)}
-
-            {/* Tab 6 Showcase: Website Widget (Visual match to Image 3!) */}
-            {d6 && (<>
-              <div className="daily-showcase">
-                <div className="showcase-bg-gradient showcase-bg--light-blue"></div>
-                <div className="showcase-content widget-layout">
-
-                  {/* Chat conversation bubble */}
-                  <div className="widget-chat-box">
-                    <div className="widget-msg widget-msg--bot">
-                      {' '}If you don’t mind, Can you please share your details, we can share details on WhatsApp?{' '}
-                    </div>
-                    <div className="widget-msg widget-msg--user">
-                      {' '}Yeah, sure{' '}
-                    </div>
-                  </div>
-
-                  {/* Web Form Lead Capture Card (Exact match to Image 3!) */}
-                  <div className="widget-form-card">
-                    <div className="w-form-group">
-                      <div className="w-input-mock">Michael Royce</div>
-                    </div>
-                    <div className="w-form-group">
-                      <div className="w-input-mock">+1- 97856 43210</div>
-                    </div>
-                    <button className="w-btn-submit">
-                      {' '}Continue on WhatsApp{' '}
-                      <svg width="15" height="15" viewBox="0 0 24 24" fill={WHITE}>
-                        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.347-.347.52-.52.174-.174.232-.298.347-.497.115-.198.057-.371-.03-.52-.086-.148-.66-1.59-.905-2.174-.234-.556-.47-.48-.646-.487-.174-.007-.373-.008-.572-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413z" />
-                      </svg>
-                    </button>
-                  </div>
-
-                </div>
-              </div>
-            </>)}
-
+            <DailyShowcase index={daily} />
           </div>
+        </div>
+
+        {/* Phone: one heading and its own example at a time. No rail and no
+            auto-play — the six pairs are a snap carousel, so a swipe brings the
+            next one fully into view. */}
+        <div
+          className="daily-stack"
+          data-reveal
+          ref={dailyCar.ref}
+          onScroll={dailyCar.onScroll}
+        >
+          {dailyRail.map((item, i) => (<Fragment key={i}>
+            <div className="daily-stack-item">
+              <div className="daily-stack-head">
+                <span className="daily-nav-num">{item.num}</span>
+                <h3 className="daily-stack-title">{item.name}</h3>
+              </div>
+              <div className="daily-nav-bullets daily-stack-bullets">
+                {item.bullets.map((b, j) => (<Fragment key={j}>
+                  <DailyBullet text={b.text} />
+                </Fragment>))}
+              </div>
+              <div className="daily-showcase-wrap daily-stack-showcase">
+                <DailyShowcase index={i} />
+              </div>
+            </div>
+          </Fragment>))}
+        </div>
+
+        {/* Which of the six is in view, and a tap target for each */}
+        <div className="carousel-dots" role="tablist" aria-label="Everyday features">
+          {dailyRail.map((item, i) => (<Fragment key={i}>
+            <button
+              type="button"
+              role="tab"
+              aria-selected={i === dailyCar.index}
+              aria-label={item.name}
+              className={`carousel-dot${i === dailyCar.index ? ' is-active' : ''}`}
+              onClick={() => dailyCar.go(i)}
+            />
+          </Fragment>))}
         </div>
       </section>
 
@@ -1168,16 +1033,16 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
       <section id="industries" style={{ position: "relative", zIndex: "7", background: "var(--color-bg)", maxWidth: "1440px", margin: "0 auto", padding: "clamp(56px,8vw,84px) clamp(20px,4vw,32px)" }}>
         <h2 data-reveal style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "40px", maxWidth: "22em", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
           {' '}Built for how your business actually sells</h2>
-        <div role="tablist" aria-label="Industries" className="scroll-tabs ind-tabs" data-reveal style={{ display: "flex", flexWrap: "nowrap", gap: "12px", marginBottom: "clamp(28px,3.4vw,40px)", overflowX: "auto" }}>
+        <div role="tablist" aria-label="Industries" className="scroll-tabs ind-tabs" data-reveal style={{ display: "flex", flexWrap: "nowrap", gap: "12px", marginBottom: "clamp(18px, 2.1vw, 20px)", overflowX: "auto" }}>
           {industries.map((ind, i) => (<Fragment key={i}>
             <Hx as="button" type="button" role="tab" aria-selected={ind.selected} onClick={ind.select} style={{ font: "inherit", cursor: "pointer", whiteSpace: "nowrap", flex: "none", borderWidth: "1px", borderStyle: "solid", borderColor: ind.border, background: ind.bg, color: ind.fg, borderRadius: "999px", padding: "12px 24px", fontSize: "16px", fontWeight: "500" }} hoverStyle={{ borderColor: "var(--brand)" }}>{ind.name}</Hx>
           </Fragment>))}
         </div>
-        <div className="ind-grid" data-reveal="stagger" style={{ gap: "clamp(36px,5vw,56px)", alignItems: "stretch" }}>
+        <div className="ind-grid" data-reveal="stagger" style={{ columnGap: "clamp(36px,5vw,56px)", alignItems: "stretch" }}>
           <div className="ind-copy" style={{ display: "flex", flexDirection: "column" }}>
-            <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "700", letterSpacing: "-0.02em", marginBottom: "10px" }}>{activeName}</h3>
-            <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.6", color: "var(--color-text-muted)", marginBottom: "26px" }}>{activeBlurb}</p>
-            <div style={{ display: "flex", flexDirection: "column", gap: "12px", borderTop: "1px solid var(--color-divider)", paddingTop: "22px" }}>
+            <h3 style={{ fontSize: "clamp(24px, 3vw, 32px)", fontWeight: "700", letterSpacing: "-0.02em", marginBottom: "10px" }}>{activeName}</h3>
+            <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.6", color: "var(--color-text-muted)", marginBottom: "20px" }}>{activeBlurb}</p>
+            <div style={{ display: "flex", flexDirection: "column", gap: "12px", borderTop: "1px solid var(--color-divider)", paddingTop: "20px" }}>
               {activePoints.map((pt, i) => (<Fragment key={i}>
                 <div style={{ display: "flex", gap: "11px", alignItems: "flex-start", fontSize: "15px", lineHeight: "1.5", color: "var(--color-text)" }}>
                   <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={BRAND} strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "none", marginTop: "3px" }}>
@@ -1187,16 +1052,21 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                 </div>
               </Fragment>))}
             </div>
-            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(150px,100%),1fr))", gap: "16px", borderTop: "1px solid var(--color-divider)", marginTop: "26px", paddingTop: "24px" }}>
+          </div>
+
+          {/* The rest of the copy. Split from .ind-copy so the phone can sit
+              between the two on a narrow screen — see .ind-grid grid-template-areas. */}
+          <div className="ind-copy-rest" style={{ display: "flex", flexDirection: "column" }}>
+            <div className="ind-metrics" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(150px,100%),1fr))", gap: "16px", borderTop: "1px solid var(--color-divider)", marginTop: "20px", paddingTop: "20px" }}>
               {activeMetrics.map((m, i) => (<Fragment key={i}>
                 <div>
-                  <div style={{ fontSize: "24px", fontWeight: "700", letterSpacing: "-0.02em", lineHeight: "1" }}>{m.value}</div>
+                  <div style={{ fontSize: "24px", fontWeight: "700", letterSpacing: "-0.02em", lineHeight: "1", color: m.value === '3 sec' ? 'var(--brand)' : 'var(--color-text)' }}>{m.value}</div>
                   <div style={{ fontSize: "13px", color: "var(--color-text-muted)", marginTop: "7px", lineHeight: "1.35" }}>{m.label}</div>
                 </div>
               </Fragment>))}
             </div>
-            <p style={{ fontSize: "var(--fs-body-sm)", lineHeight: "1.6", color: "var(--color-text-muted)", marginTop: "22px" }}>{activeNote}</p>
-            <div style={{ marginTop: "26px", border: "1px solid var(--color-divider)", borderRadius: "14px", background: "var(--color-surface-3)", padding: "15px 18px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "14px" }}>
+            <p style={{ fontSize: "var(--fs-body-sm)", lineHeight: "1.6", color: "var(--color-text-muted)", marginTop: "20px" }}>{activeNote}</p>
+            <div style={{ marginTop: "20px", border: "1px solid var(--color-divider)", borderRadius: "14px", background: "var(--color-surface-3)", padding: "15px 18px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "14px" }}>
               <div style={{ display: "flex", alignItems: "center", flex: "none" }}>
                 <span title="WhatsApp" style={{ width: "32px", height: "32px", borderRadius: "50%", background: "var(--color-whatsapp)", border: "2px solid var(--color-surface-3)", display: "grid", placeItems: "center" }}>
                   <svg width="17" height="17" viewBox="0 0 24 24" fill={WHITE} aria-label="WhatsApp" role="img">
@@ -1225,9 +1095,8 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                   your
                   website — answered in seconds.</div>
               </div>
-
             </div>
-            <div style={{ marginTop: "24px" }}>
+            <div className="ind-cta" style={{ marginTop: "20px" }}>
               <Hx link className="btn-fx btn-fx-brand btn-fx-arrow" href={`/industries/${activeSlug}`} style={{ display: "inline-flex", alignItems: "center", gap: "10px", background: "var(--brand)", color: "#fff", fontSize: "15px", fontWeight: "700", padding: "14px 24px", borderRadius: "999px" }} hoverStyle={{ background: "#181818" }}>
                 See it for {activeName}
                 <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
@@ -1237,10 +1106,38 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
             </div>
           </div>
 
-          <div className="ind-stage">
-            <div className="ind-phone" style={{ position: "relative", height: "620px", display: "flex", flexDirection: "column", width: "min(340px,100%)", maxWidth: "100%", border: "11px solid var(--color-text)", borderRadius: "38px", overflow: "hidden", background: "var(--color-text)", boxShadow: "0 24px 60px rgba(24,24,24,0.18)" }}>
-              <div style={{ background: "#075E54", color: "var(--color-bg)", padding: "14px 16px 12px" }}>
-                <div style={{ width: "74px", height: "5px", borderRadius: "99px", background: "rgba(255,255,255,0.35)", margin: "0 auto 12px" }}>
+          <div className="ind-stage" style={{ position: "relative" }}>
+            {/* Concentric premium glowing rings */}
+            <div className="ind-ring" style={{ width: "clamp(260px, 42vw, 340px)", aspectRatio: "1", opacity: 1, animationDelay: "0s" }}></div>
+            <div className="ind-ring" style={{ width: "clamp(340px, 56vw, 450px)", aspectRatio: "1", opacity: 0.75, animationDelay: "0.4s" }}></div>
+            <div className="ind-ring" style={{ width: "clamp(420px, 70vw, 560px)", aspectRatio: "1", opacity: 0.5, animationDelay: "0.8s" }}></div>
+            <div className="ind-ring" style={{ width: "clamp(500px, 84vw, 670px)", aspectRatio: "1", opacity: 0.25, animationDelay: "1.2s" }}></div>
+            <div className="ind-phone" style={{ position: "relative", height: "620px", display: "flex", flexDirection: "column", width: "min(340px,100%)", maxWidth: "100%", border: "12px solid #1C1C1E", borderRadius: "48px", overflow: "hidden", background: "#1C1C1E", boxShadow: "0 24px 60px rgba(24,24,24,0.18)" }}>
+              <div style={{ background: "#075E54", color: "var(--color-bg)", padding: "0 16px 12px" }}>
+                {/* iOS status bar + dynamic island, so the handset reads like a real phone */}
+                <div className="ind-statusbar" style={{ position: "relative", display: "flex", alignItems: "center", justifyContent: "space-between", height: "42px", margin: "0 -16px", padding: "0 20px", fontSize: "12.5px", fontWeight: "600", letterSpacing: "-0.01em" }}>
+                  <span>9:41</span>
+                  <span className="ind-island" aria-hidden="true">
+                    <span className="ind-island-cam"></span>
+                  </span>
+                  <span style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+                    <svg width="17" height="11" viewBox="0 0 17 11" fill={WHITE} aria-hidden="true">
+                      <rect x="0" y="7.5" width="3" height="3.5" rx="1"></rect>
+                      <rect x="4.6" y="5.5" width="3" height="5.5" rx="1"></rect>
+                      <rect x="9.2" y="3" width="3" height="8" rx="1"></rect>
+                      <rect x="13.8" y="0.5" width="3" height="10.5" rx="1"></rect>
+                    </svg>
+                    <svg width="15" height="11" viewBox="0 0 24 18" fill="none" stroke={WHITE} strokeWidth="2.4" strokeLinecap="round" aria-hidden="true">
+                      <path d="M2.5 5.6a14 14 0 0 1 19 0"></path>
+                      <path d="M6.4 9.9a8.6 8.6 0 0 1 11.2 0"></path>
+                      <path d="M10.2 14.1a3.2 3.2 0 0 1 3.6 0"></path>
+                    </svg>
+                    <svg width="24" height="11" viewBox="0 0 26 12" fill="none" aria-hidden="true">
+                      <rect x="0.75" y="0.75" width="21" height="10.5" rx="3" stroke="rgba(255,255,255,0.55)" strokeWidth="1.2"></rect>
+                      <rect x="2.4" y="2.4" width="17" height="7.2" rx="1.8" fill={WHITE}></rect>
+                      <path d="M23.4 4.2v3.6a2.1 2.1 0 0 0 0-3.6z" fill="rgba(255,255,255,0.55)"></path>
+                    </svg>
+                  </span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
                   <span style={{ width: "32px", height: "32px", borderRadius: "50%", background: "rgba(255,255,255,0.2)", display: "grid", placeItems: "center", fontSize: "11.5px", fontWeight: "700" }}>C3</span>
@@ -1578,7 +1475,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
             {' '}See it working on your own channels. Fifteen minutes, no slides.</p>
           <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "14px" }}>
             <Hx link className="btn-fx btn-fx-dark" href="/book-a-demo" style={{ background: "var(--color-bg)", color: "var(--color-text)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-surface)" }}>Book a Free Demo</Hx>
-            <Hx link className="btn-fx" href="/pricing" style={{ border: "1px solid rgba(255,255,255,0.5)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "rgba(255,255,255,0.12)" }}>Pricing</Hx>
+            <Hx link className="btn-fx" href="/pricing" style={{ border: "1px solid rgba(255,255,255,0.5)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "rgba(255,255,255,0.12)" }}>See Pricing</Hx>
           </div>
         </div>
       </section>
