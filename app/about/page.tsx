@@ -1,11 +1,14 @@
 import type { Metadata } from 'next';
 import Hx from '@/components/Hx';
-import { WHITE } from '@/lib/tokens';
 import AnnouncementBar from '@/components/AnnouncementBar';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import PageShell from '@/components/PageShell';
 import StatAnimator from '@/components/StatAnimator';
+import { FaWhatsapp } from 'react-icons/fa';
+import { BsChatDots, BsMegaphone } from 'react-icons/bs';
+import { LuWorkflow } from 'react-icons/lu';
+import { RiCustomerService2Line } from 'react-icons/ri';
 
 export const metadata: Metadata = {
   title: 'About — Converse360',
@@ -74,78 +77,35 @@ const WHAT_WE_DO: {
       desc: 'Automate customer replies, order updates, appointment reminders, and support on WhatsApp Business.',
       ink: '#0F9D4F',
       tint: '#F1FAF4',
-      icon: (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <circle cx="12" cy="12" r="11.4" fill="currentColor" />
-          <g transform="translate(5.15 5.15) scale(0.57)" fill={WHITE}>
-            <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.347-.347.52-.52.174-.174.232-.298.347-.497.115-.198.057-.371-.03-.52-.086-.148-.66-1.59-.905-2.174-.234-.556-.47-.48-.646-.487-.174-.007-.373-.008-.572-.008-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.263.489 1.694.625.712.227 1.36.195 1.872.118.572-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884" />
-          </g>
-        </svg>
-      ),
+      icon: <FaWhatsapp />,
     },
     {
       title: 'Website Chat Automation',
       desc: 'A smart chat assistant embedded on your website to capture leads and answer visitor questions in real time.',
       ink: '#2C7BE5',
       tint: '#F1F6FE',
-      icon: (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4.4 3h15.2A2.4 2.4 0 0 1 22 5.4v9.2a2.4 2.4 0 0 1-2.4 2.4h-8.3l-4.6 3.7A1 1 0 0 1 5.1 20v-3H4.4A2.4 2.4 0 0 1 2 14.6V5.4A2.4 2.4 0 0 1 4.4 3Z" fill="currentColor" />
-          <g fill={WHITE}>
-            <circle cx="8.1" cy="10" r="1.35" />
-            <circle cx="12" cy="10" r="1.35" />
-            <circle cx="15.9" cy="10" r="1.35" />
-          </g>
-        </svg>
-      ),
+      icon: <BsChatDots />,
     },
     {
       title: 'Custom Conversation Flows',
       desc: 'Tailored chat journeys built around your business — from FAQs to lead qualification to post-sale support.',
       ink: '#7C5CE0',
       tint: '#F5F3FE',
-      icon: (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M12 7.6v3.1M5.2 16.2v-3.2h13.6v3.2" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" strokeLinejoin="round" fill="none" />
-          <g fill="currentColor">
-            <rect x="8.6" y="2.2" width="6.8" height="5.6" rx="1.9" />
-            <rect x="1.8" y="16.2" width="6.8" height="5.6" rx="1.9" />
-            <rect x="15.4" y="16.2" width="6.8" height="5.6" rx="1.9" />
-          </g>
-        </svg>
-      ),
+      icon: <LuWorkflow />,
     },
     {
       title: 'Seamless Handover',
       desc: 'Smooth escalation to a human team member whenever a conversation needs a personal touch.',
       ink: '#D6336C',
       tint: '#FEF2F6',
-      icon: (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M4.4 4.2a7.6 7.6 0 0 1 15.2 0v4.3" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" fill="none" />
-          <g fill="currentColor">
-            <rect x="1.7" y="4.4" width="3.5" height="5.4" rx="1.7" />
-            <rect x="18.8" y="4.4" width="3.5" height="5.4" rx="1.7" />
-            <circle cx="12" cy="9.6" r="3.7" />
-            <path d="M4.6 22c0-3.7 3.3-6.6 7.4-6.6s7.4 2.9 7.4 6.6z" />
-          </g>
-        </svg>
-      ),
+      icon: <RiCustomerService2Line />,
     },
     {
       title: 'Marketing Broadcasts',
       desc: 'Send bulk WhatsApp campaigns, offers, product launches, and updates with delivery and read tracking.',
       ink: '#E1830B',
       tint: '#FFF7EA',
-      icon: (
-        <svg viewBox="0 0 24 24" aria-hidden="true">
-          <g fill="currentColor">
-            <path d="M2.6 10.1 14.4 4.3v11.9L2.6 13.9z" />
-            <path d="M5.2 14.5l4 .8-.9 4.6a1.3 1.3 0 0 1-1.6 1l-1-.2a1.3 1.3 0 0 1-1-1.5z" />
-          </g>
-          <path d="M17.6 5.6l2.6-1.7M18.6 10.2h3.1M17.6 14.8l2.6 1.7" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" fill="none" />
-        </svg>
-      ),
+      icon: <BsMegaphone />,
     },
   ];
 

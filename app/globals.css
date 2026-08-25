@@ -4778,23 +4778,30 @@ body {
   border-color: color-mix(in srgb, var(--wwd-ink, var(--brand)) 42%, transparent);
 }
 
-/* the glyph carries the card — no tinted box behind it. It draws in
-   currentColor, so the card hue is the only thing that sets it. */
+/* each icon sits in a clean white circle that pops on the tinted card background */
 .page-about .what-we-do-icon {
-  display: block;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: var(--color-bg);
+  box-shadow: 0 3px 10px rgba(24, 24, 24, 0.04);
   color: var(--wwd-ink, var(--brand));
   margin-bottom: 18px;
-  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
 }
 
 .page-about .what-we-do-icon svg {
   display: block;
-  width: clamp(38px, 3.4vw, 46px);
-  height: clamp(38px, 3.4vw, 46px);
+  width: 32px;
+  height: 32px;
 }
 
 .page-about .what-we-do-card:hover .what-we-do-icon {
   transform: scale(1.08);
+  box-shadow: 0 6px 14px rgba(24, 24, 24, 0.08);
 }
 
 .page-about .what-we-do-title {
