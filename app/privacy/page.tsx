@@ -19,12 +19,12 @@ export default function PrivacyPage() {
 
         <div style={{ marginBottom: "32px" }}>
           <h1>Privacy Policy</h1>
-          <p style={{ fontSize: "14.5px", color: "#6B726E", fontWeight: "500" }}>
+          <p style={{ fontSize: "var(--fs-body-sm)", color: "#6B726E", fontWeight: "500" }}>
             {' '}Effective 9 August 2026 · Last updated 9 August 2026{' '}
           </p>
         </div>
 
-        <p style={{ fontSize: "17px", lineHeight: "1.7", color: "var(--color-text)" }}>
+        <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.7", color: "var(--color-text)" }}>
           {' '}This policy explains what personal data Converse360 handles, why, who it is shared with, how long it is kept,
           and how to have it deleted. It covers our website, our web application, and every channel the product connects
           to — WhatsApp, Instagram, Facebook Pages and Meta Ads.{' '}
@@ -41,7 +41,7 @@ export default function PrivacyPage() {
 
         {/* TABLE OF CONTENTS */}
         <nav className="toc-box" aria-label="Contents">
-          <strong style={{ fontFamily: "var(--font-heading)", fontSize: "17px", color: "var(--color-text)" }}>Table of Contents</strong>
+          <strong style={{ fontFamily: "var(--font-heading)", fontSize: "var(--fs-title-sm)", color: "var(--color-text)" }}>Table of Contents</strong>
           <ol>
             <li><a href="#roles">1. Two different roles we play</a></li>
             <li><a href="#what">2. What we collect</a></li>
@@ -533,7 +533,7 @@ export default function PrivacyPage() {
           <p>Email <a href="mailto:support@converse360.in">support@converse360.in</a>. We respond within 30 days and do
             not charge for reasonable requests. We may need to verify your identity first — the alternative is a
             deletion endpoint anyone can point at anyone.</p>
-          <p style={{ fontSize: "14px", color: "#6B726E" }}>If we act as a processor rather than a controller for the data in
+          <p style={{ fontSize: "var(--fs-body-sm)", color: "#6B726E" }}>If we act as a processor rather than a controller for the data in
             question (see <a href="#roles">§1</a>), we will forward your request to the business that controls it and
             support them in answering it.</p>
         </section>

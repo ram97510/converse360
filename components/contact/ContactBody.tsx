@@ -21,9 +21,9 @@ export default function ContactBody() {
     <>
       <section style={{ background: "var(--color-surface)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(48px,7vw,88px) clamp(20px,4vw,32px)", textAlign: "center" }}>
-          <h1 style={{ fontSize: "clamp(32px,5vw,54px)", fontWeight: "700", letterSpacing: "-0.04em", lineHeight: "1.06", marginBottom: "20px", maxWidth: "18em", marginLeft: "auto", marginRight: "auto", textWrap: "balance" }}>
+          <h1 style={{ fontSize: "var(--fs-hero)", fontWeight: "var(--fw-hero)", letterSpacing: "-0.04em", lineHeight: "1.06", marginBottom: "20px", maxWidth: "18em", marginLeft: "auto", marginRight: "auto", textWrap: "balance" }}>
             {' '}We'd love to hear from you.</h1>
-          <p style={{ fontSize: "clamp(16px,1.8vw,19px)", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "44em", marginLeft: "auto", marginRight: "auto" }}>
+          <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "44em", marginLeft: "auto", marginRight: "auto" }}>
             {' '}We'd love to hear
             from you. Whether you're exploring WhatsApp automation for the first time or looking to upgrade your
             existing chat setup, our team is here to help.</p>
@@ -32,9 +32,9 @@ export default function ContactBody() {
 
       <section style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(48px,6.5vw,80px) clamp(20px,4vw,32px)" }}>
         <div style={{ marginBottom: "clamp(28px,3.4vw,40px)", textAlign: "center" }}>
-          <h2 style={{ fontSize: "clamp(24px,3.2vw,32px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "14px" }}>Tell
+          <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "14px" }}>Tell
             us what you want to automate</h2>
-          <p style={{ fontSize: "16.5px", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "44em", marginBottom: "30px", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
+          <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "44em", marginBottom: "30px", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
             {' '}Have a question, want a demo, or need a custom quote? Fill out the form below or reach out directly — we
             typically respond within one business day.</p>
         </div>
@@ -133,7 +133,7 @@ export default function ContactBody() {
             </div>
 
             <div style={{ border: "1px solid var(--color-divider)", borderRadius: "16px", padding: "clamp(24px,3vw,34px)", marginTop: "20px", flex: "1", display: "flex", flexDirection: "column" }}>
-              <h3 style={{ fontSize: "17px", fontWeight: "700", letterSpacing: "-0.02em", marginBottom: "16px" }}>Follow Us</h3>
+              <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "700", letterSpacing: "-0.02em", marginBottom: "16px" }}>Follow Us</h3>
               <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                 <Hx as="a" className="btn-fx btn-fx-dark" href="https://www.instagram.com/converse.360/" target="_blank" rel="noopener noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: "10px", borderWidth: "1px", borderStyle: "solid", borderColor: "var(--color-divider)", borderRadius: "999px", padding: "10px 18px", fontSize: "14.5px", fontWeight: "500", color: "var(--color-text)", background: "var(--color-bg)" }} hoverStyle={{ borderColor: "var(--brand)", color: "var(--brand)" }}><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.9" strokeLinecap="round" aria-hidden="true">
                     <rect x="2.5" y="2.5" width="19" height="19" rx="5.5"></rect>

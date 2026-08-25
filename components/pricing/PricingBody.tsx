@@ -46,9 +46,9 @@ export default function PricingBody() {
     <>
       <section style={{ background: "var(--color-surface)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(48px,7vw,84px) clamp(20px,4vw,32px)", textAlign: "center" }}>
-          <h1 style={{ fontSize: "clamp(32px,5vw,54px)", fontWeight: "700", letterSpacing: "-0.04em", lineHeight: "1.06", marginBottom: "20px", maxWidth: "18em", marginLeft: "auto", marginRight: "auto", textWrap: "balance" }}>
+          <h1 style={{ fontSize: "var(--fs-hero)", fontWeight: "var(--fw-hero)", letterSpacing: "-0.04em", lineHeight: "1.06", marginBottom: "20px", maxWidth: "18em", marginLeft: "auto", marginRight: "auto", textWrap: "balance" }}>
             {' '}Plans That Automate Your Business.</h1>
-          <p style={{ fontSize: "clamp(16px,1.8vw,19px)", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "42em", marginLeft: "auto", marginRight: "auto" }}>
+          <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "42em", marginLeft: "auto", marginRight: "auto" }}>
             {' '}Pick the plan that
             fits how much you talk to customers. Every plan includes the unified inbox, the AI agent and official
             WhatsApp setup.</p>
@@ -69,7 +69,7 @@ export default function PricingBody() {
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(260px,100%),1fr))", gap: "20px", alignItems: "stretch" }}>
             <div style={{ background: "var(--color-bg)", border: "1px solid var(--color-divider)", borderRadius: "14px", padding: "30px 26px", position: "relative", display: "flex", flexDirection: "column" }}>
 
-              <h3 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "6px" }}>Basic</h3>
+              <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "700", marginBottom: "6px" }}>Basic</h3>
               <p style={{ fontSize: "13.5px", fontWeight: "500", color: "var(--color-accent-600)", marginBottom: "20px" }}>Perfect for getting started{' '}
               </p>
               <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
@@ -222,7 +222,7 @@ export default function PricingBody() {
             <div style={{ background: "var(--color-bg)", border: "2px solid var(--brand)", borderRadius: "14px", padding: "30px 26px", position: "relative", display: "flex", flexDirection: "column", boxShadow: "0 18px 44px rgba(0,171,86,0.14)" }}>
               <span style={{ position: "absolute", top: "-13px", left: "50%", transform: "translateX(-50%)", background: "var(--brand)", color: "var(--color-bg)", fontSize: "10.5px", fontWeight: "700", letterSpacing: "0.08em", textTransform: "uppercase", padding: "5px 12px", borderRadius: "999px", whiteSpace: "nowrap" }}>★
                 Most popular</span>
-              <h3 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "6px" }}>Pro</h3>
+              <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "700", marginBottom: "6px" }}>Pro</h3>
               <p style={{ fontSize: "13.5px", fontWeight: "500", color: "var(--color-accent-600)", marginBottom: "20px" }}>Built for growing businesses{' '}
               </p>
               <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
@@ -393,7 +393,7 @@ export default function PricingBody() {
             </div>
             <div style={{ background: "var(--color-bg)", border: "1px solid var(--color-divider)", borderRadius: "14px", padding: "30px 26px", position: "relative", display: "flex", flexDirection: "column" }}>
 
-              <h3 style={{ fontSize: "20px", fontWeight: "700", marginBottom: "6px" }}>Premium</h3>
+              <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "700", marginBottom: "6px" }}>Premium</h3>
               <p style={{ fontSize: "13.5px", fontWeight: "500", color: "var(--color-accent-600)", marginBottom: "20px" }}>Built for businesses ready
                 to scale</p>
               <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
@@ -556,9 +556,9 @@ export default function PricingBody() {
         </div>
 
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 clamp(20px,4vw,32px) clamp(56px,8vw,84px)" }}>
-          <h2 style={{ fontSize: "clamp(28px,4.2vw,40px)", fontWeight: "700", letterSpacing: "-0.035em", marginBottom: "14px", textAlign: "center" }}>
+          <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.035em", marginBottom: "14px", textAlign: "center" }}>
             {' '}Add only what you actually need</h2>
-          <p style={{ fontSize: "16.5px", lineHeight: "1.55", color: "var(--color-text-muted)", maxWidth: "40em", marginBottom: "32px", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
+          <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.55", color: "var(--color-text-muted)", maxWidth: "40em", marginBottom: "32px", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
             {' '}Every add-on is a one-time purchase that never expires — no recurring charge, no forced upgrade. Buy them
             any time from your dashboard.</p>
 
@@ -577,7 +577,7 @@ export default function PricingBody() {
                   </svg>
                 </div>
                 <div>
-                  <h3 style={{ fontSize: "20px", fontWeight: "800", letterSpacing: "-0.02em", color: "var(--color-text)", marginBottom: "4px" }}>
+                  <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "800", letterSpacing: "-0.02em", color: "var(--color-text)", marginBottom: "4px" }}>
                     {' '}Additional WhatsApp number</h3>
                   <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
                     <span style={{ fontSize: "26px", fontWeight: "800", fontFamily: "var(--font-heading)", color: "var(--color-text)" }}>₹2,299</span>
@@ -586,7 +586,7 @@ export default function PricingBody() {
                 </div>
               </div>
 
-              <p style={{ fontSize: "15px", lineHeight: "1.6", color: "var(--color-text-soft)", marginBottom: "24px", flex: "1" }}>Add a separate WhatsApp
+              <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.6", color: "var(--color-text-soft)", marginBottom: "24px", flex: "1" }}>Add a separate WhatsApp
                 Business identity to your account — useful for multiple brands, locations, or departments.</p>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "28px" }}>
@@ -638,7 +638,7 @@ export default function PricingBody() {
                   </svg>
                 </div>
                 <div>
-                  <h3 style={{ fontSize: "20px", fontWeight: "800", letterSpacing: "-0.02em", color: "var(--color-text)", marginBottom: "4px" }}>
+                  <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "800", letterSpacing: "-0.02em", color: "var(--color-text)", marginBottom: "4px" }}>
                     {' '}Extra team member</h3>
                   <div style={{ display: "flex", alignItems: "baseline", gap: "6px" }}>
                     <span style={{ fontSize: "26px", fontWeight: "800", fontFamily: "var(--font-heading)", color: "var(--color-text)" }}>₹300</span>
@@ -647,7 +647,7 @@ export default function PricingBody() {
                 </div>
               </div>
 
-              <p style={{ fontSize: "15px", lineHeight: "1.6", color: "var(--color-text-soft)", marginBottom: "24px", flex: "1" }}>Give another teammate
+              <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.6", color: "var(--color-text-soft)", marginBottom: "24px", flex: "1" }}>Give another teammate
                 their own seat in the shared inbox, with their own assignments and reply stats.</p>
 
               <div style={{ display: "flex", flexDirection: "column", gap: "12px", marginBottom: "28px" }}>
@@ -687,11 +687,11 @@ export default function PricingBody() {
           </div>
 
           <div style={{ display: "flex", flexWrap: "wrap", alignItems: "center", gap: "12px", marginBottom: "10px" }}>
-            <h3 style={{ fontSize: "21px", fontWeight: "700", letterSpacing: "-0.02em" }}>Message credits</h3>
+            <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "700", letterSpacing: "-0.02em" }}>Message credits</h3>
             <span style={{ fontSize: "11.5px", color: "var(--color-accent-600)", background: "rgba(0,171,86,0.10)", borderRadius: "999px", padding: "5px 12px", whiteSpace: "nowrap" }}>never
               expires</span>
           </div>
-          <p style={{ fontSize: "15.5px", lineHeight: "1.55", color: "var(--color-text-muted)", maxWidth: "40em", marginBottom: "28px" }}>Top up your
+          <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.55", color: "var(--color-text-muted)", maxWidth: "40em", marginBottom: "28px" }}>Top up your
             message allowance whenever you need it. Buy once — credits never expire.</p>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(180px,100%),1fr))", gap: "18px" }}>
 
@@ -759,9 +759,9 @@ export default function PricingBody() {
       <section style={{ background: "var(--brand)", color: "var(--color-bg)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(48px,6.5vw,76px) clamp(20px,4vw,32px)", display: "flex", flexDirection: "column", flexWrap: "wrap", alignItems: "center", gap: "24px", textAlign: "center" }}>
           <div>
-            <h2 style={{ fontSize: "clamp(24px,3.2vw,34px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "10px" }}>Not
+            <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "10px" }}>Not
               sure which plan fits?</h2>
-            <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.85)" }}>Tell us how many customers you talk to and we will
+            <p style={{ fontSize: "var(--fs-lede)", color: "rgba(255,255,255,0.85)" }}>Tell us how many customers you talk to and we will
               point you to the right one.</p>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "14px" }}>

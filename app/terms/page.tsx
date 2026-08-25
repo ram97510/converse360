@@ -19,12 +19,12 @@ export default function TermsPage() {
 
         <div style={{ marginBottom: "32px" }}>
           <h1>Terms of Service</h1>
-          <p style={{ fontSize: "14.5px", color: "#6B726E", fontWeight: "500" }}>
+          <p style={{ fontSize: "var(--fs-body-sm)", color: "#6B726E", fontWeight: "500" }}>
             {' '}Effective 9 August 2026 · Last updated 9 August 2026{' '}
           </p>
         </div>
 
-        <p style={{ fontSize: "17px", lineHeight: "1.7", color: "var(--color-text)" }}>
+        <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.7", color: "var(--color-text)" }}>
           {' '}These terms are the agreement between <strong>Conceps Media Works</strong>, Coimbatore, Tamil Nadu, India
           ("Converse360", "we", "us") and the business that opens an account ("you"). By creating an account or using
           the service you accept them. If you are accepting on behalf of a company, you confirm you are authorised to
@@ -33,7 +33,7 @@ export default function TermsPage() {
 
         {/* TABLE OF CONTENTS */}
         <nav className="toc-box" aria-label="Contents">
-          <strong style={{ fontFamily: "var(--font-heading)", fontSize: "17px", color: "var(--color-text)" }}>Table of Contents</strong>
+          <strong style={{ fontFamily: "var(--font-heading)", fontSize: "var(--fs-title-sm)", color: "var(--color-text)" }}>Table of Contents</strong>
           <ol>
             <li><a href="#service">1. What Converse360 is</a></li>
             <li><a href="#accounts">2. Your account</a></li>
@@ -236,7 +236,7 @@ export default function TermsPage() {
               </tbody>
             </table>
           </div>
-          <p style={{ fontSize: "14.5px", color: "#6B726E" }}>Again: none of the above covers Meta's charges for conversations or
+          <p style={{ fontSize: "var(--fs-body-sm)", color: "#6B726E" }}>Again: none of the above covers Meta's charges for conversations or
             ad spend. Those are billed to you by Meta separately — see <a href="#meta">§3</a>.</p>
         </section>
 

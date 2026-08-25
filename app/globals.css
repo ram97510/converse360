@@ -65,6 +65,19 @@
   --radius-md: 0px;
   --radius-lg: 0px;
 
+  /* Typography — one shared ramp used by every page. Each token is a ROLE,
+     not a size: retune it here and every heading in that role follows. */
+  --fs-hero: clamp(32px, 5vw, 54px);          /* page title (h1) */
+  --fw-hero: 700;                             /* page title weight */
+  --fs-section: clamp(28px, 4vw, 42px);       /* section title (h2) */
+  --fs-subsection: clamp(22px, 2.6vw, 27px);  /* long-form h2 (legal, articles) */
+  --fs-card-title: clamp(19px, 2vw, 22px);    /* card / list-item title (h3) */
+  --fs-title-sm: 18px;                        /* h4, FAQ question, article h3 */
+  --fs-lede: clamp(16px, 1.8vw, 19px);        /* subheading under a title */
+  --fs-body: 16px;                            /* paragraphs and list items */
+  --fs-body-sm: 14.5px;                       /* dense supporting copy */
+  --fs-eyebrow: 12px;                         /* kickers, tags, labels */
+
   /* Elevation — derived from the ground: soft ink-tinted shadows on a
      light theme, a hairline edge + ambient darkness on a dark one. */
   --shadow-sm: 0 1px 2px color-mix(in srgb, #2d2b2b 14%, transparent);
@@ -104,7 +117,7 @@ h4 {
 
 body {
   margin: 0;
-  font-size: 15px;
+  font-size: var(--fs-body);
   line-height: 1.55;
   font-weight: 400;
 }
@@ -123,27 +136,27 @@ h6 {
 }
 
 h1 {
-  font-size: 42px;
+  font-size: var(--fs-hero);
 }
 
 h2 {
-  font-size: 32px;
+  font-size: var(--fs-section);
 }
 
 h3 {
-  font-size: 25px;
+  font-size: var(--fs-card-title);
 }
 
 h4 {
-  font-size: 20px;
+  font-size: var(--fs-title-sm);
 }
 
 h5 {
-  font-size: 16px;
+  font-size: var(--fs-body);
 }
 
 h6 {
-  font-size: 13px;
+  font-size: var(--fs-eyebrow);
 }
 
 h6 {
@@ -1292,7 +1305,7 @@ summary::-webkit-details-marker {
 }
 
 .page-landing .cmp-item-text {
-  font-size: 15px;
+  font-size: var(--fs-body);
   line-height: 1.5;
   color: var(--color-text-muted);
 }
@@ -1538,7 +1551,7 @@ summary::-webkit-details-marker {
 }
 
 .page-landing .tst-quote {
-  font-size: clamp(16.5px, 1.6vw, 19px);
+  font-size: var(--fs-lede);
   line-height: 1.66;
   color: #2E3733;
   margin: 0;
@@ -1892,7 +1905,7 @@ summary::-webkit-details-marker {
 
 .page-landing .flow-title {
   font-family: var(--font-heading);
-  font-size: clamp(18px, 1.6vw, 21px);
+  font-size: var(--fs-card-title);
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.3;
@@ -1901,7 +1914,7 @@ summary::-webkit-details-marker {
 }
 
 .page-landing .flow-text {
-  font-size: clamp(16px, 1.25vw, 15.5px);
+  font-size: var(--fs-body);
   line-height: 1.68;
   color: #5a5c5a;
   margin: 0;
@@ -2274,7 +2287,7 @@ summary::-webkit-details-marker {
 
 .page-landing .daily-title {
   font-family: var(--font-heading, var(--font-heading));
-  font-size: clamp(30px, 4.2vw, 44px);
+  font-size: var(--fs-section);
   font-weight: 800;
   letter-spacing: -0.035em;
   color: var(--color-text);
@@ -2283,7 +2296,7 @@ summary::-webkit-details-marker {
 }
 
 .page-landing .daily-subtitle {
-  font-size: clamp(16px, 1.6vw, 18.5px);
+  font-size: var(--fs-lede);
   line-height: 1.55;
   color: #4A4A4D;
   margin: 0;
@@ -2364,7 +2377,7 @@ summary::-webkit-details-marker {
 
 .page-landing .daily-nav-title {
   font-family: var(--font-heading, var(--font-heading));
-  font-size: clamp(17px, 1.8vw, 21px);
+  font-size: var(--fs-card-title);
   letter-spacing: -0.02em;
   color: var(--color-text);
   line-height: 1.3;
@@ -2379,7 +2392,7 @@ summary::-webkit-details-marker {
 }
 
 .page-landing .daily-nav-desc {
-  font-size: 15px;
+  font-size: var(--fs-body);
   line-height: 1.55;
   color: #4A4A4D;
   margin-bottom: 14px;
@@ -2395,7 +2408,7 @@ summary::-webkit-details-marker {
   display: flex;
   align-items: flex-start;
   gap: 10px;
-  font-size: 14.5px;
+  font-size: var(--fs-body-sm);
   line-height: 1.45;
   color: var(--color-text);
   font-weight: 500;
@@ -3839,7 +3852,7 @@ body {
 
 .page-about .approach-title {
   font-family: var(--font-heading);
-  font-size: clamp(28px, 4vw, 42px);
+  font-size: var(--fs-section);
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1.15;
@@ -3849,7 +3862,7 @@ body {
 
 .page-about .approach-text {
   font-family: var(--font-body);
-  font-size: clamp(16px, 1.8vw, 19.5px);
+  font-size: var(--fs-lede);
   line-height: 1.7;
   color: var(--color-text-muted);
   margin: 0;
@@ -3999,7 +4012,7 @@ body {
 
 .page-about .what-we-do-tag {
   font-family: var(--font-heading);
-  font-size: 11px;
+  font-size: var(--fs-eyebrow);
   font-weight: 700;
   letter-spacing: 0.12em;
   text-transform: uppercase;
@@ -4009,7 +4022,7 @@ body {
 
 .page-about .what-we-do-title {
   font-family: var(--font-heading);
-  font-size: clamp(19px, 2vw, 22px);
+  font-size: var(--fs-card-title);
   font-weight: 700;
   color: var(--color-text);
   margin: 0 0 12px 0;
@@ -4019,7 +4032,7 @@ body {
 
 .page-about .what-we-do-desc {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: var(--fs-body);
   line-height: 1.65;
   color: var(--color-text-muted);
   margin: 0 0 20px 0;
@@ -4090,7 +4103,7 @@ body {
 
 .page-about .why-choose-card-title {
   font-family: var(--font-heading);
-  font-size: clamp(18px, 2vw, 21px);
+  font-size: var(--fs-card-title);
   font-weight: 700;
   color: var(--color-text);
   margin: 0 0 10px 0;
@@ -4099,7 +4112,7 @@ body {
 
 .page-about .why-choose-card-text {
   font-family: var(--font-body);
-  font-size: 15px;
+  font-size: var(--fs-body);
   line-height: 1.65;
   color: var(--color-text-muted);
   margin: 0;
@@ -4390,14 +4403,14 @@ body {
    --------------------------------------------------------------------------- */
 
 .legal-page h1 {
-  font-size: clamp(32px, 4.5vw, 48px);
-  font-weight: 800;
+  font-size: var(--fs-hero);
+  font-weight: var(--fw-hero);
   line-height: 1.15;
   margin-bottom: 12px;
 }
 
 .legal-page h2 {
-  font-size: clamp(22px, 3vw, 26px);
+  font-size: var(--fs-subsection);
   font-weight: 800;
   margin: 48px 0 16px;
   scroll-margin-top: 90px;
@@ -4406,7 +4419,7 @@ body {
 }
 
 .legal-page h3 {
-  font-size: 18px;
+  font-size: var(--fs-title-sm);
   font-weight: 700;
   margin: 28px 0 12px;
 }
@@ -4414,7 +4427,7 @@ body {
 .legal-page p,
 .legal-page li {
   color: var(--color-text-legal);
-  font-size: 16px;
+  font-size: var(--fs-body);
   line-height: 1.7;
 }
 
@@ -4474,7 +4487,7 @@ body {
 .legal-page table {
   width: 100%;
   border-collapse: collapse;
-  font-size: 15px;
+  font-size: var(--fs-body);
   text-align: left;
 }
 
@@ -4986,7 +4999,7 @@ body {
   color: #00844A;
   border-radius: 999px;
   padding: 6px 13px;
-  font-size: 12px;
+  font-size: var(--fs-eyebrow);
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -4995,7 +5008,7 @@ body {
 
 .page-blog .blog-title {
   font-family: var(--font-heading);
-  font-size: clamp(19px, 1.6vw, 22px);
+  font-size: var(--fs-card-title);
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.28;
@@ -5013,7 +5026,7 @@ body {
 }
 
 .page-blog .blog-excerpt {
-  font-size: 15px;
+  font-size: var(--fs-body);
   line-height: 1.62;
   color: #4A4A4D;
   margin: 0;
@@ -5047,7 +5060,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  font-size: 15px;
+  font-size: var(--fs-body-sm);
   font-weight: 700;
   color: var(--color-accent-600);
 }
@@ -5068,7 +5081,7 @@ body {
 }
 
 .page-blog .post-body>p {
-  font-size: 17px;
+  font-size: var(--fs-body);
   line-height: 1.78;
   color: #3F4744;
   margin: 0 0 22px;
@@ -5080,7 +5093,7 @@ body {
 
 .page-blog .post-body h2 {
   font-family: var(--font-heading);
-  font-size: clamp(22px, 2.6vw, 27px);
+  font-size: var(--fs-subsection);
   font-weight: 700;
   letter-spacing: -0.028em;
   line-height: 1.25;
@@ -5090,7 +5103,7 @@ body {
 
 .page-blog .post-body h3 {
   font-family: var(--font-heading);
-  font-size: 18.5px;
+  font-size: var(--fs-title-sm);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--color-text);
@@ -5109,7 +5122,7 @@ body {
 .page-blog .post-body li {
   position: relative;
   padding-left: 30px;
-  font-size: 16.5px;
+  font-size: var(--fs-body);
   line-height: 1.68;
   color: #3F4744;
 }
@@ -5139,7 +5152,7 @@ body {
   padding: 4px 0 4px 22px;
   border-left: 3px solid var(--brand);
   font-family: var(--font-heading);
-  font-size: clamp(18px, 2vw, 21px);
+  font-size: var(--fs-lede);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.45;
@@ -5204,11 +5217,11 @@ body {
 
 @media (max-width:640px) {
   .page-blog .post-body>p {
-    font-size: 16.5px;
+    font-size: var(--fs-body);
   }
 
   .page-blog .post-body li {
-    font-size: 16px;
+    font-size: var(--fs-body);
   }
 
   .page-blog .post-note {
@@ -5739,7 +5752,7 @@ body {
   color: #00844A;
   border-radius: 999px;
   padding: 6px 13px;
-  font-size: 12px;
+  font-size: var(--fs-eyebrow);
   font-weight: 700;
   letter-spacing: 0.07em;
   text-transform: uppercase;
@@ -5748,7 +5761,7 @@ body {
 
 .page-post .blog-title {
   font-family: var(--font-heading);
-  font-size: clamp(19px, 1.6vw, 22px);
+  font-size: var(--fs-card-title);
   font-weight: 700;
   letter-spacing: -0.025em;
   line-height: 1.28;
@@ -5766,7 +5779,7 @@ body {
 }
 
 .page-post .blog-excerpt {
-  font-size: 15px;
+  font-size: var(--fs-body);
   line-height: 1.62;
   color: #4A4A4D;
   margin: 0;
@@ -5800,7 +5813,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 9px;
-  font-size: 15px;
+  font-size: var(--fs-body-sm);
   font-weight: 700;
   color: var(--color-accent-600);
 }
@@ -5821,7 +5834,7 @@ body {
 }
 
 .page-post .post-body>p {
-  font-size: 17px;
+  font-size: var(--fs-body);
   line-height: 1.78;
   color: #3F4744;
   margin: 0 0 22px;
@@ -5833,7 +5846,7 @@ body {
 
 .page-post .post-body h2 {
   font-family: var(--font-heading);
-  font-size: clamp(22px, 2.6vw, 27px);
+  font-size: var(--fs-subsection);
   font-weight: 700;
   letter-spacing: -0.028em;
   line-height: 1.25;
@@ -5843,7 +5856,7 @@ body {
 
 .page-post .post-body h3 {
   font-family: var(--font-heading);
-  font-size: 18.5px;
+  font-size: var(--fs-title-sm);
   font-weight: 700;
   letter-spacing: -0.02em;
   color: var(--color-text);
@@ -5862,7 +5875,7 @@ body {
 .page-post .post-body li {
   position: relative;
   padding-left: 30px;
-  font-size: 16.5px;
+  font-size: var(--fs-body);
   line-height: 1.68;
   color: #3F4744;
 }
@@ -5892,7 +5905,7 @@ body {
   padding: 4px 0 4px 22px;
   border-left: 3px solid var(--brand);
   font-family: var(--font-heading);
-  font-size: clamp(18px, 2vw, 21px);
+  font-size: var(--fs-lede);
   font-weight: 600;
   letter-spacing: -0.02em;
   line-height: 1.45;
@@ -5957,11 +5970,11 @@ body {
 
 @media (max-width:640px) {
   .page-post .post-body>p {
-    font-size: 16.5px;
+    font-size: var(--fs-body);
   }
 
   .page-post .post-body li {
-    font-size: 16px;
+    font-size: var(--fs-body);
   }
 
   .page-post .post-note {
@@ -6491,7 +6504,7 @@ body {
   :is(.page-landing, .page-about, .page-std, .legal-page, .page-blog, .page-post) .legal-table-wrap td {
     padding: 10px 0 0;
     border-bottom: 0;
-    font-size: 15px;
+    font-size: var(--fs-body);
     line-height: 1.6;
   }
 
@@ -6500,7 +6513,7 @@ body {
     display: block;
     margin-bottom: 3px;
     font-family: var(--font-heading);
-    font-size: 11px;
+    font-size: var(--fs-eyebrow);
     font-weight: 700;
     letter-spacing: 0.1em;
     text-transform: uppercase;
@@ -6513,7 +6526,7 @@ body {
     color: var(--color-text);
     font-family: var(--font-heading);
     font-weight: 700;
-    font-size: 16px;
+    font-size: var(--fs-body);
   }
 }
 
@@ -6948,7 +6961,7 @@ body {
   gap: 9px;
   border-radius: 999px;
   padding: 6px 14px 6px 7px;
-  font-size: 12px;
+  font-size: var(--fs-eyebrow);
   font-weight: 600;
   letter-spacing: 0.02em;
   border: 1px solid var(--color-divider);
@@ -6956,8 +6969,8 @@ body {
 }
 
 .page-ind .ind-h1 {
-  font-size: clamp(32px, 5vw, 56px);
-  font-weight: 800;
+  font-size: var(--fs-hero);
+  font-weight: var(--fw-hero);
   letter-spacing: -0.04em;
   line-height: 1.07;
   margin: 22px 0 18px;
@@ -6965,7 +6978,7 @@ body {
 }
 
 .page-ind .ind-lede {
-  font-size: clamp(15.5px, 1.6vw, 18px);
+  font-size: var(--fs-lede);
   line-height: 1.7;
   color: var(--color-text-muted);
   max-width: 40em;
@@ -6973,7 +6986,7 @@ body {
 }
 
 .page-ind .ind-h2 {
-  font-size: clamp(24px, 3.4vw, 38px);
+  font-size: var(--fs-section);
   font-weight: 800;
   letter-spacing: -0.035em;
   line-height: 1.15;
@@ -6982,7 +6995,7 @@ body {
 }
 
 .page-ind .ind-sub {
-  font-size: clamp(15px, 1.5vw, 16.5px);
+  font-size: var(--fs-lede);
   line-height: 1.7;
   color: var(--color-text-muted);
   max-width: 46em;
@@ -7180,14 +7193,14 @@ body {
 }
 
 .page-ind .ind-card h3 {
-  font-size: 17px;
+  font-size: var(--fs-card-title);
   font-weight: 700;
   letter-spacing: -0.02em;
   margin: 14px 0 8px;
 }
 
 .page-ind .ind-card p {
-  font-size: 14.5px;
+  font-size: var(--fs-body);
   line-height: 1.65;
   color: var(--color-text-muted);
   margin: 0;
@@ -7222,7 +7235,7 @@ body {
   grid-template-columns: auto minmax(0, 1fr);
   gap: 12px;
   align-items: start;
-  font-size: 15.5px;
+  font-size: var(--fs-body);
   line-height: 1.6;
   color: var(--color-text-muted);
 }
@@ -7265,7 +7278,7 @@ body {
   padding: 20px 2px;
   cursor: pointer;
   list-style: none;
-  font-size: clamp(15.5px, 1.7vw, 17.5px);
+  font-size: var(--fs-title-sm);
   font-weight: 600;
   letter-spacing: -0.015em;
   transition: color 0.18s ease;
@@ -7295,7 +7308,7 @@ body {
 .page-ind .ind-faq p {
   margin: 0;
   padding: 0 2px 22px;
-  font-size: 15.5px;
+  font-size: var(--fs-body);
   line-height: 1.7;
   color: var(--color-text-muted);
   max-width: 58em;
@@ -7401,16 +7414,16 @@ body {
   }
 
   .page-ind .ind-lede {
-    font-size: 15px;
+    font-size: var(--fs-lede);
   }
 
   .page-ind .ind-h2 {
-    font-size: clamp(22px, 5.5vw, 30px);
+    font-size: var(--fs-section);
   }
 
   /* Reduce FAQ summary font */
   .page-ind details summary {
-    font-size: 15.5px !important;
+    font-size: var(--fs-title-sm) !important;
     padding: 18px 0 !important;
   }
 
@@ -7445,11 +7458,11 @@ body {
   }
 
   .page-ind .ind-card h3 {
-    font-size: 15.5px;
+    font-size: var(--fs-card-title);
   }
 
   .page-ind .ind-card p {
-    font-size: 13.5px;
+    font-size: var(--fs-body);
   }
 
   .page-ind .ind-btn {

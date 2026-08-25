@@ -12,6 +12,7 @@ import {
   FEATURE_TABS,
   HERO_PHRASES,
 } from '@/lib/landing-data';
+import { INDUSTRIES } from '@/lib/industries-data';
 
 /**
  * The landing page body.
@@ -40,6 +41,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
   // declares --brand, so nothing here reads it.
   const active = DATA.find((d) => d.name === industry) || DATA[2];
   const extra = EXTRA[active.name] || { metrics: [], note: '' };
+  const activeSlug = INDUSTRIES.find((ind) => ind.name === active.name)?.slug || '';
 
   // The hero headline types a phrase out, holds it, deletes it and moves to the
   // next. The source re-armed a single timeout from each setState callback;
@@ -241,9 +243,9 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                 <span style={{ color: "var(--color-meta-blue)" }}>Tech Provider</span></span>
             </div>
           </div>
-          <h1 style={{ fontSize: "clamp(36px,6.4vw,66px)", lineHeight: "1.05", fontWeight: "700", letterSpacing: "-0.035em", marginBottom: "22px", textWrap: "balance" }}>
+          <h1 style={{ fontSize: "var(--fs-hero)", lineHeight: "1.05", fontWeight: "var(--fw-hero)", letterSpacing: "-0.035em", marginBottom: "22px", textWrap: "balance" }}>
             {' '}One inbox. Every customer.<br /><span className="hero-rotator" style={{ color: "var(--brand)" }}>{heroPhrase}</span></h1>
-          <p style={{ fontSize: "clamp(16px,1.6vw,18.5px)", lineHeight: "1.55", color: "var(--color-text-muted)", maxWidth: "60em", margin: "0 auto 30px", textWrap: "pretty" }}>
+          <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.55", color: "var(--color-text-muted)", maxWidth: "60em", margin: "0 auto 30px", textWrap: "pretty" }}>
             {' '}Stop switching between apps and missing important conversations. Manage WhatsApp, Instagram, and website
             leads from one AI-powered inbox built for faster conversions.</p>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px", marginBottom: "34px" }}>
@@ -270,7 +272,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "12px", marginBottom: "16px" }}>
             <Hx link className="btn-fx btn-fx-brand hero-cta-pulse" href="/book-a-demo" style={{ background: "var(--brand)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-text)" }}>Book a Free Demo</Hx>
-            <Hx link className="btn-fx btn-fx-dark" href="/contact" style={{ background: "var(--color-text)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px", border: "1px solid transparent" }} hoverStyle={{ background: "var(--color-bg)", color: "var(--color-text)", border: "1px solid var(--color-text)" }}>Start Free</Hx>
+            <Hx link className="btn-fx btn-fx-dark" href="/pricing" style={{ background: "var(--color-text)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px", border: "1px solid transparent" }} hoverStyle={{ background: "var(--color-bg)", color: "var(--color-text)", border: "1px solid var(--color-text)" }}>Pricing</Hx>
           </div>
           <div style={{ fontSize: "13.5px", color: "var(--color-text-muted)", paddingTop: "12px" }}>No setup fee · Live in days, not months</div>
         </div>
@@ -285,7 +287,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
       <section style={{ background: "var(--color-bg)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 clamp(20px,4vw,32px)" }}>
           <div data-reveal style={{ maxWidth: "760px", margin: "0 auto clamp(32px,4vw,44px)" }}>
-            <h2 style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "12px", textAlign: "center" }}>
+            <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "12px", textAlign: "center" }}>
               {' '}Why
               WhatsApp comes first</h2>
             {/* <p style={{ fontSize: "clamp(15px,1.6vw,17.5px)", color: "var(--color-text-muted)", textAlign: "center" }}>It's the one app your
@@ -395,7 +397,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
           {/* SECTION HEADER */}
           <div data-reveal style={{ textAlign: "center", maxWidth: "680px", margin: "0 auto 48px" }}>
-            <h2 style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "800", letterSpacing: "-0.035em", color: "var(--color-text)", marginBottom: "14px", lineHeight: "1.15" }}>
+            <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "800", letterSpacing: "-0.035em", color: "var(--color-text)", marginBottom: "14px", lineHeight: "1.15" }}>
               {' '}Where customers slip through{' '}
             </h2>
             {/* <p style={{ fontSize: "clamp(15.5px,1.7vw,18px)", lineHeight: "1.6", color: "#4A4A4D", margin: "0" }}>
@@ -414,13 +416,13 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                   <span style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#F3EEFE", border: "1px solid #E2D9F9", display: "grid", placeItems: "center", flex: "none" }}>
                     <img src="/assets/icons/Scattered%20Conversations.svg" alt="Scattered Conversations" style={{ width: "24px", height: "24px", display: "block", filter: "brightness(0) saturate(100%) invert(27%) sepia(85%) saturate(2250%) hue-rotate(248deg) brightness(97%) contrast(93%)" }} />
                   </span>
-                  <h3 style={{ fontSize: "clamp(20px,2.4vw,24px)", fontWeight: "800", letterSpacing: "-0.025em", color: "var(--color-text)", margin: "0" }}>
+                  <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "800", letterSpacing: "-0.025em", color: "var(--color-text)", margin: "0" }}>
                     {' '}Scattered Conversations</h3>
                 </div>
-                <p style={{ fontSize: "15.5px", fontWeight: "600", color: "#334155", marginBottom: "8px", lineHeight: "1.45" }}>
+                <p style={{ fontSize: "var(--fs-body)", fontWeight: "600", color: "#334155", marginBottom: "8px", lineHeight: "1.45" }}>
                   {' '}Three apps, three logins, one exhausted team.{' '}
                 </p>
-                <p style={{ fontSize: "14px", lineHeight: "1.6", color: "#64748B", margin: "0" }}>
+                <p style={{ fontSize: "var(--fs-body-sm)", lineHeight: "1.6", color: "#64748B", margin: "0" }}>
                   {' '}Your team jumps between WhatsApp, Instagram and email all day. Context gets lost in the switch, and
                   the same customer gets asked the same question twice.{' '}
                 </p>
@@ -439,13 +441,13 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                   <span style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#EEF6FF", border: "1px solid #D2E5FF", display: "grid", placeItems: "center", flex: "none" }}>
                     <img src="/assets/icons/Slow%20Replies.svg" alt="Slow Replies" style={{ width: "24px", height: "24px", display: "block", filter: "brightness(0) saturate(100%) invert(41%) sepia(85%) saturate(1915%) hue-rotate(182deg) brightness(96%) contrast(101%)" }} />
                   </span>
-                  <h3 style={{ fontSize: "clamp(20px,2.4vw,24px)", fontWeight: "800", letterSpacing: "-0.025em", color: "var(--color-text)", margin: "0" }}>
+                  <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "800", letterSpacing: "-0.025em", color: "var(--color-text)", margin: "0" }}>
                     {' '}Slow Replies</h3>
                 </div>
-                <p style={{ fontSize: "15.5px", fontWeight: "600", color: "#334155", marginBottom: "8px", lineHeight: "1.45" }}>
+                <p style={{ fontSize: "var(--fs-body)", fontWeight: "600", color: "#334155", marginBottom: "8px", lineHeight: "1.45" }}>
                   {' '}Customers wait hours for an answer they needed in minutes.{' '}
                 </p>
-                <p style={{ fontSize: "14px", lineHeight: "1.6", color: "#64748B", margin: "0" }}>
+                <p style={{ fontSize: "var(--fs-body-sm)", lineHeight: "1.6", color: "#64748B", margin: "0" }}>
                   {' '}People buy from whoever replies first. By the time your team opens the message, the enquiry has
                   usually gone somewhere else.{' '}
                 </p>
@@ -464,13 +466,13 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                   <span style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#FFF7ED", border: "1px solid #FFEDD5", display: "grid", placeItems: "center", flex: "none" }}>
                     <img src="/assets/icons/Forgotten%20Follow-ups.svg" alt="Forgotten Follow-ups" style={{ width: "24px", height: "24px", display: "block", filter: "brightness(0) saturate(100%) invert(47%) sepia(76%) saturate(2390%) hue-rotate(16deg) brightness(97%) contrast(96%)" }} />
                   </span>
-                  <h3 style={{ fontSize: "clamp(20px,2.4vw,24px)", fontWeight: "800", letterSpacing: "-0.025em", color: "var(--color-text)", margin: "0" }}>
+                  <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "800", letterSpacing: "-0.025em", color: "var(--color-text)", margin: "0" }}>
                     {' '}Forgotten Follow-ups</h3>
                 </div>
-                <p style={{ fontSize: "15.5px", fontWeight: "600", color: "#334155", marginBottom: "8px", lineHeight: "1.45" }}>
+                <p style={{ fontSize: "var(--fs-body)", fontWeight: "600", color: "#334155", marginBottom: "8px", lineHeight: "1.45" }}>
                   {' '}A quiet customer today is a lost sale tomorrow.{' '}
                 </p>
-                <p style={{ fontSize: "14px", lineHeight: "1.6", color: "#64748B", margin: "0" }}>
+                <p style={{ fontSize: "var(--fs-body-sm)", lineHeight: "1.6", color: "#64748B", margin: "0" }}>
                   {' '}Interested buyers go quiet and stay that way. Without a reminder in front of someone, the conversation
                   simply ends.{' '}
                 </p>
@@ -489,13 +491,13 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                   <span style={{ width: "48px", height: "48px", borderRadius: "14px", background: "#FDF0F6", border: "1px solid #FBCFE8", display: "grid", placeItems: "center", flex: "none" }}>
                     <img src="/assets/icons/Wasted%20Ad%20Spend.svg" alt="Wasted Ad Spend" style={{ width: "24px", height: "24px", display: "block", filter: "brightness(0) saturate(100%) invert(33%) sepia(65%) saturate(2238%) hue-rotate(303deg) brightness(92%) contrast(92%)" }} />
                   </span>
-                  <h3 style={{ fontSize: "clamp(20px,2.4vw,24px)", fontWeight: "800", letterSpacing: "-0.025em", color: "var(--color-text)", margin: "0" }}>
+                  <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "800", letterSpacing: "-0.025em", color: "var(--color-text)", margin: "0" }}>
                     {' '}Wasted Ad Spend</h3>
                 </div>
-                <p style={{ fontSize: "15.5px", fontWeight: "600", color: "#334155", marginBottom: "8px", lineHeight: "1.45" }}>
+                <p style={{ fontSize: "var(--fs-body)", fontWeight: "600", color: "#334155", marginBottom: "8px", lineHeight: "1.45" }}>
                   {' '}You can't tell which ads actually turned into sales.{' '}
                 </p>
-                <p style={{ fontSize: "14px", lineHeight: "1.6", color: "#64748B", margin: "0" }}>
+                <p style={{ fontSize: "var(--fs-body-sm)", lineHeight: "1.6", color: "#64748B", margin: "0" }}>
                   {' '}Money keeps going into campaigns that never close, because nothing connects the chat that started from
                   an ad to the order that came out of it.{' '}
                 </p>
@@ -515,7 +517,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
       <section style={{ background: "var(--color-bg)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(56px,8vw,84px) clamp(20px,4vw,32px)" }}>
           <div data-reveal style={{ textAlign: "center", marginBottom: "clamp(40px,5vw,60px)" }}>
-            <h2 style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.035em", lineHeight: "1.06", maxWidth: "20em", marginLeft: "auto", marginRight: "auto" }}>
+            <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.035em", lineHeight: "1.06", maxWidth: "20em", marginLeft: "auto", marginRight: "auto" }}>
               {' '}One message. Start to finish.</h2>
           </div>
 
@@ -693,7 +695,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
       <section id="platform" style={{ backgroundColor: "var(--color-surface)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(56px,8vw,84px) clamp(20px,4vw,32px)", backgroundColor: "var(--color-surface)" }}>
-          <h2 data-reveal style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "clamp(28px,3.4vw,40px)", textAlign: "center" }}>
+          <h2 data-reveal style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "clamp(28px,3.4vw,40px)", textAlign: "center" }}>
             {' '}Everything in one place</h2>
           <div className="plat-card" data-reveal data-playing={platPlaying ? '' : undefined} ref={platRef}>
             <div className="plat-tabbar" style={{ marginBottom: "clamp(32px,4vw,48px)" }}>
@@ -1164,7 +1166,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
 
       <section id="industries" style={{ position: "relative", zIndex: "7", background: "var(--color-bg)", maxWidth: "1440px", margin: "0 auto", padding: "clamp(56px,8vw,84px) clamp(20px,4vw,32px)" }}>
-        <h2 data-reveal style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "40px", maxWidth: "22em", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
+        <h2 data-reveal style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "40px", maxWidth: "22em", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
           {' '}Built for how your business actually sells</h2>
         <div role="tablist" aria-label="Industries" className="scroll-tabs ind-tabs" data-reveal style={{ display: "flex", flexWrap: "nowrap", gap: "12px", marginBottom: "clamp(28px,3.4vw,40px)", overflowX: "auto" }}>
           {industries.map((ind, i) => (<Fragment key={i}>
@@ -1173,8 +1175,8 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
         </div>
         <div className="ind-grid" data-reveal="stagger" style={{ gap: "clamp(36px,5vw,56px)", alignItems: "stretch" }}>
           <div className="ind-copy" style={{ display: "flex", flexDirection: "column" }}>
-            <h3 style={{ fontSize: "24px", fontWeight: "700", letterSpacing: "-0.02em", marginBottom: "10px" }}>{activeName}</h3>
-            <p style={{ fontSize: "16.5px", lineHeight: "1.6", color: "var(--color-text-muted)", marginBottom: "26px" }}>{activeBlurb}</p>
+            <h3 style={{ fontSize: "var(--fs-card-title)", fontWeight: "700", letterSpacing: "-0.02em", marginBottom: "10px" }}>{activeName}</h3>
+            <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.6", color: "var(--color-text-muted)", marginBottom: "26px" }}>{activeBlurb}</p>
             <div style={{ display: "flex", flexDirection: "column", gap: "12px", borderTop: "1px solid var(--color-divider)", paddingTop: "22px" }}>
               {activePoints.map((pt, i) => (<Fragment key={i}>
                 <div style={{ display: "flex", gap: "11px", alignItems: "flex-start", fontSize: "15px", lineHeight: "1.5", color: "var(--color-text)" }}>
@@ -1193,7 +1195,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                 </div>
               </Fragment>))}
             </div>
-            <p style={{ fontSize: "14px", lineHeight: "1.6", color: "var(--color-text-muted)", marginTop: "22px" }}>{activeNote}</p>
+            <p style={{ fontSize: "var(--fs-body-sm)", lineHeight: "1.6", color: "var(--color-text-muted)", marginTop: "22px" }}>{activeNote}</p>
             <div style={{ marginTop: "26px", border: "1px solid var(--color-divider)", borderRadius: "14px", background: "var(--color-surface-3)", padding: "15px 18px", display: "flex", flexWrap: "wrap", alignItems: "center", gap: "14px" }}>
               <div style={{ display: "flex", alignItems: "center", flex: "none" }}>
                 <span title="WhatsApp" style={{ width: "32px", height: "32px", borderRadius: "50%", background: "var(--color-whatsapp)", border: "2px solid var(--color-surface-3)", display: "grid", placeItems: "center" }}>
@@ -1223,19 +1225,16 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                   your
                   website — answered in seconds.</div>
               </div>
-              <span style={{ display: "inline-flex", alignItems: "center", gap: "7px", flex: "none", fontSize: "11px", fontWeight: "700", letterSpacing: "0.09em", textTransform: "uppercase", color: "var(--brand)", background: "rgba(0,171,86,0.1)", borderRadius: "999px", padding: "5px 11px" }}>
-                <span style={{ width: "7px", height: "7px", borderRadius: "50%", background: "var(--brand)", animation: "shimmer 1.7s ease-in-out infinite", flex: "none" }}></span>Live{' '}
-              </span>
+
             </div>
-            {/* <div style="margin-top:auto;padding-top:28px;">
-              <a class="btn-fx btn-fx-brand btn-fx-arrow" href="Contact.html"
-                style="display:inline-flex;align-items:center;gap:10px;background:var(--brand,#00AB56);color:#fff;font-size:15px;font-weight:700;padding:14px 24px;border-radius:999px;"
-                style-hover="background:#181818">See it for {{ activeName }}
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2"
-                  stroke-linecap="round" stroke-linejoin="round">
+            <div style={{ marginTop: "24px" }}>
+              <Hx link className="btn-fx btn-fx-brand btn-fx-arrow" href={`/industries/${activeSlug}`} style={{ display: "inline-flex", alignItems: "center", gap: "10px", background: "var(--brand)", color: "#fff", fontSize: "15px", fontWeight: "700", padding: "14px 24px", borderRadius: "999px" }} hoverStyle={{ background: "#181818" }}>
+                See it for {activeName}
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
                   <path d="M5 12h14M13 6l6 6-6 6"></path>
-                </svg></a>
-            </div> */}
+                </svg>
+              </Hx>
+            </div>
           </div>
 
           <div className="ind-stage">
@@ -1302,7 +1301,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
       <section style={{ background: "var(--color-surface-2)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(56px,8vw,84px) clamp(20px,4vw,32px)" }}>
-          <h2 data-reveal style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "36px", textAlign: "center" }}>
+          <h2 data-reveal style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "36px", textAlign: "center" }}>
             {' '}Not more
             staff. One platform.</h2>
 
@@ -1315,7 +1314,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                     <path d="M18 6 6 18M6 6l12 12"></path>
                   </svg>
                 </span>
-                <span style={{ fontSize: "18.5px", fontWeight: "700", color: "var(--color-text)" }}>The Old Way</span>
+                <span style={{ fontSize: "var(--fs-card-title)", fontWeight: "700", color: "var(--color-text)" }}>The Old Way</span>
               </div>
 
               <div className="cmp-item" style={{ borderBottom: "1px solid #F4DEDE" }}>
@@ -1323,7 +1322,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                   <svg width="21" height="21" viewBox="0 0 24 24" fill="none" stroke="#E5484D" strokeWidth="1.8" strokeLinecap="round" strokeLinejoin="round" style={{ flex: "none" }}>
                     <path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"></path>
                   </svg>
-                  <span style={{ fontSize: "15.5px", fontWeight: "600", color: "#E5484D" }}>Manual channels</span>
+                  <span style={{ fontSize: "var(--fs-body)", fontWeight: "600", color: "#E5484D" }}>Manual channels</span>
                 </div>
                 <div className="cmp-item-text">Replies delayed, deals forgotten.</div>
               </div>
@@ -1338,7 +1337,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                     <circle cx="9.2" cy="13.6" r="1.15"></circle>
                     <circle cx="14.8" cy="13.6" r="1.15"></circle>
                   </svg>
-                  <span style={{ fontSize: "15.5px", fontWeight: "600", color: "#E5484D" }}>Generic chatbot</span>
+                  <span style={{ fontSize: "var(--fs-body)", fontWeight: "600", color: "#E5484D" }}>Generic chatbot</span>
                 </div>
                 <div className="cmp-item-text">Answers questions, but doesn’t unify your pipeline or ads.</div>
               </div>
@@ -1351,7 +1350,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                     <path d="M16.4 5.6a3.3 3.3 0 0 1 0 6.2"></path>
                     <path d="M18.2 19.6c0-2.6-.9-4.4-2.4-5.3"></path>
                   </svg>
-                  <span style={{ fontSize: "15.5px", fontWeight: "600", color: "#E5484D" }}>Hiring more staff</span>
+                  <span style={{ fontSize: "var(--fs-body)", fontWeight: "600", color: "#E5484D" }}>Hiring more staff</span>
                 </div>
                 <div className="cmp-item-text">Costs more every month, still offline after hours.</div>
               </div>
@@ -1370,7 +1369,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                     <path d="M20 6 9 17l-5-5"></path>
                   </svg>
                 </span>
-                <span style={{ fontSize: "18.5px", fontWeight: "700", color: "var(--brand)" }}>The Smarter Way</span>
+                <span style={{ fontSize: "var(--fs-card-title)", fontWeight: "700", color: "var(--brand)" }}>The Smarter Way</span>
               </div>
 
               <div className="cmp-new-body">
@@ -1379,7 +1378,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
                     <img src="/assets/new/bot.png" alt="AI Agent" style={{ width: "100%", height: "100%", objectFit: "cover", display: "block" }} />
                   </span>
                   <img src="/assets/converse360-logo.png" alt="Converse360" style={{ height: "32px", width: "auto", display: "block", marginTop: "18px" }} />
-                  <p style={{ fontSize: "15px", lineHeight: "1.55", color: "var(--color-text-muted)", marginTop: "10px", maxWidth: "16em" }}>One inbox,
+                  <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.55", color: "var(--color-text-muted)", marginTop: "10px", maxWidth: "16em" }}>One inbox,
                     one
                     pipeline, one AI agent — every channel.</p>
                 </div>
@@ -1454,7 +1453,7 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
       <section style={{ background: "var(--color-bg)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(56px,8vw,84px) clamp(20px,4vw,32px)" }}>
-          <h2 data-reveal style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "clamp(30px,3.6vw,44px)", textAlign: "center" }}>
+          <h2 data-reveal style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "clamp(30px,3.6vw,44px)", textAlign: "center" }}>
             {' '}What our clients say</h2>
           <div className="tst-grid" data-reveal="stagger">
 
@@ -1517,53 +1516,53 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
       <section id="faq" style={{ maxWidth: "1440px", margin: "0 auto", padding: "30px clamp(20px,4vw,32px) clamp(56px,8vw,84px)" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(min(320px,100%),1fr))", gap: "clamp(32px,5vw,56px)", alignItems: "start" }}>
           <div data-reveal>
-            <h2 style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "12px", textAlign: "left" }}>
+            <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "12px", textAlign: "left" }}>
               {' '}Questions, answered plainly</h2>
-            <p style={{ fontSize: "15.5px", lineHeight: "1.55", color: "var(--color-text-muted)", textAlign: "left" }}>Still unsure? <Link href="/book-a-demo">Book a
+            <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.55", color: "var(--color-text-muted)", textAlign: "left" }}>Still unsure? <Link href="/book-a-demo">Book a
               demo</Link> and we'll walk you through it.</p>
           </div>
           <div data-reveal="stagger" style={{ borderTop: "1px solid var(--color-divider)" }}>
             <details style={{ borderBottom: "1px solid var(--color-divider)" }}>
-              <summary style={{ cursor: "pointer", padding: "22px 0", fontSize: "17.5px", fontWeight: "500", display: "flex", alignItems: "center", gap: "16px" }}>
+              <summary style={{ cursor: "pointer", padding: "22px 0", fontSize: "var(--fs-title-sm)", fontWeight: "500", display: "flex", alignItems: "center", gap: "16px" }}>
                 <span style={{ flex: "1" }}>Is Converse360 an official WhatsApp API provider?</span>
                 <span style={{ fontSize: "22px", color: "var(--brand)", lineHeight: "1" }}>+</span>
               </summary>
-              <p style={{ fontSize: "15.5px", lineHeight: "1.6", color: "var(--color-text-muted)", padding: "0 0 22px", maxWidth: "44em" }}>Yes. We set you
+              <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.6", color: "var(--color-text-muted)", padding: "0 0 22px", maxWidth: "44em" }}>Yes. We set you
                 up on the official WhatsApp Business Platform through Meta. Your number stays safe and your account
                 stays compliant.</p>
             </details>
             <details style={{ borderBottom: "1px solid var(--color-divider)" }}>
-              <summary style={{ cursor: "pointer", padding: "22px 0", fontSize: "17.5px", fontWeight: "500", display: "flex", alignItems: "center", gap: "16px" }}>
+              <summary style={{ cursor: "pointer", padding: "22px 0", fontSize: "var(--fs-title-sm)", fontWeight: "500", display: "flex", alignItems: "center", gap: "16px" }}>
                 <span style={{ flex: "1" }}>Do I need a developer to set this up?</span>
                 <span style={{ fontSize: "22px", color: "var(--brand)", lineHeight: "1" }}>+</span>
               </summary>
-              <p style={{ fontSize: "15.5px", lineHeight: "1.6", color: "var(--color-text-muted)", padding: "0 0 22px", maxWidth: "44em" }}>No. Our team
+              <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.6", color: "var(--color-text-muted)", padding: "0 0 22px", maxWidth: "44em" }}>No. Our team
                 handles the setup and verification. After that, everything — flows, replies, broadcasts — is built by
                 clicking, not coding.</p>
             </details>
             <details style={{ borderBottom: "1px solid var(--color-divider)" }}>
-              <summary style={{ cursor: "pointer", padding: "22px 0", fontSize: "17.5px", fontWeight: "500", display: "flex", alignItems: "center", gap: "16px" }}>
+              <summary style={{ cursor: "pointer", padding: "22px 0", fontSize: "var(--fs-title-sm)", fontWeight: "500", display: "flex", alignItems: "center", gap: "16px" }}>
                 <span style={{ flex: "1" }}>Is the AI agent included, or billed separately?</span>
                 <span style={{ fontSize: "22px", color: "var(--brand)", lineHeight: "1" }}>+</span>
               </summary>
-              <p style={{ fontSize: "15.5px", lineHeight: "1.6", color: "var(--color-text-muted)", padding: "0 0 22px", maxWidth: "44em" }}>The AI agent is
+              <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.6", color: "var(--color-text-muted)", padding: "0 0 22px", maxWidth: "44em" }}>The AI agent is
                 part of the Growth and Scale plans. On Starter it can be added on. WhatsApp's own per-message charges
                 from Meta are billed at actual cost.</p>
             </details>
             <details style={{ borderBottom: "1px solid var(--color-divider)" }}>
-              <summary style={{ cursor: "pointer", padding: "22px 0", fontSize: "17.5px", fontWeight: "500", display: "flex", alignItems: "center", gap: "16px" }}>
+              <summary style={{ cursor: "pointer", padding: "22px 0", fontSize: "var(--fs-title-sm)", fontWeight: "500", display: "flex", alignItems: "center", gap: "16px" }}>
                 <span style={{ flex: "1" }}>Can I use this for Instagram and my website too?</span>
                 <span style={{ fontSize: "22px", color: "var(--brand)", lineHeight: "1" }}>+</span>
               </summary>
-              <p style={{ fontSize: "15.5px", lineHeight: "1.6", color: "var(--color-text-muted)", padding: "0 0 22px", maxWidth: "44em" }}>Yes. Instagram
+              <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.6", color: "var(--color-text-muted)", padding: "0 0 22px", maxWidth: "44em" }}>Yes. Instagram
                 DMs and your website chat land in the same inbox, with the same AI agent and the same pipeline.</p>
             </details>
             <details style={{ borderBottom: "1px solid var(--color-divider)" }}>
-              <summary style={{ cursor: "pointer", padding: "22px 0", fontSize: "17.5px", fontWeight: "500", display: "flex", alignItems: "center", gap: "16px" }}>
+              <summary style={{ cursor: "pointer", padding: "22px 0", fontSize: "var(--fs-title-sm)", fontWeight: "500", display: "flex", alignItems: "center", gap: "16px" }}>
                 <span style={{ flex: "1" }}>How is ad spend connected to real sales?</span>
                 <span style={{ fontSize: "22px", color: "var(--brand)", lineHeight: "1" }}>+</span>
               </summary>
-              <p style={{ fontSize: "15.5px", lineHeight: "1.6", color: "var(--color-text-muted)", padding: "0 0 22px", maxWidth: "44em" }}>Every chat that
+              <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.6", color: "var(--color-text-muted)", padding: "0 0 22px", maxWidth: "44em" }}>Every chat that
                 starts from an ad carries that ad's name with it. When the deal is won, you can see which ad brought it
                 in.</p>
             </details>
@@ -1573,13 +1572,13 @@ export default function LandingBody({ defaultIndustry = 'Real Estate' }: { defau
 
       <section id="cta" style={{ background: "var(--brand)", color: "var(--color-bg)" }}>
         <div data-reveal="stagger" style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(56px,8vw,88px) clamp(20px,4vw,32px)" }}>
-          <h2 style={{ fontSize: "clamp(30px,4.5vw,42px)", fontWeight: "700", letterSpacing: "-0.035em", lineHeight: "1.05", marginBottom: "18px", maxWidth: "20em", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
+          <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.035em", lineHeight: "1.05", marginBottom: "18px", maxWidth: "20em", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
             {' '}Your next reply could be automatic.</h2>
-          <p style={{ fontSize: "18.5px", lineHeight: "1.5", color: "rgba(255,255,255,0.85)", maxWidth: "30em", marginBottom: "34px", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
+          <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.5", color: "rgba(255,255,255,0.85)", maxWidth: "30em", marginBottom: "34px", textAlign: "center", marginLeft: "auto", marginRight: "auto" }}>
             {' '}See it working on your own channels. Fifteen minutes, no slides.</p>
           <div style={{ display: "flex", justifyContent: "center", flexWrap: "wrap", gap: "14px" }}>
             <Hx link className="btn-fx btn-fx-dark" href="/book-a-demo" style={{ background: "var(--color-bg)", color: "var(--color-text)", fontSize: "16px", fontWeight: "700", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "var(--color-surface)" }}>Book a Free Demo</Hx>
-            <Hx link className="btn-fx" href="/contact" style={{ border: "1px solid rgba(255,255,255,0.5)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "rgba(255,255,255,0.12)" }}>Start Free</Hx>
+            <Hx link className="btn-fx" href="/pricing" style={{ border: "1px solid rgba(255,255,255,0.5)", color: "var(--color-bg)", fontSize: "16px", fontWeight: "500", padding: "16px 30px", borderRadius: "999px" }} hoverStyle={{ background: "rgba(255,255,255,0.12)" }}>Pricing</Hx>
           </div>
         </div>
       </section>

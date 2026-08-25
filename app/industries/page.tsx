@@ -94,7 +94,7 @@ export default function IndustriesPage() {
                   </span>
                   <h2
                     style={{
-                      fontSize: '19px',
+                      fontSize: 'var(--fs-card-title)',
                       fontWeight: 700,
                       letterSpacing: '-0.025em',
                       margin: '15px 0 8px',
@@ -103,7 +103,7 @@ export default function IndustriesPage() {
                   >
                     {ind.menuLabel}
                   </h2>
-                  <p style={{ fontSize: '14.5px', lineHeight: 1.65, color: 'var(--color-text-muted)', margin: 0 }}>
+                  <p style={{ fontSize: 'var(--fs-body)', lineHeight: 1.65, color: 'var(--color-text-muted)', margin: 0 }}>
                     {blurb}
                   </p>
                   <span className="ind-tile-go">
@@ -120,10 +120,10 @@ export default function IndustriesPage() {
       <section style={{ background: 'var(--brand)', color: 'var(--color-bg)' }}>
         <div style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(48px,6.5vw,76px) clamp(20px,4vw,32px)', display: 'flex', flexDirection: 'column', flexWrap: 'wrap', alignItems: 'center', gap: '24px', textAlign: 'center' }}>
           <div>
-            <h2 style={{ fontSize: 'clamp(24px,3.2vw,36px)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '10px' }}>
+            <h2 style={{ fontSize: 'var(--fs-section)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '10px' }}>
               Not sure which one fits you?
             </h2>
-            <p style={{ fontSize: '16.5px', color: 'rgba(255,255,255,0.9)', maxWidth: '42em', margin: '0 auto' }}>
+            <p style={{ fontSize: 'var(--fs-lede)', color: 'rgba(255,255,255,0.9)', maxWidth: '42em', margin: '0 auto' }}>
               Most businesses sit across two or three of these. Tell us how enquiries reach you today and we will map
               the flow to your own process in a twenty-minute session.
             </p>

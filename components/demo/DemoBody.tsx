@@ -759,8 +759,8 @@ export default function DemoBody() {
 
           <h1
             style={{
-              fontSize: 'clamp(30px,5.4vw,58px)',
-              fontWeight: '700',
+              fontSize: 'var(--fs-hero)',
+              fontWeight: 'var(--fw-hero)',
               letterSpacing: '-0.04em',
               lineHeight: '1.05',
               marginBottom: '16px',
@@ -769,7 +769,7 @@ export default function DemoBody() {
           >
             Meeting scheduled successfully!
           </h1>
-          <p style={{ fontSize: 'clamp(16px,1.8vw,19px)', lineHeight: '1.6', color: 'var(--color-text-muted)' }}>
+          <p style={{ fontSize: 'var(--fs-lede)', lineHeight: '1.6', color: 'var(--color-text-muted)' }}>
             {booked?.name ? `Thanks, ${booked.name.split(' ')[0]} — we` : 'We'}&rsquo;ll send the confirmation and
             the joining link on WhatsApp shortly.
           </p>
@@ -782,10 +782,10 @@ export default function DemoBody() {
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(330px,100%),1fr))', gap: 'clamp(24px,4vw,40px)', alignItems: 'stretch' }}>
 
           <div style={{ ...CARD, background: 'var(--color-surface)', minWidth: '0' }}>
-            <h2 style={{ fontSize: '19px', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '4px' }}>
+            <h2 style={{ fontSize: 'var(--fs-card-title)', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '4px' }}>
               Your booking
             </h2>
-            <p style={{ fontSize: '14.5px', lineHeight: '1.6', color: 'var(--color-text-muted)' }}>
+            <p style={{ fontSize: 'var(--fs-body)', lineHeight: '1.6', color: 'var(--color-text-muted)' }}>
               Quote the reference if you write in about this slot.
             </p>
             <dl style={{ margin: '18px 0 0' }}>
@@ -809,10 +809,10 @@ export default function DemoBody() {
 
           <div style={{ minWidth: '0', display: 'flex', flexDirection: 'column' }}>
             <div style={CARD}>
-              <h2 style={{ fontSize: '19px', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '4px' }}>
+              <h2 style={{ fontSize: 'var(--fs-card-title)', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '4px' }}>
                 Keep it or share it
               </h2>
-              <p style={{ fontSize: '14.5px', lineHeight: '1.6', color: 'var(--color-text-muted)', marginBottom: '18px' }}>
+              <p style={{ fontSize: 'var(--fs-body)', lineHeight: '1.6', color: 'var(--color-text-muted)', marginBottom: '18px' }}>
                 Put it on your calendar, or send it to whoever else should sit in.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '10px' }}>
@@ -841,10 +841,10 @@ export default function DemoBody() {
 
             {/* Takes up the slack, so the column bottoms out with the booking card. */}
             <div style={{ ...CARD, marginTop: '20px', flex: '1' }}>
-              <h2 style={{ fontSize: '19px', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '4px' }}>
+              <h2 style={{ fontSize: 'var(--fs-card-title)', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '4px' }}>
                 Need to change something?
               </h2>
-              <p style={{ fontSize: '14.5px', lineHeight: '1.6', color: 'var(--color-text-muted)', marginBottom: '18px' }}>
+              <p style={{ fontSize: 'var(--fs-body)', lineHeight: '1.6', color: 'var(--color-text-muted)', marginBottom: '18px' }}>
                 Message or call us and we&apos;ll move the slot — no forms to fill in again.
               </p>
               <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
@@ -855,7 +855,7 @@ export default function DemoBody() {
                   Book another demo
                 </Hx>
               </div>
-              <p style={{ fontSize: '14.5px', lineHeight: '1.6', color: 'var(--color-text-muted)', marginTop: '20px', paddingTop: '20px', borderTop: '1px solid var(--color-divider)' }}>
+              <p style={{ fontSize: 'var(--fs-body)', lineHeight: '1.6', color: 'var(--color-text-muted)', marginTop: '20px', paddingTop: '20px', borderTop: '1px solid var(--color-divider)' }}>
                 While you wait, look over{' '}
                 <Hx link href="/pricing" style={{ color: 'var(--brand)', fontWeight: '500' }} hoverStyle={{ color: 'var(--color-text)' }}>
                   plans and per-message costs
@@ -887,10 +887,10 @@ export default function DemoBody() {
     <>
       <section style={{ background: 'var(--color-surface)' }}>
         <div style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(48px,7vw,88px) clamp(20px,4vw,32px)', textAlign: 'center' }}>
-          <h1 style={{ fontSize: 'clamp(32px,5vw,54px)', fontWeight: '700', letterSpacing: '-0.04em', lineHeight: '1.06', marginBottom: '20px', maxWidth: '18em', marginLeft: 'auto', marginRight: 'auto', textWrap: 'balance' }}>
+          <h1 style={{ fontSize: 'var(--fs-hero)', fontWeight: 'var(--fw-hero)', letterSpacing: '-0.04em', lineHeight: '1.06', marginBottom: '20px', maxWidth: '18em', marginLeft: 'auto', marginRight: 'auto', textWrap: 'balance' }}>
             See Converse360 answer your own enquiries.
           </h1>
-          <p style={{ fontSize: 'clamp(16px,1.8vw,19px)', lineHeight: '1.65', color: 'var(--color-text-muted)', maxWidth: '44em', marginLeft: 'auto', marginRight: 'auto' }}>
+          <p style={{ fontSize: 'var(--fs-lede)', lineHeight: '1.65', color: 'var(--color-text-muted)', maxWidth: '44em', marginLeft: 'auto', marginRight: 'auto' }}>
             Bring one question your customers ask every week. In twenty minutes we&apos;ll build the flow that
             handles it, show you the handover to your team, and give you the numbers — no slide deck, no
             commitment.
@@ -909,10 +909,10 @@ export default function DemoBody() {
       <section style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(48px,6.5vw,80px) clamp(20px,4vw,32px)' }}>
         {stepper}
 
-        <h2 style={{ fontSize: 'clamp(24px,3.2vw,32px)', fontWeight: '700', letterSpacing: '-0.03em', marginBottom: '12px' }}>
+        <h2 style={{ fontSize: 'var(--fs-section)', fontWeight: '700', letterSpacing: '-0.03em', marginBottom: '12px' }}>
           {heading.title}
         </h2>
-        <p style={{ fontSize: '16.5px', lineHeight: '1.65', color: 'var(--color-text-muted)', marginBottom: '24px' }}>
+        <p style={{ fontSize: 'var(--fs-lede)', lineHeight: '1.65', color: 'var(--color-text-muted)', marginBottom: '24px' }}>
           {heading.body}
         </p>
 
@@ -959,10 +959,10 @@ export default function DemoBody() {
 
           <div style={{ display: 'flex', flexDirection: 'column', minWidth: '0' }}>
             <div style={{ ...CARD, flex: 1 }}>
-              <h3 style={{ fontSize: '17px', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '6px' }}>
+              <h3 style={{ fontSize: 'var(--fs-card-title)', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '6px' }}>
                 What the twenty minutes covers
               </h3>
-              <p style={{ fontSize: '14.5px', lineHeight: '1.6', color: 'var(--color-text-muted)' }}>
+              <p style={{ fontSize: 'var(--fs-body)', lineHeight: '1.6', color: 'var(--color-text-muted)' }}>
                 One of our product team, start to finish — no sales handoff.
               </p>
               {AGENDA.map((item, i) => (

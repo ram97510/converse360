@@ -26,15 +26,15 @@ export default function AboutPage() {
         <div style={{ position: "relative", maxWidth: "1440px", margin: "0 auto", padding: "clamp(52px,7.5vw,96px) clamp(20px,4vw,32px) clamp(52px,7vw,86px)" }}>
           <div className="ab-hero" style={{ maxWidth: "920px", margin: "0 auto", textAlign: "center" }}>
 
-            <h1 style={{ fontSize: "clamp(34px,5.2vw,60px)", fontWeight: "800", letterSpacing: "-0.04em", lineHeight: "1.06", color: "var(--color-text)", marginBottom: "22px", textWrap: "balance" }}>
+            <h1 style={{ fontSize: "var(--fs-hero)", fontWeight: "var(--fw-hero)", letterSpacing: "-0.04em", lineHeight: "1.06", color: "var(--color-text)", marginBottom: "22px", textWrap: "balance" }}>
               {' '}We help businesses turn <span style={{ color: "var(--brand)" }}>everyday conversations</span> into real
               growth.{' '}
             </h1>
 
-            <p style={{ fontSize: "clamp(16px,1.7vw,19px)", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "54em", margin: "0 auto 16px", textWrap: "pretty" }}>
+            <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "54em", margin: "0 auto 16px", textWrap: "pretty" }}>
               {' '}We build smart WhatsApp and website chat automation that lets companies respond to customers instantly,
               around the clock — without adding to their support workload.</p>
-            <p style={{ fontSize: "clamp(16px,1.7vw,19px)", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "54em", margin: "0 auto 16px", textWrap: "pretty" }}>
+            <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "54em", margin: "0 auto 16px", textWrap: "pretty" }}>
               {' '}FAQs, lead qualification, orders, updates, or guiding a customer through a purchase — Converse360 puts an
               always-on, intelligent chat assistant to work so no message ever goes unanswered.</p>
 
@@ -65,14 +65,14 @@ export default function AboutPage() {
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "0 clamp(20px,4vw,32px) clamp(50px,7vw,90px)" }}>
           <div className="ab-roots-grid" style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "clamp(32px,5vw,64px)", alignItems: "center", paddingBottom: "clamp(32px,4vw,48px)" }}>
             <div>
-              <h2 style={{ fontSize: "clamp(26px,3.8vw,42px)", fontWeight: "800", letterSpacing: "-0.035em", lineHeight: "1.15", textWrap: "balance", marginBottom: "20px", textAlign: "left" }}>
+              <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "800", letterSpacing: "-0.035em", lineHeight: "1.15", textWrap: "balance", marginBottom: "20px", textAlign: "left" }}>
                 {' '}Agency-Made, Product-Driven.</h2>
               <div style={{ borderLeft: "3px solid var(--brand)", paddingLeft: "clamp(16px,2vw,22px)" }}>
-                <p style={{ fontSize: "clamp(15.5px,1.6vw,17.5px)", lineHeight: "1.7", color: "var(--color-text-muted)" }}><img src="/assets/converse360-logo.png" alt="Converse360" style={{ height: "22px", width: "auto", display: "inline-block", verticalAlign: "-4px", marginRight: "4px" }} /> operates
+                <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.7", color: "var(--color-text-muted)" }}><img src="/assets/converse360-logo.png" alt="Converse360" style={{ height: "22px", width: "auto", display: "inline-block", verticalAlign: "-4px", marginRight: "4px" }} /> operates
                   under <strong>Conceps Media Works</strong>, a Coimbatore-based branding, advertising, and digital
                   media agency with 18+ years of experience helping brands grow through creative strategy and
                   technology.</p>
-                <p style={{ fontSize: "clamp(15px,1.5vw,16.5px)", lineHeight: "1.7", color: "var(--color-text-muted)", marginTop: "12px" }}>That
+                <p style={{ fontSize: "var(--fs-body)", lineHeight: "1.7", color: "var(--color-text-muted)", marginTop: "12px" }}>That
                   heritage shapes how we build Converse360 solutions that aren't just technically sound, but designed
                   with the same brand-first thinking that has powered 100+ businesses we've worked with over the years.{' '}
                 </p>
@@ -122,9 +122,9 @@ export default function AboutPage() {
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(60px,8vw,100px) clamp(20px,4vw,32px)" }}>
 
           <div style={{ maxWidth: "52em", margin: "0 auto clamp(36px,5vw,56px)", textAlign: "center" }}>
-            <h2 style={{ fontSize: "clamp(28px,4vw,42px)", fontWeight: "800", letterSpacing: "-0.035em", lineHeight: "1.15", marginBottom: "14px", color: "var(--color-text)" }}>
+            <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "800", letterSpacing: "-0.035em", lineHeight: "1.15", marginBottom: "14px", color: "var(--color-text)" }}>
               {' '}What We Do</h2>
-            <p style={{ fontSize: "clamp(16px,1.8vw,19px)", lineHeight: "1.7", color: "var(--color-text-muted)", margin: "0" }}>
+            <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.7", color: "var(--color-text-muted)", margin: "0" }}>
               {' '}Five ways we put conversations to work for your business — designed for maximum conversion and engagement.{' '}
             </p>
           </div>
@@ -243,7 +243,7 @@ export default function AboutPage() {
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(60px,8vw,100px) clamp(20px,4vw,32px)" }}>
 
           <div style={{ marginBottom: "clamp(36px,5vw,56px)", textAlign: "center" }}>
-            <h2 style={{ fontSize: "clamp(28px,4vw,42px)", fontWeight: "800", letterSpacing: "-0.035em", color: "var(--color-text)" }}>
+            <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "800", letterSpacing: "-0.035em", color: "var(--color-text)" }}>
               {' '}Why Businesses Choose Converse360</h2>
           </div>
 
@@ -325,9 +325,9 @@ export default function AboutPage() {
       <section style={{ background: "var(--brand)", color: "var(--color-bg)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(48px,6.5vw,76px) clamp(20px,4vw,32px)", display: "flex", flexDirection: "column", flexWrap: "wrap", alignItems: "center", gap: "24px", textAlign: "center" }}>
           <div>
-            <h2 style={{ fontSize: "clamp(24px,3.2vw,36px)", fontWeight: "800", letterSpacing: "-0.03em", marginBottom: "10px" }}>Your
+            <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "800", letterSpacing: "-0.03em", marginBottom: "10px" }}>Your
               next reply could be automatic.</h2>
-            <p style={{ fontSize: "16.5px", color: "rgba(255,255,255,0.9)" }}>Fifteen minutes, your questions answered, no
+            <p style={{ fontSize: "var(--fs-lede)", color: "rgba(255,255,255,0.9)" }}>Fifteen minutes, your questions answered, no
               slides.</p>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "14px" }}>

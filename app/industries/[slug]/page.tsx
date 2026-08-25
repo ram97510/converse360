@@ -254,17 +254,17 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
       <section style={{ maxWidth: '1440px', margin: '0 auto', padding: '0 clamp(20px,4vw,32px) clamp(56px,8vw,84px)' }}>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(320px,100%),1fr))', gap: 'clamp(32px,5vw,56px)', alignItems: 'start' }}>
           <div>
-            <h2 style={{ fontSize: 'clamp(30px,4.5vw,42px)', fontWeight: '700', letterSpacing: '-0.03em', marginBottom: '12px', textAlign: 'left' }}>{ind.faqTitle}</h2>
-            <p style={{ fontSize: '15.5px', lineHeight: '1.55', color: 'var(--color-text-muted)', textAlign: 'left' }}>Still unsure? <Link href="/book-a-demo" style={{ color: 'var(--brand)', textDecoration: 'none', fontWeight: '500' }}>Book a demo</Link> and we&apos;ll walk you through it.</p>
+            <h2 style={{ fontSize: 'var(--fs-section)', fontWeight: '700', letterSpacing: '-0.03em', marginBottom: '12px', textAlign: 'left' }}>{ind.faqTitle}</h2>
+            <p style={{ fontSize: 'var(--fs-body)', lineHeight: '1.55', color: 'var(--color-text-muted)', textAlign: 'left' }}>Still unsure? <Link href="/book-a-demo" style={{ color: 'var(--brand)', textDecoration: 'none', fontWeight: '500' }}>Book a demo</Link> and we&apos;ll walk you through it.</p>
           </div>
           <div style={{ borderTop: '1px solid var(--color-divider)' }}>
             {ind.faqs.map((f) => (
               <details key={f.q} style={{ borderBottom: '1px solid var(--color-divider)' }}>
-                <summary style={{ cursor: 'pointer', padding: '22px 0', fontSize: '17.5px', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '16px' }}>
+                <summary style={{ cursor: 'pointer', padding: '22px 0', fontSize: 'var(--fs-title-sm)', fontWeight: '500', display: 'flex', alignItems: 'center', gap: '16px' }}>
                   <span style={{ flex: '1' }}>{f.q}</span>
                   <span style={{ fontSize: '22px', color: 'var(--brand)', lineHeight: '1' }}>+</span>
                 </summary>
-                <p style={{ fontSize: '15.5px', lineHeight: '1.6', color: 'var(--color-text-muted)', padding: '0 0 22px', maxWidth: '44em' }}>
+                <p style={{ fontSize: 'var(--fs-body)', lineHeight: '1.6', color: 'var(--color-text-muted)', padding: '0 0 22px', maxWidth: '44em' }}>
                   {f.a}
                 </p>
               </details>
@@ -277,10 +277,10 @@ export default async function IndustryPage({ params }: { params: Promise<Params>
       <section style={{ background: 'var(--brand)', color: 'var(--color-bg)' }}>
         <div style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(48px,6.5vw,76px) clamp(20px,4vw,32px)', display: 'flex', flexDirection: 'column', flexWrap: 'wrap', alignItems: 'center', gap: '24px', textAlign: 'center' }}>
           <div>
-            <h2 style={{ fontSize: 'clamp(24px,3.2vw,36px)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '10px' }}>
+            <h2 style={{ fontSize: 'var(--fs-section)', fontWeight: '800', letterSpacing: '-0.03em', marginBottom: '10px' }}>
               {ind.ctaTitle}
             </h2>
-            <p style={{ fontSize: '16.5px', color: 'rgba(255,255,255,0.9)', maxWidth: '42em', margin: '0 auto' }}>
+            <p style={{ fontSize: 'var(--fs-lede)', color: 'rgba(255,255,255,0.9)', maxWidth: '42em', margin: '0 auto' }}>
               {ind.ctaBody}
             </p>
           </div>

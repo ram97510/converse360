@@ -26,9 +26,9 @@ export default function EventManagementPost() {
               <span aria-hidden="true">/</span>
               <span style={{ color: "var(--color-text)", fontWeight: "500" }}>Event management</span>
             </div>
-            <h1 style={{ fontSize: "clamp(30px,4.6vw,44px)", fontWeight: "800", letterSpacing: "-0.035em", lineHeight: "1.14", margin: "18px 0 18px" }}>
+            <h1 style={{ fontSize: "var(--fs-hero)", fontWeight: "var(--fw-hero)", letterSpacing: "-0.035em", lineHeight: "1.14", margin: "18px 0 18px" }}>
               {' '}How to Use WhatsApp for Event Management: A Complete Guide for Event Organisers</h1>
-            <p style={{ fontSize: "clamp(16.5px,1.8vw,19px)", lineHeight: "1.65", color: "#4A4A4D", marginBottom: "26px" }}>
+            <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.65", color: "#4A4A4D", marginBottom: "26px" }}>
               {' '}In the organisation of any event, there are a lot of things to do, like guest list management, coordination
               with vendors, booking of tickets and much more in one go.</p>
             <div className="post-byline">

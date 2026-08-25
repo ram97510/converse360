@@ -46,9 +46,9 @@ export default function BlogBody() {
     <>
       <section style={{ background: "var(--color-surface)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(48px,7vw,84px) clamp(20px,4vw,32px)", textAlign: "center" }}>
-          <h1 style={{ fontSize: "clamp(32px,5vw,54px)", fontWeight: "700", letterSpacing: "-0.04em", lineHeight: "1.06", marginBottom: "20px", maxWidth: "18em", marginLeft: "auto", marginRight: "auto", textWrap: "balance" }}>
+          <h1 style={{ fontSize: "var(--fs-hero)", fontWeight: "var(--fw-hero)", letterSpacing: "-0.04em", lineHeight: "1.06", marginBottom: "20px", maxWidth: "18em", marginLeft: "auto", marginRight: "auto", textWrap: "balance" }}>
             {' '}Turn Conversations Into Growth</h1>
-          <p style={{ fontSize: "clamp(16px,1.8vw,19px)", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "42em", marginLeft: "auto", marginRight: "auto" }}>
+          <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.65", color: "var(--color-text-muted)", maxWidth: "42em", marginLeft: "auto", marginRight: "auto" }}>
             {' '}Practical insights on WhatsApp, AI agents, conversational sales, and smarter ways to turn everyday customer
             conversations into real business results.</p>
         </div>
@@ -164,8 +164,8 @@ export default function BlogBody() {
 
           {isEmpty && (<>
             <div className="blog-empty">
-              <p style={{ fontSize: "16.5px", fontWeight: "600", color: "var(--color-text)", marginBottom: "8px" }}>Nothing here yet</p>
-              <p style={{ fontSize: "15px", color: "var(--color-text-subtle)" }}>No articles under this topic. Pick another one above.</p>
+              <p style={{ fontSize: "var(--fs-title-sm)", fontWeight: "600", color: "var(--color-text)", marginBottom: "8px" }}>Nothing here yet</p>
+              <p style={{ fontSize: "var(--fs-body)", color: "var(--color-text-subtle)" }}>No articles under this topic. Pick another one above.</p>
             </div>
           </>)}
 
@@ -175,9 +175,9 @@ export default function BlogBody() {
       <section style={{ background: "var(--brand)", color: "var(--color-bg)" }}>
         <div style={{ maxWidth: "1440px", margin: "0 auto", padding: "clamp(48px,6.5vw,76px) clamp(20px,4vw,32px)", display: "flex", flexDirection: "column", flexWrap: "wrap", alignItems: "center", gap: "24px", textAlign: "center" }}>
           <div>
-            <h2 style={{ fontSize: "clamp(24px,3.2vw,34px)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "10px" }}>
+            <h2 style={{ fontSize: "var(--fs-section)", fontWeight: "700", letterSpacing: "-0.03em", marginBottom: "10px" }}>
               {' '}Want this working for your business?</h2>
-            <p style={{ fontSize: "16px", color: "rgba(255,255,255,0.85)", maxWidth: "32em", margin: "0 auto" }}>See Converse360 on your
+            <p style={{ fontSize: "var(--fs-lede)", color: "rgba(255,255,255,0.85)", maxWidth: "32em", margin: "0 auto" }}>See Converse360 on your
               own channels. We will walk you through it — no setup fee, live in days.</p>
           </div>
           <div style={{ display: "flex", flexWrap: "wrap", gap: "14px", justifyContent: "center" }}>

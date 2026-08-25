@@ -26,9 +26,9 @@ export default function ConversationalSalesPost() {
               <span aria-hidden="true">/</span>
               <span style={{ color: "var(--color-text)", fontWeight: "500" }}>Conversational sales</span>
             </div>
-            <h1 style={{ fontSize: "clamp(30px,4.6vw,44px)", fontWeight: "800", letterSpacing: "-0.035em", lineHeight: "1.14", margin: "18px 0 18px" }}>
+            <h1 style={{ fontSize: "var(--fs-hero)", fontWeight: "var(--fw-hero)", letterSpacing: "-0.035em", lineHeight: "1.14", margin: "18px 0 18px" }}>
               {' '}Conversational Sales Strategy: How to Engage Customers and Increase Conversions</h1>
-            <p style={{ fontSize: "clamp(16.5px,1.8vw,19px)", lineHeight: "1.65", color: "#4A4A4D", marginBottom: "26px" }}>
+            <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.65", color: "#4A4A4D", marginBottom: "26px" }}>
               {' '}The traditional sales funnel is fast becoming irrelevant compared to something much more efficient:
               conversation.</p>
             <div className="post-byline">

@@ -26,9 +26,9 @@ export default function WhatsAppEssentialPost() {
               <span aria-hidden="true">/</span>
               <span style={{ color: "var(--color-text)", fontWeight: "500" }}>WhatsApp</span>
             </div>
-            <h1 style={{ fontSize: "clamp(30px,4.6vw,44px)", fontWeight: "800", letterSpacing: "-0.035em", lineHeight: "1.14", margin: "18px 0 18px" }}>
+            <h1 style={{ fontSize: "var(--fs-hero)", fontWeight: "var(--fw-hero)", letterSpacing: "-0.035em", lineHeight: "1.14", margin: "18px 0 18px" }}>
               {' '}Why WhatsApp Is Essential for Business in 2026: Benefits, Use Cases & Customer Engagement</h1>
-            <p style={{ fontSize: "clamp(16.5px,1.8vw,19px)", lineHeight: "1.65", color: "#4A4A4D", marginBottom: "26px" }}>
+            <p style={{ fontSize: "var(--fs-lede)", lineHeight: "1.65", color: "#4A4A4D", marginBottom: "26px" }}>
               {' '}The rise of WhatsApp has been so quiet and understated that it has emerged as one of the most powerful
               business communication tools of the decade.</p>
             <div className="post-byline">
