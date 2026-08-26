@@ -8395,19 +8395,52 @@ body {
 }
 
 /* ---------------------------------------------------------------------------
-   Book a demo — the date/time picker. Two columns side by side, stacked once
-   the calendar can no longer hold seven readable day cells.
+   Book a demo — the booking panel.
+
+   Three columns of content on a wide screen: the calendar, the details form,
+   and the sidebar. The sidebar drops under the card first, being the
+   supporting copy; the two panels inside the card stack last, once the
+   calendar can no longer hold seven readable day cells.
    --------------------------------------------------------------------------- */
-@media (max-width: 640px) {
+/* The time slots sit in a fixed-height box so the card keeps its height
+   whichever day is picked; the overflow scrolls, on a hairline scrollbar that
+   only darkens on hover. */
+.demo-slots {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-divider) transparent;
+}
+
+.demo-slots::-webkit-scrollbar {
+  width: 6px;
+}
+
+.demo-slots::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.demo-slots::-webkit-scrollbar-thumb {
+  background: var(--color-divider);
+  border-radius: 999px;
+}
+
+.demo-slots:hover::-webkit-scrollbar-thumb {
+  background: var(--color-text-fainter);
+}
+
+@media (max-width: 1080px) {
+  .demo-shell {
+    grid-template-columns: minmax(0, 1fr) !important;
+  }
+}
+
+@media (max-width: 880px) {
   .demo-picker {
-    grid-template-columns: 1fr !important;
+    grid-template-columns: minmax(0, 1fr) !important;
   }
 
-  .demo-picker > :last-child {
+  .demo-picker .demo-details {
     border-left: 0 !important;
     border-top: 1px solid var(--color-divider);
-    padding-left: 0 !important;
-    padding-top: 22px;
   }
 }
 

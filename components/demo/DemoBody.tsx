@@ -2,55 +2,72 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import Hx from '@/components/Hx';
-import { INDUSTRIES } from '@/lib/industries-data';
 import { BRAND, BRAND_600, BRAND_700 } from '@/lib/tokens';
 
 /**
- * The Book a Free Demo page body — a three-step booking flow.
+ * The Book a Demo page body — a single-screen booking panel.
  *
- *   1. Pick a date on the calendar, then a slot from that day's times.
- *   2. Fill in the details.
- *   3. Confirmation, with the chosen slot read back.
+ *   Left card    : pick a date, then a slot for that day, then the three
+ *                  details we need. One screen, no stepper.
+ *   Right column : why the demo is worth the twenty minutes, and who runs it.
+ *   On submit    : the whole page is replaced by the confirmation.
  *
  * Client-side only, in step with ContactBody: submitting does not post
  * anywhere. Wire `submit` to a real endpoint when one exists — the slot lives
  * in `date` / `time`, the rest in the form fields.
  *
- * Availability is a static rule for now (weekdays and Saturdays, 10:00–18:30
- * IST, half-hour slots, nothing inside the next two hours). Replace
- * `isDayOpen` / `slotOpen` when a real calendar backs this.
+ * Availability is a static rule for now (Monday to Saturday, 10:00–18:30 IST,
+ * half-hour slots, nothing inside the next two hours). Replace `isDayOpen` /
+ * `slotOpen` when a real calendar backs this.
  */
 
-/** The three trust lines under the hero headline. */
-const ASSURANCES = [
-  '20 minutes, on a call or over WhatsApp',
-  'No setup fee, no obligation to buy',
-  'A live walkthrough on your own enquiries',
+/** The three reasons in the sidebar, each with the glyph for its badge. */
+const REASONS = [
+  {
+    title: 'Personalized AI Walkthrough',
+    body: 'See how Converse360 adapts to your specific industry use cases.',
+    icon: (
+      <>
+        <path d="M12 5a3 3 0 1 0-6 .1 4 4 0 0 0-2.5 5.8 4 4 0 0 0 .5 6.6A4 4 0 1 0 12 18z" />
+        <path d="M12 5a3 3 0 1 1 6 .1 4 4 0 0 1 2.5 5.8 4 4 0 0 1-.5 6.6A4 4 0 1 1 12 18z" />
+        <path d="M15 13a4.5 4.5 0 0 1-3-4 4.5 4.5 0 0 1-3 4" />
+      </>
+    ),
+  },
+  {
+    title: 'ROI Analysis',
+    body: 'Get a custom breakdown of expected cost savings and efficiency gains.',
+    icon: (
+      <>
+        <path d="M22 7l-8.5 8.5-5-5L2 17" />
+        <path d="M16 7h6v6" />
+      </>
+    ),
+  },
+  {
+    title: 'Integration Roadmap',
+    body: 'Learn how quickly you can deploy alongside your existing tech stack.',
+    icon: (
+      <>
+        <path d="m9 8-4 4 4 4" />
+        <path d="m15 8 4 4-4 4" />
+        <path d="m13.4 6.5-2.8 11" />
+      </>
+    ),
+  },
 ];
 
-/** What the twenty minutes covers, shown beside the flow. */
-const AGENDA = [
-  {
-    title: 'Your enquiries today',
-    body: 'Where they land now — WhatsApp, calls, Instagram DMs, the website form — and which ones eat the most of your team’s day.',
-  },
-  {
-    title: 'A live flow, on your questions',
-    body: 'We take a real enquiry you get every week and build the reply flow for it while you watch.',
-  },
-  {
-    title: 'Handover to your team',
-    body: 'How a conversation moves to a person with the full context attached, and what your team sees when it arrives.',
-  },
-  {
-    title: 'Numbers and next steps',
-    body: 'Plan, per-message costs, what onboarding needs from you, and a straight answer on timelines.',
-  },
-];
+/** The specialist card under the reasons. Placeholder — swap for a real name. */
+const SPECIALIST = {
+  name: 'Sarah Jenkins',
+  role: 'Enterprise Solutions Architect',
+  quote: 'I look forward to showing you how we can streamline your customer interactions.',
+};
 
-const STEPS = ['Date & time', 'Your details', 'Confirmed'];
+/** Options for the volume select. */
+const VOLUMES = ['Under 10,000', '10,000 – 50,000', '50,000 – 200,000', 'Over 200,000'];
 
-const DAY_INITIALS = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+const DAY_INITIALS = ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'];
 
 /** Booking window, in IST. Half-hour slots from 10:00 up to and including 18:30. */
 const OPEN_HOUR = 10;
@@ -65,41 +82,93 @@ for (let m = OPEN_HOUR * 60; m < CLOSE_HOUR * 60; m += 30) {
   TIME_SLOTS.push(`${String(Math.floor(m / 60)).padStart(2, '0')}:${String(m % 60).padStart(2, '0')}`);
 }
 
+/** How the slot grid is measured: two rows of them show, the rest scroll. */
+const SLOT_HEIGHT = 46;
+const SLOT_GAP = 10;
+const SLOT_ROWS = 2;
+
+/** '13:00' → '01:00 PM'. Slots are stored 24-hour and shown 12-hour. */
+const label12 = (slot: string) => {
+  const [h, m] = slot.split(':').map(Number);
+  const hh = h % 12 === 0 ? 12 : h % 12;
+  return `${String(hh).padStart(2, '0')}:${String(m).padStart(2, '0')} ${h >= 12 ? 'PM' : 'AM'}`;
+};
+
+/* --- shared styling ------------------------------------------------------- */
+
+/** A white panel: the booking card and both sidebar cards share this. */
+const CARD: React.CSSProperties = {
+  background: 'var(--color-bg)',
+  border: '1px solid var(--color-divider)',
+  borderRadius: '20px',
+  boxShadow: '0 1px 2px rgba(24,24,24,0.03), 0 14px 34px -24px rgba(24,24,24,0.20)',
+};
+
+const LABEL: React.CSSProperties = {
+  fontSize: '11px',
+  fontWeight: '500',
+  letterSpacing: '0.09em',
+  textTransform: 'uppercase',
+  color: 'var(--color-text-subtle)',
+};
+
 const FIELD: React.CSSProperties = {
   font: 'inherit',
-  fontSize: '15.5px',
+  fontSize: '14.5px',
   color: 'var(--color-text)',
   background: 'var(--color-bg)',
   borderWidth: '1px',
   borderStyle: 'solid',
   borderColor: 'var(--color-divider)',
   borderRadius: '9px',
-  padding: '13px 14px',
+  padding: '12px 13px',
   width: '100%',
 };
 
 const FIELD_FOCUS: React.CSSProperties = { borderColor: 'var(--brand)', outline: 'none' };
 
-const ROW: React.CSSProperties = {
-  display: 'grid',
-  gridTemplateColumns: 'repeat(auto-fit,minmax(min(220px,100%),1fr))',
-  gap: '18px',
+/** The two panel headings inside the booking card. */
+const PANEL_TITLE: React.CSSProperties = {
+  fontSize: 'clamp(24px,2.6vw,30px)',
+  fontWeight: '700',
+  letterSpacing: '-0.03em',
+  lineHeight: '1.12',
+  margin: '0 0 18px',
 };
 
-const CARD: React.CSSProperties = {
-  border: '1px solid var(--color-divider)',
-  borderRadius: '16px',
-  padding: 'clamp(24px,3vw,34px)',
+const BTN_BRAND: React.CSSProperties = {
+  font: 'inherit',
+  cursor: 'pointer',
+  background: 'var(--brand)',
+  color: 'var(--color-bg)',
+  border: '0',
+  fontSize: '15px',
+  fontWeight: '700',
+  padding: '14px 26px',
+  borderRadius: '999px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  gap: '10px',
+  transition: 'background .2s ease',
 };
 
-const ICON_TILE: React.CSSProperties = {
-  width: '38px',
-  height: '38px',
-  borderRadius: '9px',
-  background: 'rgba(0,171,86,0.10)',
-  display: 'grid',
-  placeItems: 'center',
-  flex: 'none',
+const BTN_GHOST: React.CSSProperties = {
+  font: 'inherit',
+  cursor: 'pointer',
+  background: 'var(--color-bg)',
+  color: 'var(--color-text)',
+  borderWidth: '1px',
+  borderStyle: 'solid',
+  borderColor: 'var(--color-divider)',
+  fontSize: '15px',
+  fontWeight: '500',
+  padding: '13px 22px',
+  borderRadius: '999px',
+  display: 'inline-flex',
+  alignItems: 'center',
+  gap: '9px',
+  transition: 'border-color .2s ease, color .2s ease',
 };
 
 const PILL: React.CSSProperties = {
@@ -119,40 +188,6 @@ const PILL: React.CSSProperties = {
 
 const PILL_HOVER: React.CSSProperties = { borderColor: 'var(--brand)', color: 'var(--brand)' };
 
-const BTN_BRAND: React.CSSProperties = {
-  font: 'inherit',
-  cursor: 'pointer',
-  background: 'var(--brand)',
-  color: 'var(--color-bg)',
-  border: '0',
-  fontSize: '16px',
-  fontWeight: '700',
-  padding: '15px 30px',
-  borderRadius: '999px',
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '10px',
-  transition: 'background .2s ease, opacity .2s ease',
-};
-
-const BTN_GHOST: React.CSSProperties = {
-  font: 'inherit',
-  cursor: 'pointer',
-  background: 'var(--color-bg)',
-  color: 'var(--color-text)',
-  borderWidth: '1px',
-  borderStyle: 'solid',
-  borderColor: 'var(--color-divider)',
-  fontSize: '15.5px',
-  fontWeight: '500',
-  padding: '14px 24px',
-  borderRadius: '999px',
-  display: 'inline-flex',
-  alignItems: 'center',
-  gap: '9px',
-  transition: 'border-color .2s ease, color .2s ease',
-};
-
 /** A labelled form control. `htmlFor` ties the label to the control's id. */
 const Field = ({
   htmlFor,
@@ -164,7 +199,7 @@ const Field = ({
   children: React.ReactNode;
 }) => (
   <div style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
-    <label htmlFor={htmlFor} style={{ fontSize: '13.5px', fontWeight: '500', color: 'var(--color-text)' }}>
+    <label htmlFor={htmlFor} style={LABEL}>
       {label}
     </label>
     {children}
@@ -191,16 +226,14 @@ const monthLabel = (d: Date) => d.toLocaleDateString('en-GB', { month: 'long', y
 
 const longDate = (d: Date) => d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
 
-const shortDate = (d: Date) => d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'short' });
+const shortDate = (d: Date) => d.toLocaleDateString('en-GB', { day: 'numeric', month: 'short' });
 
 /* --- the booking ---------------------------------------------------------- */
 
 type Booking = {
   name: string;
-  company: string;
-  whatsapp: string;
   email: string;
-  question: string;
+  volume: string;
 };
 
 /** How long the demo runs, in minutes. */
@@ -239,11 +272,10 @@ const monthCells = (year: number, month: number): (Date | null)[] => {
 };
 
 export default function DemoBody() {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
   const [date, setDate] = useState<Date | null>(null);
   const [time, setTime] = useState<string | null>(null);
 
-  /** What step 2 collected, kept so the confirmation can read it back. */
+  /** What the form collected, kept so the confirmation can read it back. */
   const [booked, setBooked] = useState<Booking | null>(null);
 
   /** Feedback for the copy button, cleared on a timer. */
@@ -286,16 +318,10 @@ export default function DemoBody() {
 
   const submit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!date || !time) return;
     const data = new FormData(e.currentTarget);
     const get = (k: string) => String(data.get(k) ?? '').trim();
-    setBooked({
-      name: get('name'),
-      company: get('company'),
-      whatsapp: get('whatsapp'),
-      email: get('email'),
-      question: get('question'),
-    });
-    setStep(3);
+    setBooked({ name: get('name'), email: get('email'), volume: get('volume') });
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
@@ -304,111 +330,55 @@ export default function DemoBody() {
     setTime(null);
     setBooked(null);
     setCopied(false);
-    setStep(1);
   };
 
-  /* --- pieces ------------------------------------------------------------- */
-
-  const stepper = (
-    <ol
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        flexWrap: 'wrap',
-        gap: '10px 14px',
-        listStyle: 'none',
-        margin: '0 0 clamp(24px,3vw,34px)',
-        padding: '0',
-      }}
-    >
-      {STEPS.map((label, i) => {
-        const n = i + 1;
-        const done = step > n;
-        const active = step === n;
-        return (
-          <li key={label} style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
-            <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
-              <span
-                style={{
-                  width: '28px',
-                  height: '28px',
-                  borderRadius: '999px',
-                  display: 'grid',
-                  placeItems: 'center',
-                  flex: 'none',
-                  fontSize: '13.5px',
-                  fontWeight: '700',
-                  border: `1px solid ${done || active ? BRAND : 'var(--color-divider)'}`,
-                  background: done ? BRAND : active ? 'rgba(0,171,86,0.10)' : 'var(--color-bg)',
-                  color: done ? '#fff' : active ? BRAND_700 : 'var(--color-text-subtle)',
-                  transition: 'background .2s ease, border-color .2s ease, color .2s ease',
-                }}
-              >
-                {done ? <Check size={14} colour="#fff" width={3} /> : n}
-              </span>
-              <span
-                style={{
-                  fontSize: '14.5px',
-                  fontWeight: active ? '700' : '500',
-                  color: done || active ? 'var(--color-text)' : 'var(--color-text-subtle)',
-                }}
-              >
-                {label}
-              </span>
-            </div>
-            {n < STEPS.length && (
-              <span style={{ width: 'clamp(18px,4vw,54px)', height: '1px', background: done ? BRAND : 'var(--color-divider)' }} aria-hidden="true" />
-            )}
-          </li>
-        );
-      })}
-    </ol>
-  );
+  /* --- the picker --------------------------------------------------------- */
 
   const calendar = (
-    <div style={{ minWidth: '0' }}>
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: '12px', marginBottom: '14px' }}>
-        <div style={{ fontSize: '18px', fontWeight: '700', letterSpacing: '-0.02em' }}>
-          {cursor ? monthLabel(new Date(cursor.y, cursor.m, 1)) : ' '}
-        </div>
-        <div style={{ display: 'flex', gap: '6px' }}>
-          {[-1, 1].map((by) => {
-            const disabled = by === -1 && atFirstMonth;
-            return (
-              <Hx
-                key={by}
-                as="button"
-                type="button"
-                aria-label={by === -1 ? 'Previous month' : 'Next month'}
-                disabled={disabled || !cursor}
-                onClick={() => shiftMonth(by)}
-                style={{
-                  width: '34px',
-                  height: '34px',
-                  display: 'grid',
-                  placeItems: 'center',
-                  borderWidth: '1px',
-                  borderStyle: 'solid',
-                  borderColor: 'var(--color-divider)',
-                  borderRadius: '9px',
-                  background: 'var(--color-bg)',
-                  color: disabled ? 'var(--color-text-fainter)' : 'var(--color-text)',
-                  cursor: disabled ? 'not-allowed' : 'pointer',
-                }}
-                hoverStyle={disabled ? undefined : { borderColor: BRAND, color: BRAND_700 }}
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                  <path d={by === -1 ? 'm14 6-6 6 6 6' : 'm10 6 6 6-6 6'} />
-                </svg>
-              </Hx>
-            );
-          })}
+    <div style={{ padding: 'clamp(22px,2.6vw,32px)', minWidth: '0' }}>
+      <h2 style={PANEL_TITLE}>Select Date &amp; Time</h2>
+
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+        {[-1, 1].map((by) => {
+          const disabled = (by === -1 && atFirstMonth) || !cursor;
+          return (
+            <Hx
+              key={by}
+              as="button"
+              type="button"
+              aria-label={by === -1 ? 'Previous month' : 'Next month'}
+              disabled={disabled}
+              onClick={() => shiftMonth(by)}
+              style={{
+                order: by === -1 ? 0 : 2,
+                font: 'inherit',
+                width: '28px',
+                height: '28px',
+                display: 'grid',
+                placeItems: 'center',
+                border: '0',
+                borderRadius: '8px',
+                background: 'transparent',
+                color: disabled ? 'var(--color-text-fainter)' : 'var(--color-text-subtle)',
+                cursor: disabled ? 'not-allowed' : 'pointer',
+                flex: 'none',
+              }}
+              hoverStyle={disabled ? undefined : { color: BRAND_700, background: 'rgba(0,171,86,0.08)' }}
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d={by === -1 ? 'm14 6-6 6 6 6' : 'm10 6 6 6-6 6'} />
+              </svg>
+            </Hx>
+          );
+        })}
+        <div style={{ order: 1, flex: '1', textAlign: 'center', fontSize: '14.5px', fontWeight: '700', letterSpacing: '-0.01em' }}>
+          {cursor ? monthLabel(new Date(cursor.y, cursor.m, 1)) : ' '}
         </div>
       </div>
 
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: '4px' }}>
-        {DAY_INITIALS.map((d, i) => (
-          <div key={i} style={{ textAlign: 'center', fontSize: '13px', fontWeight: '500', color: 'var(--color-text-subtle)', padding: '8px 0' }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(7,1fr)', gap: '2px' }}>
+        {DAY_INITIALS.map((d) => (
+          <div key={d} style={{ textAlign: 'center', fontSize: '11.5px', fontWeight: '500', color: 'var(--color-text-subtle)', padding: '6px 0' }}>
             {d}
           </div>
         ))}
@@ -428,66 +398,52 @@ export default function DemoBody() {
               onClick={() => pickDate(cell)}
               style={{
                 font: 'inherit',
+                position: 'relative',
                 aspectRatio: '1',
                 width: '100%',
                 display: 'grid',
                 placeItems: 'center',
+                border: '0',
                 borderRadius: '999px',
-                fontSize: '15.5px',
-                fontWeight: selected ? '700' : '500',
-                borderWidth: '1px',
-                borderStyle: 'solid',
-                borderColor: isToday && !selected ? 'var(--color-divider)' : 'transparent',
-                background: selected ? BRAND_700 : open ? 'rgba(0,171,86,0.08)' : 'transparent',
-                color: selected ? '#fff' : open ? BRAND_700 : 'var(--color-text-fainter)',
+                fontSize: '13.5px',
+                fontWeight: selected || isToday ? '700' : '500',
+                background: selected ? BRAND : 'transparent',
+                color: selected ? '#fff' : !open ? 'var(--color-text-fainter)' : isToday ? BRAND_700 : 'var(--color-text)',
                 cursor: open ? 'pointer' : 'default',
                 transition: 'background .18s ease, color .18s ease',
               }}
-              hoverStyle={open && !selected ? { background: 'rgba(0,171,86,0.18)' } : undefined}
+              hoverStyle={open && !selected ? { background: 'rgba(0,171,86,0.10)' } : undefined}
             >
               {cell.getDate()}
+              {isToday && !selected && (
+                <span
+                  style={{ position: 'absolute', bottom: '3px', width: '3px', height: '3px', borderRadius: '999px', background: BRAND }}
+                  aria-hidden="true"
+                />
+              )}
             </Hx>
           );
         })}
       </div>
 
-      <p style={{ fontSize: '13.5px', lineHeight: '1.6', color: 'var(--color-text-subtle)', marginTop: '16px' }}>
-        All times IST. We&rsquo;re open Monday to Saturday, 10:00 – 19:00.
-      </p>
-    </div>
-  );
-
-  const times = (
-    <div style={{ display: 'flex', flexDirection: 'column', minWidth: '0', borderLeft: '1px solid var(--color-divider)', paddingLeft: 'clamp(18px,2.5vw,28px)' }}>
-      <div style={{ fontSize: '18px', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '14px', minHeight: '34px', display: 'flex', alignItems: 'center' }}>
-        {date ? shortDate(date) : 'Pick a date'}
+      <div style={{ fontSize: '12.5px', fontWeight: '500', color: 'var(--color-text-subtle)', margin: '22px 0 10px' }}>
+        {date ? `Available Times for ${shortDate(date)}` : 'Available times'}
       </div>
 
-      {date ? (
-        <div
-          style={{
-            display: 'flex',
-            flexDirection: 'column',
-            gap: '10px',
-            maxHeight: '360px',
-            overflowY: 'auto',
-            paddingRight: '6px',
-          }}
-        >
-          {TIME_SLOTS.map((slot) => {
-            const open = slotOpen(slot);
-            const selected = time === slot;
-            const noon = slot === '12:00';
-            return (
-              <div key={slot}>
-                {noon && (
-                  <div style={{ display: 'flex', alignItems: 'center', gap: '10px', margin: '4px 0 14px' }}>
-                    <span style={{ flex: '1', height: '1px', background: 'var(--color-divider)' }} />
-                    <span style={{ fontSize: '11.5px', letterSpacing: '0.12em', color: 'var(--color-text-fainter)' }}>NOON</span>
-                    <span style={{ flex: '1', height: '1px', background: 'var(--color-divider)' }} />
-                  </div>
-                )}
+      {/* Two rows — four slots — then scroll. The height is fixed either way,
+          so the card does not jump when a day is picked. */}
+      <div
+        className="demo-slots"
+        style={{ height: `${SLOT_ROWS * SLOT_HEIGHT + (SLOT_ROWS - 1) * SLOT_GAP}px`, overflowY: 'auto', paddingRight: '8px' }}
+      >
+        {date ? (
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2,minmax(0,1fr))', gap: `${SLOT_GAP}px` }}>
+            {TIME_SLOTS.map((slot) => {
+              const open = slotOpen(slot);
+              const selected = time === slot;
+              return (
                 <Hx
+                  key={slot}
                   as="button"
                   type="button"
                   disabled={!open}
@@ -496,134 +452,183 @@ export default function DemoBody() {
                   style={{
                     font: 'inherit',
                     width: '100%',
-                    padding: '14px 16px',
-                    borderRadius: '10px',
-                    fontSize: '16px',
+                    height: `${SLOT_HEIGHT}px`,
+                    display: 'grid',
+                    placeItems: 'center',
+                    padding: '0 8px',
+                    borderRadius: '9px',
+                    fontSize: '13.5px',
                     fontWeight: selected ? '700' : '500',
                     borderWidth: '1px',
                     borderStyle: 'solid',
-                    borderColor: selected ? BRAND_700 : open ? 'rgba(0,171,86,0.45)' : 'var(--color-divider)',
-                    background: selected ? BRAND_700 : 'var(--color-bg)',
-                    color: selected ? '#fff' : open ? BRAND_700 : 'var(--color-text-fainter)',
+                    borderColor: selected ? BRAND : 'var(--color-divider)',
+                    background: selected ? BRAND : 'var(--color-bg)',
+                    color: selected ? '#fff' : open ? 'var(--color-text)' : 'var(--color-text-fainter)',
                     cursor: open ? 'pointer' : 'not-allowed',
                     transition: 'background .18s ease, border-color .18s ease, color .18s ease',
                   }}
-                  hoverStyle={open && !selected ? { background: 'rgba(0,171,86,0.10)', borderColor: BRAND_700 } : undefined}
+                  hoverStyle={open && !selected ? { borderColor: BRAND, color: BRAND_700 } : undefined}
                 >
-                  {slot}
+                  {label12(slot)}
                 </Hx>
-              </div>
-            );
-          })}
-        </div>
-      ) : (
-        <p style={{ fontSize: '15px', lineHeight: '1.65', color: 'var(--color-text-muted)' }}>
-          Choose a day on the calendar and the open slots for it will show up here.
-        </p>
-      )}
+              );
+            })}
+          </div>
+        ) : (
+          <p style={{ fontSize: '13.5px', lineHeight: '1.6', color: 'var(--color-text-muted)', margin: '0' }}>
+            Choose a day on the calendar and its open slots will show up here.
+          </p>
+        )}
+      </div>
     </div>
   );
 
-  /** The chosen slot, read back above the form and on the confirmation. */
-  const slotSummary = date && time && (
+  /* --- the details form --------------------------------------------------- */
+
+  const details = (
     <div
+      className="demo-details"
       style={{
-        display: 'flex',
-        alignItems: 'center',
-        gap: '14px',
-        flexWrap: 'wrap',
-        border: '1px solid var(--color-divider)',
-        background: 'var(--color-surface)',
-        borderRadius: '12px',
-        padding: '14px 18px',
+        background: 'var(--color-surface-2)',
+        borderLeft: '1px solid var(--color-divider)',
+        padding: 'clamp(22px,2.6vw,32px)',
+        minWidth: '0',
       }}
     >
-      <span style={{ ...ICON_TILE, width: '34px', height: '34px' }}>
-        <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke={BRAND_700} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-          <rect x="3" y="4.5" width="18" height="16" rx="2.5" />
-          <path d="M3 9.5h18M8 3v3M16 3v3" />
-        </svg>
-      </span>
-      <div style={{ minWidth: '0' }}>
-        <div style={{ fontSize: '15.5px', fontWeight: '700' }}>
-          {longDate(date)} at {time}
-        </div>
-        <div style={{ fontSize: '13.5px', color: 'var(--color-text-muted)' }}>20 minutes, IST</div>
-      </div>
+      <h2 style={PANEL_TITLE}>Your Details</h2>
+
+      <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+        <Field htmlFor="demo-name" label="Full name">
+          <Hx as="input" id="demo-name" name="name" type="text" required placeholder="Jane Doe" style={FIELD} focusStyle={FIELD_FOCUS} />
+        </Field>
+
+        <Field htmlFor="demo-email" label="Company email">
+          <Hx as="input" id="demo-email" name="email" type="email" required placeholder="jane@company.com" style={FIELD} focusStyle={FIELD_FOCUS} />
+        </Field>
+
+        <Field htmlFor="demo-volume" label="Expected monthly conversations">
+          <Hx as="select" id="demo-volume" name="volume" style={FIELD} focusStyle={FIELD_FOCUS}>
+            {VOLUMES.map((v) => (
+              <option key={v}>{v}</option>
+            ))}
+          </Hx>
+        </Field>
+
+        <Hx
+          as="button"
+          type="submit"
+          disabled={!date || !time}
+          style={{
+            ...BTN_BRAND,
+            width: '100%',
+            marginTop: '6px',
+            ...(!date || !time ? { background: 'var(--color-divider)', color: 'var(--color-text-subtle)', cursor: 'not-allowed' } : {}),
+          }}
+          hoverStyle={date && time ? { background: 'var(--color-text)' } : undefined}
+        >
+          Confirm Demo Booking
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <path d="M4 12h15M13 6l6 6-6 6" />
+          </svg>
+        </Hx>
+
+        <p style={{ fontSize: '11.5px', lineHeight: '1.6', color: 'var(--color-text-subtle)', textAlign: 'center', margin: '0' }}>
+          {date && time ? (
+            <>
+              By booking, you agree to our{' '}
+              <Hx link href="/terms" style={{ color: 'var(--color-text-subtle)', fontWeight: '500' }} hoverStyle={{ color: 'var(--brand)' }}>
+                terms of service
+              </Hx>
+              .
+            </>
+          ) : (
+            'Select a date and a time to confirm your booking.'
+          )}
+        </p>
+      </form>
     </div>
   );
 
-  const detailsForm = (
-    <form onSubmit={submit} style={{ display: 'flex', flexDirection: 'column', gap: '18px' }}>
-      {slotSummary}
-      <div style={ROW}>
-        <Field htmlFor="demo-name" label="Name">
-          <Hx as="input" id="demo-name" name="name" type="text" required placeholder="Your full name" style={FIELD} focusStyle={FIELD_FOCUS} />
-        </Field>
-        <Field htmlFor="demo-company" label="Business/Company Name">
-          <Hx as="input" id="demo-company" name="company" type="text" required placeholder="Company name" style={FIELD} focusStyle={FIELD_FOCUS} />
-        </Field>
-      </div>
-      <div style={ROW}>
-        <Field htmlFor="demo-whatsapp" label="WhatsApp Number">
-          <Hx as="input" id="demo-whatsapp" name="whatsapp" type="tel" required placeholder="+91 00000 00000" style={FIELD} focusStyle={FIELD_FOCUS} />
-        </Field>
-        <Field htmlFor="demo-email" label="Email Address">
-          <Hx as="input" id="demo-email" name="email" type="email" required placeholder="you@company.com" style={FIELD} focusStyle={FIELD_FOCUS} />
-        </Field>
-      </div>
-      <div style={ROW}>
-        <Field htmlFor="demo-industry" label="Industry">
-          <Hx as="select" id="demo-industry" name="industry" defaultValue="" style={FIELD} focusStyle={FIELD_FOCUS}>
-            <option value="" disabled>Select your industry</option>
-            {INDUSTRIES.map((i) => (
-              <option key={i.slug} value={i.slug}>{i.name}</option>
-            ))}
-            <option value="other">Something else</option>
-          </Hx>
-        </Field>
-        <Field htmlFor="demo-channel" label="Where do enquiries reach you?">
-          <Hx as="select" id="demo-channel" name="channel" style={FIELD} focusStyle={FIELD_FOCUS}>
-            <option>WhatsApp</option>
-            <option>Website chat</option>
-            <option>Instagram / Facebook DMs</option>
-            <option>Phone calls</option>
-            <option>A bit of everything</option>
-          </Hx>
-        </Field>
-      </div>
-      <Field htmlFor="demo-question" label={<>The enquiry you&rsquo;d like us to demo</>}>
-        <Hx
-          as="textarea"
-          id="demo-question"
-          name="question"
-          rows={4}
-          placeholder={'e.g. “Do you have this in size M?” or “What are the fees for the 2026 batch?”'}
-          style={{ ...FIELD, resize: 'vertical' }}
-          focusStyle={FIELD_FOCUS}
-        />
-      </Field>
+  /* --- the sidebar -------------------------------------------------------- */
 
-      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '12px', alignItems: 'center' }}>
-        <Hx as="button" type="button" onClick={() => setStep(1)} style={BTN_GHOST} hoverStyle={{ borderColor: BRAND, color: BRAND_700 }}>
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-            <path d="M14 6l-6 6 6 6" />
+  const sidebar = (
+    <div style={{ display: 'flex', flexDirection: 'column', gap: 'clamp(16px,1.8vw,20px)', minWidth: '0' }}>
+      <div style={{ ...CARD, padding: 'clamp(20px,2.2vw,26px)' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginBottom: '18px' }}>
+          <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke={BRAND_600} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9.2" />
+            <path d="m8.4 12.2 2.5 2.5 4.7-4.9" />
           </svg>
-          Change slot
-        </Hx>
-        <Hx as="button" type="submit" style={BTN_BRAND} hoverStyle={{ background: 'var(--color-text)' }}>
-          Confirm my free demo
-        </Hx>
+          <h3 style={{ fontSize: '15px', fontWeight: '700', letterSpacing: '-0.01em', margin: '0' }}>Why Demo Converse360?</h3>
+        </div>
+
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          {REASONS.map((r) => (
+            <div key={r.title} style={{ display: 'flex', gap: '11px', alignItems: 'flex-start' }}>
+              <span
+                style={{
+                  width: '26px',
+                  height: '26px',
+                  borderRadius: '999px',
+                  background: BRAND,
+                  display: 'grid',
+                  placeItems: 'center',
+                  flex: 'none',
+                  marginTop: '1px',
+                }}
+                aria-hidden="true"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#fff" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  {r.icon}
+                </svg>
+              </span>
+              <div style={{ minWidth: '0' }}>
+                <div style={{ fontSize: '13.5px', fontWeight: '700', letterSpacing: '-0.01em', marginBottom: '3px' }}>{r.title}</div>
+                <div style={{ fontSize: '12.5px', lineHeight: '1.55', color: 'var(--color-text-muted)' }}>{r.body}</div>
+              </div>
+            </div>
+          ))}
+        </div>
       </div>
 
-      <p style={{ fontSize: '13.5px', lineHeight: '1.6', color: 'var(--color-text-subtle)' }}>
-        We use these details only to set up your demo — nothing else. See our{' '}
-        <Hx link href="/privacy" style={{ color: 'var(--brand)', fontWeight: '500' }} hoverStyle={{ color: 'var(--color-text)' }}>
-          privacy policy
-        </Hx>
-        .
-      </p>
-    </form>
+      {/* `flex: 1` takes up the slack, so the sidebar bottoms out level with
+          the booking card beside it. */}
+      <div
+        style={{
+          ...CARD,
+          padding: 'clamp(22px,2.4vw,28px)',
+          textAlign: 'center',
+          flex: '1',
+          display: 'flex',
+          flexDirection: 'column',
+          justifyContent: 'center',
+        }}
+      >
+        <span
+          style={{
+            width: '56px',
+            height: '56px',
+            borderRadius: '999px',
+            background: `linear-gradient(150deg, ${BRAND_700} 0%, #1F8A4C 46%, #4FB870 100%)`,
+            color: '#fff',
+            display: 'grid',
+            placeItems: 'center',
+            margin: '0 auto 12px',
+            fontSize: '18px',
+            fontWeight: '700',
+            letterSpacing: '0.02em',
+          }}
+          aria-hidden="true"
+        >
+          {SPECIALIST.name.split(' ').map((w) => w[0]).join('')}
+        </span>
+        <div style={{ fontSize: '14px', fontWeight: '700', letterSpacing: '-0.01em' }}>{SPECIALIST.name}</div>
+        <div style={{ fontSize: '11.5px', color: 'var(--color-text-subtle)', marginTop: '3px' }}>{SPECIALIST.role}</div>
+        <p style={{ fontSize: '12.5px', lineHeight: '1.6', color: 'var(--color-text-muted)', fontStyle: 'italic', margin: '14px 0 0' }}>
+          &ldquo;{SPECIALIST.quote}&rdquo;
+        </p>
+      </div>
+    </div>
   );
 
   /* --- confirmation ------------------------------------------------------- */
@@ -649,7 +654,7 @@ export default function DemoBody() {
   /** The plain-text version of the booking, for sharing and for the clipboard. */
   const shareText =
     date && time
-      ? `My Converse360 demo is booked — ${longDate(date)} at ${time} IST, ${DURATION} minutes. Reference ${ref}.`
+      ? `My Converse360 demo is booked — ${longDate(date)} at ${label12(time)} IST, ${DURATION} minutes. Reference ${ref}.`
       : '';
 
   const copyDetails = async () => {
@@ -708,19 +713,17 @@ export default function DemoBody() {
     },
   ];
 
-  /** The booked slot and whatever step 2 collected, read back as a list. */
+  /** The booked slot and whatever the form collected, read back as a list. */
   const row = (k: string, v: React.ReactNode): [string, React.ReactNode] => [k, v];
 
   const bookedRows: [string, React.ReactNode][] = [
     row('Reference', <span style={{ fontFamily: 'var(--font-mono)', letterSpacing: '0.04em' }}>{ref}</span>),
-    row('When', date && time ? `${longDate(date)}, ${time} IST` : ''),
-    row('Where', 'WhatsApp video or a phone call — your pick'),
+    row('When', date && time ? `${longDate(date)}, ${label12(time)} IST` : ''),
+    row('Where', 'A video call or a phone call — your pick'),
     row('Who you’ll meet', 'Someone from our product team, start to finish'),
     ...(booked?.name ? [row('Name', booked.name)] : []),
-    ...(booked?.company ? [row('Business', booked.company)] : []),
-    ...(booked?.whatsapp ? [row('WhatsApp', booked.whatsapp)] : []),
     ...(booked?.email ? [row('Email', booked.email)] : []),
-    ...(booked?.question ? [row('The enquiry we’ll demo', booked.question)] : []),
+    ...(booked?.volume ? [row('Monthly conversations', booked.volume)] : []),
   ];
 
   const success = (
@@ -736,7 +739,7 @@ export default function DemoBody() {
         <div
           style={{
             position: 'relative',
-            maxWidth: '1440px',
+            maxWidth: '1200px',
             margin: '0 auto',
             padding: 'clamp(52px,7vw,92px) clamp(20px,4vw,32px)',
             textAlign: 'center',
@@ -770,18 +773,18 @@ export default function DemoBody() {
             Meeting scheduled successfully!
           </h1>
           <p style={{ fontSize: 'var(--fs-lede)', lineHeight: '1.6', color: 'var(--color-text-muted)' }}>
-            {booked?.name ? `Thanks, ${booked.name.split(' ')[0]} — we` : 'We'}&rsquo;ll send the confirmation and
-            the joining link on WhatsApp shortly.
+            {booked?.name ? `Thanks, ${booked.name.split(' ')[0]} — the` : 'The'} confirmation and the joining link
+            are on their way to your inbox.
           </p>
         </div>
       </section>
 
       {/* The booking itself, then the ways to keep it and pass it on. */}
-      <section style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(40px,6vw,72px) clamp(20px,4vw,32px)' }}>
+      <section style={{ maxWidth: '1200px', margin: '0 auto', padding: 'clamp(40px,6vw,72px) clamp(20px,4vw,32px)' }}>
         {/* `stretch` so the share column ends level with the booking card. */}
-        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(330px,100%),1fr))', gap: 'clamp(24px,4vw,40px)', alignItems: 'stretch' }}>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit,minmax(min(330px,100%),1fr))', gap: 'clamp(20px,3vw,28px)', alignItems: 'stretch' }}>
 
-          <div style={{ ...CARD, background: 'var(--color-surface)', minWidth: '0' }}>
+          <div style={{ ...CARD, padding: 'clamp(24px,3vw,34px)', minWidth: '0' }}>
             <h2 style={{ fontSize: 'var(--fs-card-title)', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '4px' }}>
               Your booking
             </h2>
@@ -807,8 +810,8 @@ export default function DemoBody() {
             </dl>
           </div>
 
-          <div style={{ minWidth: '0', display: 'flex', flexDirection: 'column' }}>
-            <div style={CARD}>
+          <div style={{ minWidth: '0', display: 'flex', flexDirection: 'column', gap: 'clamp(20px,3vw,28px)' }}>
+            <div style={{ ...CARD, padding: 'clamp(24px,3vw,34px)' }}>
               <h2 style={{ fontSize: 'var(--fs-card-title)', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '4px' }}>
                 Keep it or share it
               </h2>
@@ -840,7 +843,7 @@ export default function DemoBody() {
             </div>
 
             {/* Takes up the slack, so the column bottoms out with the booking card. */}
-            <div style={{ ...CARD, marginTop: '20px', flex: '1' }}>
+            <div style={{ ...CARD, padding: 'clamp(24px,3vw,34px)', flex: '1' }}>
               <h2 style={{ fontSize: 'var(--fs-card-title)', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '4px' }}>
                 Need to change something?
               </h2>
@@ -874,115 +877,61 @@ export default function DemoBody() {
     </>
   );
 
-  const heading =
-    step === 1
-      ? { title: 'Pick a time that suits you', body: 'Choose a day, then a slot. Twenty minutes is all we need.' }
-      : { title: 'Tell us about your business', body: 'So we walk in already knowing what to build for you.' };
-
-  /* The confirmation owns the whole page — the sales hero and the stepper have
-     nothing left to say once the slot is booked. */
-  if (step === 3) return success;
+  /* The confirmation owns the whole page — the booking panel has nothing left
+     to say once the slot is taken. */
+  if (booked) return success;
 
   return (
-    <>
-      <section style={{ background: 'var(--color-surface)' }}>
-        <div style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(48px,7vw,88px) clamp(20px,4vw,32px)', textAlign: 'center' }}>
-          <h1 style={{ fontSize: 'var(--fs-hero)', fontWeight: 'var(--fw-hero)', letterSpacing: '-0.04em', lineHeight: '1.06', marginBottom: '20px', maxWidth: '18em', marginLeft: 'auto', marginRight: 'auto', textWrap: 'balance' }}>
-            See Converse360 answer your own enquiries.
+    <section style={{ background: 'var(--color-bg)' }}>
+      <div style={{ maxWidth: '1200px', margin: '0 auto', padding: 'clamp(44px,6vw,80px) clamp(20px,4vw,32px)' }}>
+        <div style={{ textAlign: 'center', marginBottom: 'clamp(28px,3.4vw,44px)' }}>
+          <h1
+            style={{
+              fontSize: 'var(--fs-hero)',
+              fontWeight: 'var(--fw-hero)',
+              letterSpacing: '-0.04em',
+              lineHeight: '1.06',
+              margin: '0 0 16px',
+              textWrap: 'balance',
+            }}
+          >
+            Book a Personalized Demo
           </h1>
-          <p style={{ fontSize: 'var(--fs-lede)', lineHeight: '1.65', color: 'var(--color-text-muted)', maxWidth: '44em', marginLeft: 'auto', marginRight: 'auto' }}>
-            Bring one question your customers ask every week. In twenty minutes we&apos;ll build the flow that
-            handles it, show you the handover to your team, and give you the numbers — no slide deck, no
-            commitment.
+          <p
+            style={{
+              fontSize: 'var(--fs-body)',
+              lineHeight: '1.65',
+              color: 'var(--color-text-muted)',
+              maxWidth: '40em',
+              margin: '0 auto',
+              textWrap: 'balance',
+            }}
+          >
+            Experience how Converse360 can transform your customer engagement. Select a time below to connect with
+            our product specialists.
           </p>
-          <div style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '10px 24px', marginTop: '28px' }}>
-            {ASSURANCES.map((a) => (
-              <span key={a} style={{ display: 'inline-flex', alignItems: 'center', gap: '9px', fontSize: '14.5px', color: 'var(--color-text-muted)' }}>
-                <Check />
-                {a}
-              </span>
-            ))}
-          </div>
         </div>
-      </section>
-
-      <section style={{ maxWidth: '1440px', margin: '0 auto', padding: 'clamp(48px,6.5vw,80px) clamp(20px,4vw,32px)' }}>
-        {stepper}
-
-        <h2 style={{ fontSize: 'var(--fs-section)', fontWeight: '700', letterSpacing: '-0.03em', marginBottom: '12px' }}>
-          {heading.title}
-        </h2>
-        <p style={{ fontSize: 'var(--fs-lede)', lineHeight: '1.65', color: 'var(--color-text-muted)', marginBottom: '24px' }}>
-          {heading.body}
-        </p>
 
         <div
+          className="demo-shell"
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit,minmax(min(340px,100%),1fr))',
-            gap: 'clamp(32px,5vw,64px)',
+            gridTemplateColumns: 'minmax(0,1fr) minmax(0,330px)',
+            gap: 'clamp(16px,1.8vw,20px)',
             alignItems: 'stretch',
           }}
         >
-          <div style={{ display: 'flex', flexDirection: 'column', minWidth: '0' }}>
-            <div style={{ ...CARD, flex: 1, background: 'var(--color-surface)' }}>
-              {step === 1 && (
-                <>
-                  <div className="demo-picker" style={{ display: 'grid', gridTemplateColumns: 'minmax(0,1.15fr) minmax(0,0.85fr)', gap: 'clamp(18px,2.5vw,28px)' }}>
-                    {calendar}
-                    {times}
-                  </div>
-                  <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '14px', marginTop: '24px', paddingTop: '22px', borderTop: '1px solid var(--color-divider)' }}>
-                    <Hx
-                      as="button"
-                      type="button"
-                      disabled={!date || !time}
-                      onClick={() => setStep(2)}
-                      style={{ ...BTN_BRAND, ...(!date || !time ? { background: 'var(--color-divider)', color: 'var(--color-text-subtle)', cursor: 'not-allowed' } : {}) }}
-                      hoverStyle={date && time ? { background: 'var(--color-text)' } : undefined}
-                    >
-                      Continue
-                      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                        <path d="M10 6l6 6-6 6" />
-                      </svg>
-                    </Hx>
-                    <span style={{ fontSize: '14.5px', color: 'var(--color-text-muted)' }}>
-                      {date && time ? `${shortDate(date)} at ${time} IST` : 'Select a date and a time to carry on.'}
-                    </span>
-                  </div>
-                </>
-              )}
-
-              {step === 2 && detailsForm}
-            </div>
+          <div
+            className="demo-picker"
+            style={{ ...CARD, overflow: 'hidden', display: 'grid', gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)' }}
+          >
+            {calendar}
+            {details}
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', minWidth: '0' }}>
-            <div style={{ ...CARD, flex: 1 }}>
-              <h3 style={{ fontSize: 'var(--fs-card-title)', fontWeight: '700', letterSpacing: '-0.02em', marginBottom: '6px' }}>
-                What the twenty minutes covers
-              </h3>
-              <p style={{ fontSize: 'var(--fs-body)', lineHeight: '1.6', color: 'var(--color-text-muted)' }}>
-                One of our product team, start to finish — no sales handoff.
-              </p>
-              {AGENDA.map((item, i) => (
-                <div
-                  key={item.title}
-                  style={{ display: 'flex', gap: '14px', alignItems: 'flex-start', padding: '20px 0', borderTop: '1px solid var(--color-divider)', marginTop: i === 0 ? '18px' : '0', lineHeight: '1.6' }}
-                >
-                  <span style={{ ...ICON_TILE, borderRadius: '999px', fontSize: '14px', fontWeight: '700', color: BRAND_700 }}>
-                    {i + 1}
-                  </span>
-                  <div style={{ minWidth: '0' }}>
-                    <div style={{ fontSize: '16.5px', fontWeight: '500', marginBottom: '4px' }}>{item.title}</div>
-                    <div style={{ fontSize: '15px', lineHeight: '1.6', color: 'var(--color-text-muted)' }}>{item.body}</div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
+          {sidebar}
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

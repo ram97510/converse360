@@ -6,9 +6,9 @@ import PageShell from '@/components/PageShell';
 import DemoBody from '@/components/demo/DemoBody';
 
 export const metadata: Metadata = {
-  title: 'Book a Free Demo — Converse360',
+  title: 'Book a Personalized Demo — Converse360',
   description:
-    'A free 20-minute walkthrough on your own enquiries. We build the reply flow live, show the handover to your team, and give you the numbers.',
+    'Pick a date and time and see how Converse360 can transform your customer engagement — a 20-minute walkthrough with one of our product specialists.',
 };
 
 export default function BookADemoPage() {
