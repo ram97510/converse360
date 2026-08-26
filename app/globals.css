@@ -3983,6 +3983,11 @@ body {
 
 @media (max-width:768px) {
 
+  /* Increase landing page main hero heading font size on mobile responsive */
+  .page-landing {
+    --fs-hero: clamp(40px, 8vw, 54px);
+  }
+
   /* The feature stack is a sticky full-screen deck on desktop. On a phone
        each card holds ~460px of content in a 100dvh box, so ~190px sits empty
        above and below it. Let the cards flow instead — same order, same look,
