@@ -7543,7 +7543,7 @@ body {
   gap: 13px;
   padding: 10px 12px;
   border-radius: 12px;
-  font-size: 15px;
+  font-size: 18px;
   font-weight: 500;
   letter-spacing: -0.01em;
   color: var(--color-text);
@@ -7568,8 +7568,8 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 40px;
+  height: 40px;
   border-radius: 10px;
   flex: none;
 }
@@ -7579,7 +7579,7 @@ body {
   align-items: center;
   gap: 7px;
   margin: 14px 0 0 12px;
-  font-size: 13px;
+  font-size: 16px;
   font-weight: 600;
   color: var(--brand);
   transition: gap 0.18s ease;
@@ -7736,6 +7736,19 @@ body {
 
   .ind-mega-eyebrow {
     margin-bottom: 8px;
+  }
+
+  .ind-mega-item {
+    font-size: 16px;
+  }
+
+  .ind-mega-tile {
+    width: 32px;
+    height: 32px;
+  }
+
+  .ind-mega-all {
+    font-size: 14px;
   }
 }
 

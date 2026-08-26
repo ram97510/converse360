@@ -94,10 +94,10 @@ export default function IndustryMenu({ active = false }: { active?: boolean }) {
           border: '0',
           padding: '0',
           font: 'inherit',
-          fontSize: '14.5px',
+          fontSize: '18px',
           cursor: 'pointer',
           color: active || open ? 'var(--brand)' : 'var(--color-text-muted)',
-          fontWeight: active ? 600 : 400,
+          fontWeight: active ? 600 : 500,
         }}
       >
         Industries
@@ -133,7 +133,7 @@ export default function IndustryMenu({ active = false }: { active?: boolean }) {
                       aria-current={pathname === item.href ? 'page' : undefined}
                     >
                       <span className="ind-mega-tile" style={{ background: item.tintSoft, color: item.tint }}>
-                        <IndustryIcon name={item.icon} size={19} />
+                        <IndustryIcon name={item.icon} size={22} />
                       </span>
                       {item.label}
                     </Link>

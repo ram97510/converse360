@@ -31,7 +31,7 @@ export default function Header() {
   const pathname = usePathname() ?? '';
   const isActive = (href: string) => pathname === href || pathname.startsWith(`${href}/`);
 
-  const linkStyle = { color: 'var(--color-text-muted)' };
+  const linkStyle = { color: 'var(--color-text-muted)', fontWeight: '500' };
   const linkHover = { color: 'var(--brand)' };
   const activeStyle = { color: 'var(--brand)', fontWeight: '600' };
 
@@ -136,7 +136,7 @@ export default function Header() {
             display: 'flex',
             alignItems: 'center',
             gap: '28px',
-            fontSize: '14.5px',
+            fontSize: '18px',
             color: 'var(--color-text-muted)',
           }}
         >
@@ -154,7 +154,7 @@ export default function Header() {
           style={{
             background: isActive('/contact') ? 'var(--color-text)' : 'var(--brand)',
             color: 'var(--color-bg)',
-            fontSize: '14.5px',
+            fontSize: '18px',
             fontWeight: '500',
             padding: '10px 20px',
             borderRadius: '999px',
