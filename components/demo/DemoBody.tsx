@@ -59,7 +59,7 @@ const REASONS = [
 
 /** The specialist card under the reasons. Placeholder — swap for a real name. */
 const SPECIALIST = {
-  name: 'Sarah Jenkins',
+  name: 'Arjun',
   role: 'Enterprise Solutions Architect',
   quote: 'I look forward to showing you how we can streamline your customer interactions.',
 };
